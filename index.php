@@ -16,24 +16,18 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="photo" class="form-label">Upload Photo</label>
-                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*" onchange="displayImage(this)">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                        <div class="mb-3 row">
-                            <label for="photoDisplay" class="form-label">Uploaded Photo</label>
-                            <img id="photoDisplay" src="" alt="Uploaded Photo" class="img-thumbnail" style="max-width: 200px;">
+                        <div class="photo-container mb-3 row">
+                            <img id="photoDisplay" src="" alt="" class="img-thumbnail border" style="max-width: 200px;">
                         </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="my-3">
                         <label for="name" class="form-label important">Name of Applicant</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name of Applicant">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="my-3">
+                        <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Enter Name of Applicant">
+                        <label for="photo" class="form-label">Upload Photo</label>
+                        <input type="file" class="form-control" id="photo" name="photo" accept="image/*" onchange="displayImage(this)">
+                        <div class="my-3">
                         <label for="gender" class="form-label important">Gender</label>
                         <div>
                             <div class="form-check form-check-inline">
@@ -49,6 +43,7 @@
                                 <label class="form-check-label" for="other">Other</label>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <div class="col-md-6">
