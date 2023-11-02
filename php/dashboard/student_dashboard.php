@@ -210,15 +210,14 @@ session_start(); // Start the session
                     var minutes = now.getMinutes();
 
                     // Check if the current time is within the allowed time intervals
-                    if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 11 && minutes <= 20)) {
+                    if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 10 && minutes <= 20)) {
                         // Show the "attendance-section" div and the "Morning" button
                         document.getElementById("time-show").innerHTML = "8:00 AM - 9:00 AM";
                         document.getElementById("attendance-type").innerHTML = "Morning Attendance"
                         document.querySelector(".attendance-section").style.display = "block";
                         document.getElementById("morning-attendance-btn").style.display = "block";
-                        document.getElementById("night-attendance-btn").style.display =
-                            "none"; // Hide the "Night" button
-                    } else if (hours == 11 && minutes >= 0 && minutes < 50) {
+                        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+                    } else if (hours == 21 && minutes >= 0 && minutes < 60) {
                         // Show the "attendance-section" div and the "Night" button
                         document.getElementById("time-show").innerHTML = "9:00 PM - 9:30 PM";
                         document.getElementById("attendance-type").innerHTML = "Night Attendance"
@@ -229,14 +228,14 @@ session_start(); // Start the session
 
                         // Calculate the time until 10:30 PM
                         var endTime = new Date();
-                        endTime.setHours(22);
+                        endTime.setHours(21);
                         endTime.setMinutes(30);
                         var timeRemaining = endTime - now;
 
                         // Schedule a page refresh when the end time is reached
-                        setTimeout(function() {
-                            window.location.reload(true); // Hard refresh the page
-                        }, timeRemaining);
+                        // setTimeout(function() {
+                        //     window.location.reload(true); // Hard refresh the page
+                        // }, timeRemaining);
                     } else {
                         // Hide the "attendance-section" div
                         document.querySelector(".attendance-section").style.display = "none";

@@ -178,7 +178,7 @@ include "../../data_fetch.php";
                         <?php
         
         // Include your connection.php file
-        include '../../connection/connection.php';
+        include '../../../connection/connection.php';
 
         // Initialize the searchDate with the current date
         $searchDate = date("Y-m-d");

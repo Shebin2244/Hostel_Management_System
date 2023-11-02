@@ -131,4 +131,9 @@ if ($result->num_rows > 0) {
 // Close the database connection
 $conn->close();
 
+// JavaScript code to display an alert and redirect
+echo '<script type="text/javascript">';
+echo 'alert("List Generated Successfully.");';
+echo 'window.location = "dashboard/wardenDashboard/finalized_students.php";'; // Replace "another_page.php" with the URL of the page you want to redirect to.
+echo '</script>';
 ?>

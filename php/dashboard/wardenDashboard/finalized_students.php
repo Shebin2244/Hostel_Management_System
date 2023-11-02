@@ -124,7 +124,7 @@ include "../../data_fetch.php";
             <div class="report-container">
                 <div class="report-header">
                     <h1 class="recent-Articles">Finalized Students</h1>
-                    <button class="view">Download</button>
+                    <a href="../../hostel_student_result.php"><button class="view">Generate</button></a>
                 </div>
 
                 <div class="report-body">
