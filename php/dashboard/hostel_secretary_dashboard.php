@@ -149,50 +149,59 @@
             <th>Mark Confirmation</th> <!-- New column for Mark Confirmation -->
         </tr>
         <?php
-            // Include your connection.php file
-            include '../../connection/connection.php';
+                            // Include your connection.php file
+                            include '../../connection/connection.php';
 
-            // Initialize the searchDate with the current date
-            $searchDate = date("Y-m-d");
+                            // Initialize the searchDate with the current date
+                            $searchDate = date("Y-m-d");
 
-// Check if a date is provided in the search
-if (isset($_GET['searchDate'])) {
-    $searchDate = $_GET['searchDate'];
-}
-            // Select data from the attendance table based on the searchDate
-            $query = "SELECT * FROM attendance WHERE date = '$searchDate'";
-            $result = mysqli_query($conn, $query);
+                            // Check if a date is provided in the search
+                            if (isset($_GET['searchDate'])) {
+                                $searchDate = $_GET['searchDate'];
+                            }
 
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>";
-                echo "<td>" . $row['name'] . "</td>";
-                echo "<td>" . $row['admission_no'] . "</td>";
-                echo "<td>" . $row['branch'] . "</td>";
-                echo "<td>" . $row['semester'] . "</td>";
-                
-                // Check the 'morning' value
-                if ($row['morning'] == 1) {
-                    // Display "Present" with a green background
-                    echo "<td style='color: green;'>Present</td>";
-                } else {
-                    // Display "Absent" with a red background
-                    echo "<td style='color: red;'>Absent</td>";
-                }
-                
-                // Check the 'night' value (you can do the same for 'night' as for 'morning')
-                if ($row['night'] == 1) {
-                    echo "<td style='color: green;'>Present</td>";
-                } else {
-                    echo "<td style='color: red;'>Absent</td>";
-                }
+                            // Select data from the attendance table based on the searchDate
+                            $query = "SELECT * FROM attendance WHERE date = '$searchDate'";
+                            $result = mysqli_query($conn, $query);
 
-                // Add a button to mark confirmation
-                echo "<td>";
-                echo "<button class='markConfirmationButton' id='" . $row['hs'] . "'>Mark Confirmation</button>";
-                echo "</td>";
-                echo "</tr>";
-            }
-        ?>
+                            if ($result) {
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        echo "<td>" . $row['admission_no'] . "</td>";
+                                        echo "<td>" . $row['branch'] . "</td>";
+                                        echo "<td>" . $row['semester'] . "</td>";
+
+                                        // Check the 'morning' value
+                                        if ($row['morning'] == 1) {
+                                            echo "<td style='color: green;'>Present</td>";
+                                        } else {
+                                            echo "<td style='color: red;'>Absent</td>";
+                                        }
+
+                                        // Check the 'night' value
+                                        if ($row['night'] == 1) {
+                                            echo "<td style='color: green;'>Present</td>";
+                                        } else {
+                                            echo "<td style='color: red;'>Absent</td>";
+                                        }
+
+                                        // Add a button to mark confirmation
+                                        echo "<td>";
+                                        echo "<button class='markConfirmationButton' data-id='" . $row['hs'] . "'>Mark Confirmation</button>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    // No data found for the selected date
+                                    echo "<tr><td colspan='7'>No attendance data found for the selected date.</td></tr>";
+                                }
+                            } else {
+                                // Handle any query execution errors
+                                echo "Error executing the query: " . mysqli_error($conn);
+                            }
+                        ?>
     </table>
 </div>
 

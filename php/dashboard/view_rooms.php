@@ -10,74 +10,43 @@
     <link rel="stylesheet" href="../../style/dash-style.css">
     <link rel="stylesheet" href="../../style/responsive.css">
     <style>
-    /* Style for the table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
         body {
             font-family: Arial, sans-serif;
         }
 
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
+        .room-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .room {
+            background-color: #f5f5f5;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
             border-radius: 5px;
+            width: 300px;
+            margin-bottom: 20px;
         }
 
-        .form-group input[type="number"] {
-            width: 60px;
+        .room h3 {
+            margin: 0;
+            font-size: 20px;
+            text-decoration: underline;
         }
 
-        .form-group input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
+        .students {
+            margin-top: 10px;
+            list-style-type: none;
+            padding: 0;
         }
 
-        .form-group input[type="submit"]:hover {
-            background-color: #0056b3;
+        .student {
+            margin-bottom: 5px;
+        }
+
+        .program {
+            font-weight: bold;
         }
 
     </style>
@@ -127,7 +96,7 @@
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
                                 class="nav-img" alt="articles">
                             <h3>View Rooms</h3>
-                        </a>
+                        </a>    
 
                     <div class="nav-option option3">
                         <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
@@ -172,30 +141,37 @@
                 </div>
             </div>
 
-            <div class="form-container">
-        <h1>Allocate Rooms</h1>
-        <form method="post" action="process_room_allocation.php">
-            <div class="form-group">
-                <label for="btech_rooms">B.Tech Rooms:</label>
-                <input type="number" id="btech_rooms" name="btech_rooms" required>
-            </div>
+    <h1>Room Allocation View</h1>
+    
+    <?php
+    // Include the PHP script here
+    include 'room_allocation_script.php';
+    
+    // Get and display room allocations
+    $roomAllocations = getRoomAllocations();
 
-            <div class="form-group">
-                <label for="mtech_rooms">M.Tech Rooms:</label>
-                <input type="number" id="mtech_rooms" name="mtech_rooms" required>
-            </div>
+    echo '<div class="room-container">';
+    foreach ($roomAllocations as $roomName => $allocations) {
+        echo '<div class="room">';
+        echo '<h3>Room: ' . $roomName . '</h3>';
 
-            <div class="form-group">
-                <label for="mca_rooms">MCA Rooms:</label>
-                <input type="number" id="mca_rooms" name="mca_rooms" required>
-            </div>
+        echo '<ul class="students">';
+        foreach ($allocations as $program => $students) {
+            echo '<li class="student">';
+            echo '<span class="program">Program: ' . $program . '</span>';
+            echo '<ul>';
+            foreach ($students as $student) {
+                echo '<li>' . $student . '</li>';
+            }
+            echo '</ul>';
+            echo '</li>';
+        }
+        echo '</ul>';
 
-            <div class="form-group">
-                <input type="submit" name="submit" value="Allocate Rooms">
-            </div>
-        </form>
-    </div>
-
+        echo '</div>';
+    }
+    echo '</div>';
+    ?>
 
 
 
