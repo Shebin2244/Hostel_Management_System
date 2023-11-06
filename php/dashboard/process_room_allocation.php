@@ -44,7 +44,7 @@ function allocateRooms($branch, $numRooms) {
             $roomId = array_shift($roomIds);
             $admission_no = $student['admissionNo'];
 
-            $insertQuery = "INSERT INTO allocations (room_id, admission_no) VALUES ($roomId, $admission_no)";
+            $insertQuery = "INSERT IGNORE INTO allocations (room_id, admission_no) VALUES ($roomId, $admission_no)";
             $conn->query($insertQuery);
         }
     }
