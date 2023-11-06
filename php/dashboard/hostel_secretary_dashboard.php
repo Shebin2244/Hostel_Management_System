@@ -152,7 +152,7 @@
 
             // Initialize the searchDate with the current date
             $searchDate = date("Y-m-d");
-
+            echo $searchDate;   
             // Check if a date is provided in the search
             if (isset($_GET['searchDate'])) {
                 $searchDate = $_GET['searchDate'];

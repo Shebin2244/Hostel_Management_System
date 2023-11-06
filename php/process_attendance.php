@@ -1,6 +1,8 @@
 <?php
 session_start(); // Start the session
 $admission = $_SESSION['username'];
+session_start();
+$_SESSION['attendance_message'] = "Attendance has been marked successfully.";
 
 // Include the database connection file
 include '../connection/connection.php';
@@ -29,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($insertStmt->execute()) {
                 echo "Attendance marked successfully.";
+                header("Location: dashboard/student_dashboard.php"); // Redirect to the page where the toast will be displayed
+
             } else {
                 echo "Error: " . $insertStmt->error;
             }
@@ -45,4 +49,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo "Invalid request method.";
 }
+
 ?>
