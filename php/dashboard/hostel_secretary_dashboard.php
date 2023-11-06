@@ -130,8 +130,10 @@
                     <button class="view">View All</button>
                 </div>
                 <div class="search-container">
-                    <input type="date" id="searchDate" placeholder="Select a Date">
+                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+                <input type="date" name="searchDate" id="searchDate" placeholder="Select a Date">
                     <button id="searchButton">Search</button>
+                </form>
                 </div>
                 
               
@@ -152,12 +154,11 @@
 
             // Initialize the searchDate with the current date
             $searchDate = date("Y-m-d");
-            echo $searchDate;   
-            // Check if a date is provided in the search
-            if (isset($_GET['searchDate'])) {
-                $searchDate = $_GET['searchDate'];
-            }
 
+// Check if a date is provided in the search
+if (isset($_GET['searchDate'])) {
+    $searchDate = $_GET['searchDate'];
+}
             // Select data from the attendance table based on the searchDate
             $query = "SELECT * FROM attendance WHERE date = '$searchDate'";
             $result = mysqli_query($conn, $query);
@@ -172,17 +173,17 @@
                 // Check the 'morning' value
                 if ($row['morning'] == 1) {
                     // Display "Present" with a green background
-                    echo "<td style='background-color: green;'>Present</td>";
+                    echo "<td style='color: green;'>Present</td>";
                 } else {
                     // Display "Absent" with a red background
-                    echo "<td style='background-color: red;'>Absent</td>";
+                    echo "<td style='color: red;'>Absent</td>";
                 }
                 
                 // Check the 'night' value (you can do the same for 'night' as for 'morning')
                 if ($row['night'] == 1) {
-                    echo "<td style='background-color: green;'>Present</td>";
+                    echo "<td style='color: green;'>Present</td>";
                 } else {
-                    echo "<td style='background-color: red;'>Absent</td>";
+                    echo "<td style='color: red;'>Absent</td>";
                 }
 
                 // Add a button to mark confirmation
