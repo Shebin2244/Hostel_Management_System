@@ -32,6 +32,41 @@
         display: flex;
         justify-content: space-between;
     }
+    .report-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+.white-box {
+    width: 70%;
+    max-width: 400px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+}
+
+.white-box h2 {
+    color: #333;
+}
+
+.white-box p {
+    font-size: 24px;
+    color: #3498db;
+    margin: 10px 0;
+}
+
+/* Add this if you want a responsive layout */
+@media (max-width: 768px) {
+    .white-box {
+        width: 90%;
+    }
+}
+
     </style>
 </head>
 
@@ -79,17 +114,42 @@
                 </div>
             </div>
 
-            <div class="report-container">
-                <div class="report-header">
-                    <h1 class="recent-Articles">Hs Dashboard</h1>
-                    <button class="view">View All</button>
-                </div>
-                <div class="search-container">
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
-                <input type="date" name="searchDate" id="searchDate" placeholder="Select a Date">
-                    <button id="searchButton">Search</button>
-                </form>
-                </div>
+            <?php
+// Assuming you have a database connection established
+include "../../../connection/connection.php";
+
+// Step 1: Count Morning and Night Attendance
+$currentDate = date("Y-m-d");
+$queryMorning = "SELECT COUNT(*) as morningCount FROM attendance WHERE date = '$currentDate' AND morning = 1";
+$queryNight = "SELECT COUNT(*) as nightCount FROM attendance WHERE date = '$currentDate' AND night = 1";
+
+$resultMorning = mysqli_query($conn, $queryMorning);
+$resultNight = mysqli_query($conn, $queryNight);
+
+$rowMorning = mysqli_fetch_assoc($resultMorning);
+$rowNight = mysqli_fetch_assoc($resultNight);
+
+// Step 2: Count Complaints Belonging to HS
+$queryComplaints = "SELECT COUNT(*) as hsComplaintCount FROM complaint_box WHERE role = 'hostel_secretary'";
+$resultComplaints = mysqli_query($conn, $queryComplaints);
+$rowComplaints = mysqli_fetch_assoc($resultComplaints);
+?>
+
+<div class="white-box">
+    <h2>Morning Attendance</h2>
+    <p><?php echo $rowMorning['morningCount']; ?></p>
+</div>
+
+<div class="white-box">
+    <h2>Night Attendance</h2>
+    <p><?php echo $rowNight['nightCount']; ?></p>
+</div>
+
+<div class="white-box">
+    <h2>HS Complaints</h2>
+    <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
+</div>
+
                 
               
 <div class="report-body">
