@@ -1,5 +1,5 @@
 <?php
-include '../../connection/connection.php';
+include '../../../connection/connection.php';
 
 // Function to get room allocations and student details
 function getRoomAllocations() {

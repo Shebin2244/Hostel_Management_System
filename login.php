@@ -177,7 +177,7 @@
                                 window.location.href = 'php/dashboard/hsDashboard/hostel_secretary_dashboard.php';
                                 break;
                             case 'matron':
-                                window.location.href = 'php/dashboard/matron_dashboard.php';
+                                window.location.href = 'php/dashboard/matronDashboard/matron_dashboard.php';
                                 break;
                             default:
                                 window.location.href = 'default_dashboard.php';

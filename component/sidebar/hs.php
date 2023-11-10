@@ -20,13 +20,7 @@
                             <h3>Complaint</h3>
                         </a>
     
-                        <a href="foodmenu.php" class="option2 nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Feedback</h3>
-                        </a>
-    
-                        <a href="food_feedback.php" class="option2 nav-option">
+                        <a href="fine_generation.php" class="option2 nav-option">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
                                 class="nav-img" alt="articles">
                             <h3>Fine Generation</h3>
