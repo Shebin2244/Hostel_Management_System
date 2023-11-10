@@ -191,7 +191,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 
                             <div class="mark-attendance">
-                                <form id="attendance-form" action="../process_attendance.php" method="post">
+                                <form id="morning-attendance-form" action="../process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="morning">
 
                                     <?php
@@ -223,36 +223,31 @@ $result = mysqli_query($conn, $query);
                             <div class="mark-attendance">
                                 <form id="night-attendance-form" action="../process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="night">
-
-
                                     <?php
-require_once('../../connection/connection.php'); // Include your connection.php file
+                                    require_once('../../connection/connection.php'); // Include your connection.php file
+                                    $student_id = $value = $_SESSION['username'];
+                                    // Replace with the actual student ID
+                                    $attendance_date = date("Y-m-d"); // Replace with the desired date
 
-$student_id = $value = $_SESSION['username'];
-// Replace with the actual student ID
-$attendance_date = date("Y-m-d"); // Replace with the desired date
+                                    $query = "SELECT night FROM attendance WHERE admission_no = '$student_id' AND date = '$attendance_date'";
+                                    // SQL query to check if morning attendance is marked
+                                    $result = mysqli_query($conn, $query);
+                                    // echo "Query: $query";
+                                    // echo $username;
 
-// SQL query to check if morning attendance is marked
-$query = "SELECT night FROM attendance WHERE admission_no = '$student_id' AND date = '$attendance_date'";
-$result = mysqli_query($conn, $query);
-// echo "Query: $query";
-// echo $username;
-
-$row = mysqli_fetch_assoc($result);
-if ($row['night'] == 1) {
-    // Morning attendance is already marked
-    echo "Night Attendance Marked";
-} else {
-    // Morning attendance is not marked, display the button
-    echo '<button id="night-attendance-btn" type="submit" class="attendance-btn">Mark Night Attendance</button>';
-}
-?>
-
-
-                                </form>
+                                    $row = mysqli_fetch_assoc($result);
+                                    if ($row['night'] == 1) {
+                                       // Morning attendance is already marked
+                                       echo "Night Attendance Marked";
+                                    } else {
+                                       // Morning attendance is not marked, display the button
+                                       echo '<button id="night-attendance-btn" type="submit" class="attendance-btn">Mark Night Attendance</button>';
+                                    }
+                                            ?>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
                     <script>
                     // Get the current date and time
@@ -263,15 +258,17 @@ if ($row['night'] == 1) {
                     // Check if the current time is within the allowed time intervals
                     if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 9 && minutes <= 20)) {
                         // Show the "attendance-section" div and the "Morning" button
-                        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+                        // document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
 
                         document.getElementById("time-show").innerHTML = "8:00 AM - 9:00 AM";
                         document.getElementById("attendance-type").innerHTML = "Morning Attendance"
                         document.querySelector(".attendance-section").style.display = "block";
-                        document.getElementById("morning-attendance-btn").style.display = "block";
-                    } else if (hours == 13 && minutes >= 0 && minutes < 60) {
+                        document.getElementById("morning-attendance-form").style.display = "block";
+                        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+
+                    } else if (hours == 21 && minutes >= 0 && minutes < 60) {
                         // Show the "attendance-section" div and the "Night" button
-                        // document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
+                        document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
                         document.getElementById("time-show").innerHTML = "9:00 PM - 9:30 PM";
                         document.getElementById("attendance-type").innerHTML = "Night Attendance"
                         document.querySelector(".attendance-section").style.display = "block";
