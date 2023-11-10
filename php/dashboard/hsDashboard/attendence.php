@@ -4,34 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, 
-				initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIT Hostel</title>
     <link rel="stylesheet" href="../../../style/dash-style.css">
     <link rel="stylesheet" href="../../../style/responsive.css">
     <style>
-    /* Style for the table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
+        /* Style for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        th {
+            background-color: #f2f2f2;
+        }
 
-    .box-container {
-        display: flex;
-        justify-content: space-between;
-    }
+        .box-container {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 
@@ -82,28 +81,31 @@
             <div class="report-container">
                 <div class="report-header">
                     <h1 class="recent-Articles">Attendance</h1>
-                    <button class="view">View All</button>
+                    <!-- <button class="view">View All</button> -->
+                    <button class="view" id="confirmAllButton">Confirm All</button>
+
                 </div>
                 <div class="search-container">
-                <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
-                <input type="date" name="searchDate" id="searchDate" placeholder="Select a Date">
-                    <button id="searchButton">Search</button>
-                </form>
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+                        <input type="date" name="searchDate" id="searchDate" placeholder="Select a Date">
+                        <button id="searchButton">Search</button>
+                    </form>
+                    
                 </div>
-                
-              
-<div class="report-body">
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Admission No</th>
-            <th>Branch</th>
-            <th>Semester</th>
-            <th>Morning</th>
-            <th>Night</th>
-            <th>Mark Confirmation</th> <!-- New column for Mark Confirmation -->
-        </tr>
-        <?php
+
+
+                <div class="report-body">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Admission No</th>
+                            <th>Branch</th>
+                            <th>Semester</th>
+                            <th>Morning</th>
+                            <th>Night</th>
+                            <th>Mark Confirmation</th> <!-- New column for Mark Confirmation -->
+                        </tr>
+                        <?php
                             // Include your connection.php file
                             include '../../../connection/connection.php';
 
@@ -144,7 +146,11 @@
 
                                         // Add a button to mark confirmation
                                         echo "<td>";
-                                        echo "<button class='markConfirmationButton' data-id='" . $row['hs'] . "'>Mark Confirmation</button>";
+                                        if ($row['hs'] == 1) {
+                                            echo "<h3>confirmed</h3>";
+                                        } else {
+                                            echo "<button class='markConfirmationButton' data-id='" . $row['id'] . "'>Mark Confirmation</button>";
+                                        }
                                         echo "</td>";
                                         echo "</tr>";
                                     }
@@ -157,30 +163,52 @@
                                 echo "Error executing the query: " . mysqli_error($conn);
                             }
                         ?>
-    </table>
-</div>
+                    </table>
+                </div>
 
-<script src="../../style/dashboard.js"></script>
-<script>
-    // JavaScript code for the "Mark Confirmation" button
-    const markConfirmationButtons = document.querySelectorAll('.markConfirmationButton');
-    
-    markConfirmationButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Get the attendance record ID from the data-id attribute
-            const attendanceId = button.getAttribute('data-id');
-            
-            // Send an AJAX request to update the 'hs' field to 1
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'update_hs.php'); // Create a PHP script to handle the update
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Reload the page to reflect the updated data
-                    location.reload();
-                }
-            };
-            xhr.send('id=' + attendanceId);
-        });
-    });
-</script>
+                <script src="../../style/dashboard.js"></script>
+                <script>
+                    // JavaScript code for the "Mark Confirmation" button
+                    const markConfirmationButtons = document.querySelectorAll('.markConfirmationButton');
+
+                    markConfirmationButtons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            // Get the attendance record ID from the data-id attribute
+                            const attendanceId = button.getAttribute('data-id');
+
+                            // Send an AJAX request to update the 'hs' field to 1
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('POST', 'update_hs.php'); // Create a PHP script to handle the update
+                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                            xhr.onload = function () {
+                                if (xhr.status === 200) {
+                                    // Reload the page to reflect the updated data
+                                    location.reload();
+                                }
+                            };
+                            xhr.send('id=' + attendanceId);
+                        });
+                    });
+
+                    // JavaScript code for the "Confirm All" button
+                    const confirmAllButton = document.getElementById('confirmAllButton');
+                    confirmAllButton.addEventListener('click', function () {
+                        // Send an AJAX request to update all 'hs' fields to 1
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'update_all_hs.php'); // Create a PHP script to handle the update for all
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        xhr.onload = function () {
+                            if (xhr.status === 200) {
+                                // Reload the page to reflect the updated data
+                                location.reload();
+                            }
+                        };
+                        xhr.send();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
