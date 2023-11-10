@@ -21,35 +21,48 @@ if (isset($_POST['submit'])) {
     // Allocate rooms for MCA students
     allocateRooms("MCA", $mca_rooms);
 
-    echo "Room allocation completed.";
+    // Display a success message and redirect to another page
+    echo '<script>';
+    echo 'alert("Allocation Completed!");';
+    echo 'window.location.href = "matron_dashboard.php";'; // Replace with the URL you want to redirect to
+    echo '</script>';
 }
 
 // Function to allocate rooms for a specific program
-function allocateRooms($branch, $numRooms) {
+function allocateRooms($degree, $numRooms) {
     global $conn;
 
-    $query = "SELECT admissionNo FROM hostel_student_list WHERE branch = '$branch'";
+    $query = "SELECT admissionNo FROM hostel_student_list WHERE degree = '$degree'";
     $result = $conn->query($query);
 
     if ($result->num_rows > 0) {
         $students = $result->fetch_all(MYSQLI_ASSOC);
         $roomIds = getAvailableRooms($numRooms);
 
+        // Get the existing allocations for the selected degree
+        $existingAllocations = getExistingAllocations($degree);
+
         foreach ($students as $student) {
             if (empty($roomIds)) {
-                echo "Not enough rooms for $branch students.";
+                echo "Not enough rooms for $degree students.";
                 break;
             }
 
-            $roomId = array_shift($roomIds);
             $admission_no = $student['admissionNo'];
 
-            $insertQuery = "INSERT IGNORE INTO allocations (room_id, admission_no) VALUES ($roomId, $admission_no)";
-            $conn->query($insertQuery);
+            // Check if the student is already allocated a room
+            $isAllocated = in_array($admission_no, array_column($existingAllocations, 'admission_no'));
+
+            // If the student is not already allocated, allocate a room
+            if (!$isAllocated) {
+                $roomId = array_shift($roomIds);
+
+                $insertQuery = "INSERT INTO allocations (room_id, admission_no) VALUES ($roomId, $admission_no)";
+                $conn->query($insertQuery);
+            }
         }
     }
 }
-
 // Function to get available rooms
 function getAvailableRooms($numRooms) {
     global $conn;
@@ -65,4 +78,21 @@ function getAvailableRooms($numRooms) {
 
     return [];
 }
+
+// Function to get existing allocations for a specific degree
+function getExistingAllocations($degree) {
+    global $conn;
+
+    $query = "SELECT admission_no FROM allocations
+              INNER JOIN hostel_student_list ON allocations.admission_no = hostel_student_list.admissionNo
+              WHERE hostel_student_list.degree = '$degree'";
+    $result = $conn->query($query);
+
+    if ($result->num_rows > 0) {
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    return [];
+}
+
 ?>

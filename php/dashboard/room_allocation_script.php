@@ -5,11 +5,12 @@ include '../../connection/connection.php';
 function getRoomAllocations() {
     global $conn;
 
-    $query = "SELECT rooms.room_name, hostel_student_list.name, hostel_student_list.branch
+    $query = "SELECT rooms.room_name, hostel_student_list.name, hostel_student_list.degree
               FROM rooms
               LEFT JOIN allocations ON rooms.room_id = allocations.room_id
               LEFT JOIN hostel_student_list ON allocations.admission_no = hostel_student_list.admissionNo
-              ORDER BY rooms.room_id, hostel_student_list.branch";
+              GROUP BY rooms.room_name, hostel_student_list.admissionNo
+              ORDER BY rooms.room_id, hostel_student_list.degree";
     $result = $conn->query($query);
 
     $roomAllocations = array();
@@ -18,18 +19,18 @@ function getRoomAllocations() {
         while ($row = $result->fetch_assoc()) {
             $roomName = $row['room_name'];
             $studentName = $row['name'];
-            $branch = $row['branch'];
+            $degree = $row['degree'];
 
             if (!isset($roomAllocations[$roomName])) {
                 $roomAllocations[$roomName] = array();
             }
 
-            if (!isset($roomAllocations[$roomName][$branch])) {
-                $roomAllocations[$roomName][$branch] = array();
+            if (!isset($roomAllocations[$roomName][$degree])) {
+                $roomAllocations[$roomName][$degree] = array();
             }
 
-            if (count($roomAllocations[$roomName][$branch]) < 4) {
-                $roomAllocations[$roomName][$branch][] = $studentName;
+            if (count($roomAllocations[$roomName][$degree]) < 4) {
+                $roomAllocations[$roomName][$degree][] = $studentName;
             }
         }
     }
@@ -39,6 +40,4 @@ function getRoomAllocations() {
 
 // Get and display room allocations
 $roomAllocations = getRoomAllocations();
-
-
 ?>

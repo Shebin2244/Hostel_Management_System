@@ -1,5 +1,7 @@
 <?php
 session_start(); // Start the session
+// Disable warning display
+error_reporting(E_ERROR | E_PARSE);
 
     $username = $_SESSION['username'];
     $role = $_SESSION['role'];
@@ -186,6 +188,8 @@ session_start(); // Start the session
                                 <p id="attendance-type"></p>
                                 <h1 id="time-show"></h1>
                             </div>
+
+
                             <div class="mark-attendance">
                                 <form id="attendance-form" action="../process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="morning">
@@ -193,19 +197,17 @@ session_start(); // Start the session
                                     <?php
 require_once('../../connection/connection.php'); // Include your connection.php file
 
-$student_id = $value = $_SESSION['username'];
+$student_id = $_SESSION['username'];
 // Replace with the actual student ID
 $attendance_date = date("Y-m-d"); // Replace with the desired date
 
 // SQL query to check if morning attendance is marked
 $query = "SELECT morning FROM attendance WHERE admission_no = '$student_id' AND date = '$attendance_date'";
-$result = mysqli_query($conn, $query);
+$result = mysqli_query($conn, $query); 
 // echo "Query: $query";
-// echo $username;
-
-if ($result) {
+// echo $student_id;
     // Check if there is exactly one row for the given date
-    if (mysqli_num_rows($result) == 1) {
+
         $row = mysqli_fetch_assoc($result);
         if ($row['morning'] == 1) {
             // Morning attendance is already marked
@@ -214,29 +216,16 @@ if ($result) {
             // Morning attendance is not marked, display the button
             echo '<button id="morning-attendance-btn" type="submit" class="attendance-btn">Mark Morning Attendance</button>';
         }
-    } else {
-        // Either no data or multiple entries found for the student and date
-        echo '<button id="morning-attendance-btn" type="submit" class="attendance-btn">Mark Morning Attendance</button>';
-    }
-} else {
-    // Handle query error
-    echo "Error executing the query: " . mysqli_error($conn);
-}
 ?>
-
-
-
-
-
 
                                 </form>
                             </div>
                             <div class="mark-attendance">
                                 <form id="night-attendance-form" action="../process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="night">
-                                
 
-                                        <?php
+
+                                    <?php
 require_once('../../connection/connection.php'); // Include your connection.php file
 
 $student_id = $value = $_SESSION['username'];
@@ -249,26 +238,13 @@ $result = mysqli_query($conn, $query);
 // echo "Query: $query";
 // echo $username;
 
-if ($result) {
-    // Check if there is exactly one row for the given date
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        if ($row['night'] == 1) {
-            // Morning attendance is already marked
-            echo "Night Attendance Marked";
-        } else {
-            // Morning attendance is not marked, display the button
-            echo '<button id="night-attendance-btn" type="submit" class="attendance-btn"
-            style="display: none;">Mark Night Attendance</button>';
-        }
-    } else {
-        // Either no data or multiple entries found for the student and date
-        echo '<button id="night-attendance-btn" type="submit" class="attendance-btn"
-        style="display: none;">Mark Night Attendance</button>';
-    }
+$row = mysqli_fetch_assoc($result);
+if ($row['night'] == 1) {
+    // Morning attendance is already marked
+    echo "Night Attendance Marked";
 } else {
-    // Handle query error
-    echo "Error executing the query: " . mysqli_error($conn);
+    // Morning attendance is not marked, display the button
+    echo '<button id="night-attendance-btn" type="submit" class="attendance-btn">Mark Night Attendance</button>';
 }
 ?>
 
@@ -285,33 +261,32 @@ if ($result) {
                     var minutes = now.getMinutes();
 
                     // Check if the current time is within the allowed time intervals
-                    if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 10 && minutes <= 20)) {
+                    if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 9 && minutes <= 20)) {
                         // Show the "attendance-section" div and the "Morning" button
+                        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+
                         document.getElementById("time-show").innerHTML = "8:00 AM - 9:00 AM";
                         document.getElementById("attendance-type").innerHTML = "Morning Attendance"
                         document.querySelector(".attendance-section").style.display = "block";
                         document.getElementById("morning-attendance-btn").style.display = "block";
-                        document.getElementById("night-attendance-btn").style.display =
-                            "none"; // Hide the "Night" button
-                    } else if (hours == 21 && minutes >= 0 && minutes < 60) {
+                    } else if (hours == 13 && minutes >= 0 && minutes < 60) {
                         // Show the "attendance-section" div and the "Night" button
+                        // document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
                         document.getElementById("time-show").innerHTML = "9:00 PM - 9:30 PM";
                         document.getElementById("attendance-type").innerHTML = "Night Attendance"
                         document.querySelector(".attendance-section").style.display = "block";
                         document.getElementById("night-attendance-btn").style.display = "block";
-                        document.getElementById("morning-attendance-btn").style.display =
-                            "none"; // Hide the "Morning" button
 
-                        // Calculate the time until 10:30 PM
-                        var endTime = new Date();
-                        endTime.setHours(21);
-                        endTime.setMinutes(30);
-                        var timeRemaining = endTime - now;
+                        // // Calculate the time until 10:30 PM
+                        // var endTime = new Date();
+                        // endTime.setHours(21);
+                        // endTime.setMinutes(30);
+                        // var timeRemaining = endTime - now;
 
-                        // Schedule a page refresh when the end time is reached
-                        // setTimeout(function() {
-                        //     window.location.reload(true); // Hard refresh the page
-                        // }, timeRemaining);
+                        // // Schedule a page refresh when the end time is reached
+                        // // setTimeout(function() {
+                        // //     window.location.reload(true); // Hard refresh the page
+                        // // }, timeRemaining);
                     } else {
                         // Hide the "attendance-section" div
                         document.querySelector(".attendance-section").style.display = "none";
@@ -328,12 +303,23 @@ if ($result) {
                         <form id="complaint-form" action="../process_complaint.php" method="post">
                             <label for="title" class="input-title">Topic</label>
                             <input class="complaint-input" type="text" name="topic" placeholder="Enter Topic" required>
+
+                            <!-- Add a new label and select element for role -->
+                            <label for="role">Role</label>
+                            <select class="complaint-select" name="role" required>
+                                <option value="matron">Matron</option>
+                                <option value="mess_secretary">Mess Secretary</option>
+                                <option value="hostel_secretary">Hostel Secretary</option>
+                                <option value="warden">Warden</option>
+                            </select>
+
                             <label for="description">Describe</label>
                             <textarea class="complaint-textarea" name="content" placeholder="Enter your complaint"
                                 required></textarea>
-                            <button type="submit" class="inform-button">Inform Warden</button>
+                            <button type="submit" class="inform-button">Inform</button>
                         </form>
                     </div>
+
 
                 </div>
 

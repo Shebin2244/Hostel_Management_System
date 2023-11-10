@@ -2,12 +2,14 @@
 require_once '../connection/connection.php'; // Include your database connection file
 session_start(); // Start the session
 $username = $_SESSION['username'];
-$role = $_SESSION['role'];
+// $role = $_SESSION['role'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize the user input (you should implement more robust validation)
     $topic = htmlspecialchars($_POST['topic']);
     $description = htmlspecialchars($_POST['content']);
+    $role = htmlspecialchars($_POST['role']);
+
 
     // Fetch additional data from the `hostel_student_list` table
     $sql_fetch_data = "SELECT name, branch, degree FROM hostel_student_list WHERE admissionNo = ?";
@@ -22,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt_fetch_data->fetch();
 
         // Insert the complaint into the `complaint_box` table
-        $sql_insert_complaint = "INSERT INTO complaint_box (topic, content, admission_no, name, branch_name, degree) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql_insert_complaint = "INSERT INTO complaint_box (topic, content, admission_no, name, branch_name, degree, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert_complaint = $conn->prepare($sql_insert_complaint);
-        $stmt_insert_complaint->bind_param("ssssss", $topic, $description, $username, $student_name, $student_branch, $student_degree);
+        $stmt_insert_complaint->bind_param("sssssss", $topic, $description, $username, $student_name, $student_branch, $student_degree, $role);
 
         if ($stmt_insert_complaint->execute()) {
             // Successfully added the complaint to the database
