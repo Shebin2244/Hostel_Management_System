@@ -18,8 +18,8 @@ error_reporting(E_ERROR | E_PARSE);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../style/dash-style.css">
-    <link rel="stylesheet" href="../../style/responsive.css">
+    <link rel="stylesheet" href="../../../style/dash-style.css">
+    <link rel="stylesheet" href="../../../style/responsive.css">
 </head>
 
 <body>
@@ -53,34 +53,13 @@ error_reporting(E_ERROR | E_PARSE);
     </header>
 
     <div class="main-container">
-        <div class="navcontainer">
-            <nav class="nav">
-                <div class="nav-upper-options">
-                    <div class="nav-option active">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                            class="nav-img" alt="dashboard">
-                        <h3> Dashboard</h3>
-                    </div>
-                    <div class="navbar-bottom">
-                        <div class="nav-option option6">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
-                                class="nav-img" alt="settings">
-                            <h3> Settings</h3>
-                        </div>
+        
+    <?php
+       include "../../../component/sidebar/student.php";
+       ?>
 
-                        <a href="../logout.php">
-                            <!-- Replace "logout.php" with the actual URL of your PHP logout script -->
-                            <div class="nav-option logout">
-                                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                                    class="nav-img" alt="logout">
-                                <h3>Logout</h3>
-                            </div>
-                        </a>
 
-                    </div>
-                </div>
-            </nav>
-        </div>
+
         <div class="main">
 
             <div class="searchbar2">
@@ -92,7 +71,7 @@ error_reporting(E_ERROR | E_PARSE);
             </div>
             <?php
                     // Include your connection.php file
-                    include '../../connection/connection.php';
+                    include '../../../connection/connection.php';
 
                     // Select data from the food_menu table
                     $query = "SELECT * FROM food_menu WHERE menu_id = 1";
@@ -110,13 +89,7 @@ error_reporting(E_ERROR | E_PARSE);
                                 <span class="food-label">Breakfast:</span>
                             </div>
                             <div class="food-name"> <?php echo  $row['breakfast_item']; ?></div>
-                            <button class="btn btn-small btn-outline-primary btn-rounded mt-2 feedback-btn"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                data-meal="<?php echo htmlspecialchars(json_encode($row)); ?>"
-                                data-meal-type="Breakfast"
-                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                Give Feedback
-                            </button>
+                         
 
                             <div class="food-time">8:00 AM - 9:00 AM</div>
                         </div>
@@ -126,12 +99,7 @@ error_reporting(E_ERROR | E_PARSE);
                                 <span class="food-label">Lunch:</span>
                             </div>
                             <div class="food-name"><?php echo  $row['lunch_item']; ?></div>
-                            <button class="btn btn-small btn-outline-primary btn-rounded mt-2 feedback-btn"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                data-meal="<?php echo htmlspecialchars(json_encode($row)); ?>" data-meal-type="Lunch"
-                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                Give Feedback
-                            </button>
+                           
 
                             <div class="food-time">12:00 AM - 01:30 PM</div>
                         </div>
@@ -141,12 +109,7 @@ error_reporting(E_ERROR | E_PARSE);
                                 <span class="food-label">Evening:</span>
                             </div>
                             <div class="food-name"><?php echo  $row['evening_item']; ?></div>
-                            <button class="btn btn-small btn-outline-primary btn-rounded mt-2 feedback-btn"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                data-meal="<?php echo htmlspecialchars(json_encode($row)); ?>" data-meal-type="Evening"
-                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                Give Feedback
-                            </button>
+                           
 
                             <div class="food-time">4:00 PM - 5:30 PM</div>
                         </div>
@@ -156,18 +119,7 @@ error_reporting(E_ERROR | E_PARSE);
                                 <span class="food-label">Dinner:</span>
                             </div>
                             <div class="food-name"><?php echo  $row['dinner_item']; ?></div>
-                            <button class="btn btn-small btn-outline-primary btn-rounded mt-2 feedback-btn"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                data-meal="<?php echo htmlspecialchars(json_encode($row)); ?>" data-meal-type="Dinner"
-                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                Give Feedback
-                            </button>
-                            <button class="btn btn-small btn-outline-primary btn-rounded mt-2 feedback-btn"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal" data-meal-type="Breakfast"
-                                data-meal='<?php echo htmlspecialchars(json_encode($row)); ?>'
-                                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-                                Give Feedback
-                            </button>
+                            
 
 
 
@@ -191,11 +143,11 @@ error_reporting(E_ERROR | E_PARSE);
 
 
                             <div class="mark-attendance">
-                                <form id="morning-attendance-form" action="../process_attendance.php" method="post">
+                                <form id="morning-attendance-form" action="process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="morning">
 
                                     <?php
-require_once('../../connection/connection.php'); // Include your connection.php file
+require_once('../../../connection/connection.php'); // Include your connection.php file
 
 $student_id = $_SESSION['username'];
 // Replace with the actual student ID
@@ -221,10 +173,10 @@ $result = mysqli_query($conn, $query);
                                 </form>
                             </div>
                             <div class="mark-attendance">
-                                <form id="night-attendance-form" action="../process_attendance.php" method="post">
+                                <form id="night-attendance-form" action="process_attendance.php" method="post">
                                     <input type="hidden" name="attendance_type" value="night">
                                     <?php
-                                    require_once('../../connection/connection.php'); // Include your connection.php file
+                                    require_once('../../../connection/connection.php'); // Include your connection.php file
                                     $student_id = $value = $_SESSION['username'];
                                     // Replace with the actual student ID
                                     $attendance_date = date("Y-m-d"); // Replace with the desired date
@@ -297,7 +249,7 @@ $result = mysqli_query($conn, $query);
 
                     <div class="complaint-section">
                         <h2 class="complaint-title">Complaint Box</h2>
-                        <form id="complaint-form" action="../process_complaint.php" method="post">
+                        <form id="complaint-form" action="process_complaint.php" method="post">
                             <label for="title" class="input-title">Topic</label>
                             <input class="complaint-input" type="text" name="topic" placeholder="Enter Topic" required>
 
@@ -372,7 +324,7 @@ $result = mysqli_query($conn, $query);
 
 
     </script>
-    <script src="../../style/dashboard.js"></script>
+    <script src="../../../style/dashboard.js"></script>
 </body>
 
 </html>

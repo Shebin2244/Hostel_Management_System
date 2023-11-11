@@ -165,7 +165,7 @@
                     if (xhr.responseText === 'success') {
                         switch (role) {
                             case 'student':
-                                window.location.href = 'php/dashboard/student_dashboard.php';
+                                window.location.href = 'php/dashboard/studentDashboard/student_dashboard.php';
                                 break;
                             case 'warden':
                                 window.location.href = 'php/dashboard/wardenDashboard/warden_dashboard.php';

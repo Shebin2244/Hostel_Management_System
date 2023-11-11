@@ -5,7 +5,7 @@ session_start();
 $_SESSION['attendance_message'] = "Attendance has been marked successfully.";
 
 // Include the database connection file
-include '../connection/connection.php';
+include '../../../connection/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attendanceType = $_POST['attendance_type']; // 'morning' or 'night'
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($updateStmt->execute()) {
                     echo "Attendance updated successfully.";
-                    header("Location: dashboard/student_dashboard.php"); // Redirect to the page where the toast will be displayed
+                    header("Location: student_dashboard.php"); // Redirect to the page where the toast will be displayed
                 } else {
                     echo "Error updating attendance: " . $updateStmt->error;
                 }
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if ($insertStmt->execute()) {
                     echo "Attendance marked successfully.";
-                    header("Location: dashboard/student_dashboard.php"); // Redirect to the page where the toast will be displayed
+                    header("Location: student_dashboard.php"); // Redirect to the page where the toast will be displayed
                 } else {
                     echo "Error inserting attendance: " . $insertStmt->error;
                 }
