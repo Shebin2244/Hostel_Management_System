@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, 
 				initial-scale=1.0">
     <title>RIT Hostel</title>
-    <link rel="stylesheet" href="../../style/dash-style.css">
-    <link rel="stylesheet" href="../../style/responsive.css">
+    <link rel="stylesheet" href="../../../style/dash-style.css">
+    <link rel="stylesheet" href="../../../style/responsive.css">
     <style>
     form {
         max-width: 800px;
@@ -160,54 +160,10 @@
     </header>
 
     <div class="main-container">
-        <div class="navcontainer">
-            <nav class="nav">
-                <div class="nav-upper-options">
-                    <div class="nav-option option1">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                            class="nav-img" alt="dashboard">
-                        <h3> Dashboard</h3>
-                    </div>
+    <?php
+       include "../../../component/sidebar/ms.php";
+       ?>
 
-                    <a href="registered_students.php" class="option2 nav-option">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                            class="nav-img" alt="articles">
-                        <h3> Registered Students</h3>
-                    </a>
-
-                    <div class="nav-option option3">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
-                            class="nav-img" alt="report">
-                        <h3> Report</h3>
-                    </div>
-
-                    <div class="nav-option option4">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
-                            class="nav-img" alt="institution">
-                        <h3> Institution</h3>
-                    </div>
-
-                    <div class="nav-option option5">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
-                            class="nav-img" alt="blog">
-                        <h3> Profile</h3>
-                    </div>
-
-                    <div class="nav-option option6">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
-                            class="nav-img" alt="settings">
-                        <h3> Settings</h3>
-                    </div>
-
-                    <div class="nav-option logout">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                            class="nav-img" alt="logout">
-                        <h3>Logout</h3>
-                    </div>
-
-                </div>
-            </nav>
-        </div>
 
 
         <div class="main">
@@ -224,10 +180,10 @@
 
 
             </div>
-            <form action="../process_food_menu.php" method="post">
+            <form action="process_food_menu.php" method="post">
                 <?php
     // Include your connection.php file
-    include '../../connection/connection.php';
+    include '../../../connection/connection.php';
 
     // Check if a menu_id is provided, and retrieve data from the database
 
@@ -263,90 +219,9 @@
                 <input type="submit" value="Add/Update">
 
             </form>
-            <div class="box-container">
-                <div class="attendance-container">
-                    <div class="attendance-box morning-attendance">
-                        <h3>Morning Attendance Total : </h3>
-                        <?php
-            // Include your connection.php file
-            include '../../connection/connection.php';
-
-            // Count the number of attendees in the morning
-            $morningQuery = "SELECT COUNT(*) as morning_count FROM attendance WHERE morning = 1";
-            $morningResult = mysqli_query($conn, $morningQuery);
-            $morningData = mysqli_fetch_assoc($morningResult);
-            $morningCount = $morningData['morning_count'];
-
-            echo "<p> $morningCount</p>";
-            ?>
-                    </div>
-                    <div class="attendance-box night-attendance">
-                        <h3>Night Attendance Total : </h3>
-                        <?php
-            // Count the number of attendees at night
-            $nightQuery = "SELECT COUNT(*) as night_count FROM attendance WHERE night = 1";
-            $nightResult = mysqli_query($conn, $nightQuery);
-            $nightData = mysqli_fetch_assoc($nightResult);
-            $nightCount = $nightData['night_count'];
-
-            echo "<p> $nightCount</p>";
-            ?>
-                    </div>
-                </div>
-            </div>
-
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Admission No</th>
-                    <th>Branch</th>
-                    <th>Semester</th>
-                    <th>Morning</th>
-                    <th>Night</th>
-                </tr>
-                <?php
-        // Include your connection.php file
-        include '../../connection/connection.php';
-
-        // Select data from the attendance table
-        $currentDate = date("Y-m-d");
-        $query = "SELECT * FROM attendance WHERE date = '$currentDate'";
-        $result = mysqli_query($conn, $query);
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['admission_no'] . "</td>";
-            echo "<td>" . $row['branch'] . "</td>";
-            echo "<td>" . $row['semester'] . "</td>";
             
-            // Check the 'morning' value
-            if ($row['morning'] == 1) {
-                // Display "Present" with a green background
-                echo "<td style='background-color: green;'>Present</td>";
-            } else {
-                // Display "Absent" with a red background
-                echo "<td style='background-color: red;'>Absent</td>";
-            }
-            
-            // Check the 'night' value (you can do the same for 'night' as for 'morning')
-            if ($row['night'] == 1) {
-                echo "<td style='background-color: green;'>Present</td>";
-            } else {
-                echo "<td style='background-color: red;'>Absent</td>";
-            }
-            
-            echo "</tr>";
-        }
-        ?>
 
-            </table>
-
-
-        </div>
-    </div>
-
-    <script src="../../style/dashboard.js"></script>
+    <script src="../../../style/dashboard.js"></script>
 </body>
 
 </html>

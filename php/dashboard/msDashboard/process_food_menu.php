@@ -2,7 +2,7 @@
 session_start(); // Start the session
 
 // Include the database connection file
-include '../connection/connection.php';
+include '../../../connection/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the admission number exists and is valid

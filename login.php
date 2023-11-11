@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     body {
-        background-color: #f4f4f4;
+        background-color: rgb(13,110,253);
     }
 
     .login-container {
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 60px;
         background-color: #fff;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -171,7 +171,7 @@
                                 window.location.href = 'php/dashboard/wardenDashboard/warden_dashboard.php';
                                 break;
                             case 'ms':
-                                window.location.href = 'php/dashboard/mess_secretary_dashboard.php';
+                                window.location.href = 'php/dashboard/msDashboard/mess_secretary_dashboard.php';
                                 break;
                             case 'hs':
                                 window.location.href = 'php/dashboard/hsDashboard/hostel_secretary_dashboard.php';
