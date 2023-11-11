@@ -157,6 +157,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     .edit-delete-buttons button:nth-child(2):hover {
         background-color: #0d47a1;
     }
+    table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            /* border: 1px solid black; */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
 
 
     </style>
@@ -239,42 +255,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <br>
             <div class="report-container">
 
-
-                    <div class="report-topic-heading">
-            <!-- <div>Meeting ID</div> -->
-            <div>Title</div>
-            <div>Date</div>
-            <div>Time</div>
-            <div>Location</div>
-            <div>Agenda</div>
-            <div>Actions</div>
-        </div>
-
-        <!-- Fetch and display meeting data from the database -->
-        <?php
-        $fetchMeetingsQuery = "SELECT * FROM meetings";
-        $meetingsResult = mysqli_query($conn, $fetchMeetingsQuery);
-
-        if ($meetingsResult) {
-            while ($meeting = mysqli_fetch_assoc($meetingsResult)) {
-        ?>
-                <div class="item1">
-                    <!-- <div><?php echo $meeting['id']; ?></div> -->
-                    <div><?php echo $meeting['title']; ?></div>
-                    <div><?php echo $meeting['date']; ?></div>
-                    <div><?php echo $meeting['time']; ?></div>
-                    <div><?php echo $meeting['location']; ?></div>
-                    <div><?php echo $meeting['agenda']; ?></div>
-                    <div class="edit-delete-buttons">
-                        <!-- <button onclick="editMeeting(<?php echo $meeting['id']; ?>)">Edit</button> -->
+<br>
+     
+<!-- Fetch and display meeting data from the database -->
+<?php
+$fetchMeetingsQuery = "SELECT * FROM meetings";
+$meetingsResult = mysqli_query($conn, $fetchMeetingsQuery);
+?>
+<table>
+                <tr>
+                    <!-- <th>Meeting ID</th> -->
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Agenda</th>
+                    <th>Actions</th>
+                </tr>
+                <?php
+if ($meetingsResult) {
+    while ($meeting = mysqli_fetch_assoc($meetingsResult)) {
+?>
+            
+                <tr>
+                    <!-- <td><?php echo $meeting['id']; ?></td> -->
+                    <td><?php echo $meeting['title']; ?></td>
+                    <td><?php echo $meeting['date']; ?></td>
+                    <td><?php echo $meeting['time']; ?></td>
+                    <td><?php echo $meeting['location']; ?></td>
+                    <td><?php echo $meeting['agenda']; ?></td>
+                    <td class="edit-delete-buttons">
                         <button onclick="deleteMeeting(<?php echo $meeting['id']; ?>)">Delete</button>
-                    </div>
-                </div>
-        <?php
-            }
-        }
-        ?>
+                    </td>
+                </tr>
+        </div>
+<?php
+    }
+}
 
+?>
+            </table>
 
 
 

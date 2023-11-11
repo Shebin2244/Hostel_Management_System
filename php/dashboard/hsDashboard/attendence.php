@@ -36,7 +36,7 @@
 
 <body>
 
-    <!-- for header part -->
+    <!-- for header part -->    
     <header>
 
         <div class="logosec">

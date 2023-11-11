@@ -10,23 +10,7 @@
     <link rel="stylesheet" href="../../../style/dash-style.css">
     <link rel="stylesheet" href="../../../style/responsive.css">
     <style>
-    /* Style for the table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
 
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
 
     .box-container {
         display: flex;
@@ -34,14 +18,19 @@
     }
     .report-body {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     height: 100vh;
 }
 
+.white-box-container {
+    display: flex;
+}
+
 .white-box {
-    width: 70%;
+    flex: 1;
     max-width: 400px;
+    height: 300px;
     margin: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -50,22 +39,32 @@
     text-align: center;
 }
 
+/* Add this if you want a responsive layout */
+@media (max-width: 768px) {
+    .report-body {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .white-box {
+        width: 100%;
+    }
+}
+
+
+
+
 .white-box h2 {
     color: #333;
 }
 
 .white-box p {
-    font-size: 24px;
+    font-size: 90px;
     color: #3498db;
     margin: 10px 0;
 }
 
-/* Add this if you want a responsive layout */
-@media (max-width: 768px) {
-    .white-box {
-        width: 90%;
-    }
-}
+
 
     </style>
 </head>
@@ -135,19 +134,21 @@ $resultComplaints = mysqli_query($conn, $queryComplaints);
 $rowComplaints = mysqli_fetch_assoc($resultComplaints);
 ?>
 
-<div class="white-box">
-    <h2>Morning Attendance</h2>
-    <p><?php echo $rowMorning['morningCount']; ?></p>
-</div>
+<div class="white-box-container">
+    <div class="white-box">
+        <h2>Morning Attendance</h2>
+        <p><?php echo $rowMorning['morningCount']; ?></p>
+    </div>
 
-<div class="white-box">
-    <h2>Night Attendance</h2>
-    <p><?php echo $rowNight['nightCount']; ?></p>
-</div>
+    <div class="white-box">
+        <h2>Night Attendance</h2>
+        <p><?php echo $rowNight['nightCount']; ?></p>
+    </div>
 
-<div class="white-box">
-    <h2>HS Complaints</h2>
-    <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
+    <div class="white-box">
+        <h2>HS Complaints</h2>
+        <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
+    </div>
 </div>
 
                 
