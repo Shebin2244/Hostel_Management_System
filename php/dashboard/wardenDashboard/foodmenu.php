@@ -49,71 +49,11 @@ include "../../data_fetch.php";
     </header>
 
     <div class="main-container">
-    <div class="navcontainer">
-            <nav class="nav">
-                <div class="nav-upper-options">
-                    <div class="nav-top">
-                        <a href="warden_dashboard.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                                class="nav-img" alt="dashboard">
-                            <h3> Dashboard</h3>
-                        </a>
-    
-                        <a href="registered_students.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3> Registered Students</h3>
-                        </a>
-    
-                        <a href="finalized_students.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3> Finalized Students</h3>
-                        </a>
-    
-                        <a href="attendance.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Attendance</h3>
-                        </a>
-    
-                        <a href="complaints.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Complaints</h3>
-                        </a>
-    
-                        <a href="foodmenu.php" class="active nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Food Menu</h3>
-                        </a>
-    
-                        <a href="food_feedback.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Food Feedback</h3>
-                        </a>
+    <?php
+        // Include your sidebar file
+        include "../../../component/sidebar/warden.php";
+        ?>
 
-                    </div>
-
-                    <div class="navbar-bottom">
-                        <div class="nav-option option6">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
-                                class="nav-img" alt="settings">
-                            <h3> Settings</h3>
-                        </div>
-    
-                        <div class="nav-option logout">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                                class="nav-img" alt="logout">
-                            <h3>Logout</h3>
-                        </div>
-                    </div>
-
-                </div>
-            </nav>
-        </div>
         <div class="main">
             <div class="dashboard-items-container" style="display:block">
                 <div class="food-card" style="width:100%;">
@@ -161,54 +101,7 @@ include "../../data_fetch.php";
                         </div>
                     </div>
                  </div>
-                <div>
-                <div class="report-container">
-                <div class="report-header">
-                    <h1 class="recent-Articles">Food Feedback</h1>
-                    <button class="view">Download</button>
-                </div>
-
-                <div class="report-body">
-                    <div class="report-topic-heading">
-                        <h3 class="t-op">Name</h3>
-                        <h3 class="t-op">Admission number</h3>
-                        <h3 class="t-op">Year of study</h3>
-                        <h3 class="t-op">semester</h3>
-                        <h3 class="t-op">branch</h3>
-                    </div>
-
-<!-- Add the following code after the existing PHP includes -->
-<!-- Add the following code after the existing PHP includes -->
-<?php
-// Assuming $connection is your database connection variable
-
-// Fetch data from the database
-$query = "SELECT name, admissionNo, semester, branch, yearOfStudy FROM hostel_student_list";
-$result = mysqli_query($conn, $query);
-
-// Check if the query was successful
-if ($result) {
-    // Loop through each row in the result set
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Output the data in the HTML structure for each row
-        echo '<div class="item1">';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['name']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['admissionNo']) . '</h3>';
-        
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['yearOfStudy']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['semester']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['branch']) . '</h3>';
-        echo '</div>';
-    }
-} else {
-    // Handle the case where the query fails
-    echo 'Error fetching data: ' . mysqli_error($connection);
-}
-
-// Close the database connection
-// mysqli_close($connection);
-?>
-        </div>
+                
     </div>
 
     <script src="../../../style/dashboard.js"></script>

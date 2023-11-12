@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php
-include "../../../connection/connection.php";
-include "../../data_fetch.php";
-?>
 
 <head>
     <meta charset="UTF-8">
@@ -13,6 +9,64 @@ include "../../data_fetch.php";
     <title>RIT Hostel</title>
     <link rel="stylesheet" href="../../../style/dash-style.css">
     <link rel="stylesheet" href="../../../style/responsive.css">
+    <style>
+
+
+    .box-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    .report-body {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+.white-box-container {
+    display: flex;
+}
+
+.white-box {
+    flex: 1;
+    max-width: 400px;
+    height: 300px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Add this if you want a responsive layout */
+@media (max-width: 768px) {
+    .report-body {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .white-box {
+        width: 100%;
+    }
+}
+
+
+
+
+.white-box h2 {
+    color: #333;
+}
+
+.white-box p {
+    font-size: 90px;
+    color: #3498db;
+    margin: 10px 0;
+}
+
+
+
+    </style>
 </head>
 
 <body>
@@ -46,10 +100,9 @@ include "../../data_fetch.php";
     </header>
 
     <div class="main-container">
-    <?php
-        // Include your sidebar file
-        include "../../../component/sidebar/warden.php";
-        ?>
+        <?php
+       include "../../../component/sidebar/warden.php";
+       ?>
         <div class="main">
 
             <div class="searchbar2">
@@ -60,127 +113,71 @@ include "../../data_fetch.php";
                 </div>
             </div>
 
-            <div class="box-container">
+            <?php
+// Assuming you have a database connection established
+include "../../../connection/connection.php";
 
-                <div class="box box1">
-                    <div class="text">
-                        <h2 class="topic-heading"><?php echo $totalStudents; ?></h2>
-                        <h2 class="topic">Registered student</h2>
-                    </div>
-                </div>
+// Step 1: Count Morning and Night Attendance
+$currentDate = date("Y-m-d");
+$queryMorning = "SELECT COUNT(*) as morningCount FROM attendance WHERE date = '$currentDate' AND morning = 1";
+$queryNight = "SELECT COUNT(*) as nightCount FROM attendance WHERE date = '$currentDate' AND night = 1";
 
-                <div class="box box2">
-                    <div class="text">
-                    <h2 class="topic-heading"><?php echo $totalStudents1; ?></h2>
-                        <h2 class="topic">Alloted Students</h2>
-                    </div>
+$resultMorning = mysqli_query($conn, $queryMorning);
+$resultNight = mysqli_query($conn, $queryNight);
 
-                    <!-- <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210185030/14.png" alt="likes"> -->
-                </div>
+$rowMorning = mysqli_fetch_assoc($resultMorning);
+$rowNight = mysqli_fetch_assoc($resultNight);
 
-                <div class="box box3">
-                    <div class="text">
-                        <h2 class="topic-heading">320</h2>
-                        <h2 class="topic">Comments</h2>
-                    </div>
+// Step 2: Count Complaints Belonging to HS
+$queryComplaints = "SELECT COUNT(*) as hsComplaintCount FROM complaint_box WHERE role = 'hostel_secretary'";
+$resultComplaints = mysqli_query($conn, $queryComplaints);
+$rowComplaints = mysqli_fetch_assoc($resultComplaints);
+?>
 
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(32).png"
-                        alt="comments">
-                </div>
-
-                <div class="box box4">
-                    <div class="text">
-                        <h2 class="topic-heading">70</h2>
-                        <h2 class="topic">Published</h2>
-                    </div>
-
-                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210185029/13.png" alt="published">
-                </div>
-            </div>
-
-            <div class="report-container">
-                <div class="report-header">
-                    <h1 class="recent-Articles">Alloted Students</h1>
-                    <button class="view">Download</button>
-                </div>
-
-                <div class="report-body">
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>Admission No</th>
-                            <th>Branch</th>
-                            <th>Semester</th>
-                            <th>Morning</th>
-                            <th>Night</th>
-                        </tr>
-                        <?php
-        
-        // Include your connection.php file
-        include '../../../connection/connection.php';
-
-        // Initialize the searchDate with the current date
-        $searchDate = date("Y-m-d");
-
-        // Check if a date is provided in the search
-        if (isset($_GET['searchDate'])) {
-            $searchDate = $_GET['searchDate'];
-        }
-
-        // Select data from the attendance table based on the searchDate
-        $query = "SELECT * FROM attendance WHERE date = '$searchDate'";
-        $result = mysqli_query($conn, $query);
-
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['admission_no'] . "</td>";
-            echo "<td>" . $row['branch'] . "</td>";
-            echo "<td>" . $row['semester'] . "</td>";
-            
-            // Check the 'morning' value
-            if ($row['morning'] == 1) {
-                // Display "Present" with a green background
-                echo "<td style='background-color: green;'>Present</td>";
-            } else {
-                // Display "Absent" with a red background
-                echo "<td style='background-color: red;'>Absent</td>";
-            }
-            
-            // Check the 'night' value (you can do the same for 'night' as for 'morning')
-            if ($row['night'] == 1) {
-                echo "<td style='background-color: green;'>Present</td>";
-            } else {
-                echo "<td style='background-color: red;'>Absent</td>";
-            }
-            
-            echo "</tr>";
-        }
-        ?>
-
-                    </table>
-
-
-
-
-
-                </div>
-            </div>
-        </div>
+<div class="white-box-container">
+    <div class="white-box">
+        <h2>Morning Attendance</h2>
+        <p><?php echo $rowMorning['morningCount']; ?></p>
     </div>
 
-    <script src="../../../style/dashboard.js"></script>
-    <script>
-        document.getElementById("searchButton").addEventListener("click", function() {
-            // Get the selected date from the input field
-            var searchDate = document.getElementById("searchDate").value;
+    <div class="white-box">
+        <h2>Night Attendance</h2>
+        <p><?php echo $rowNight['nightCount']; ?></p>
+    </div>
 
-            // Redirect to the page with the selected date as a parameter
-            window.location.href = "hostel_secretary_dashboard.php?searchDate=" + searchDate;
+    <div class="white-box">
+        <h2>HS Complaints</h2>
+        <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
+    </div>
+</div>
+
+                
+              
+<div class="report-body">
+    
+</div>
+
+<script src="../../style/dashboard.js"></script>
+<script>
+    // JavaScript code for the "Mark Confirmation" button
+    const markConfirmationButtons = document.querySelectorAll('.markConfirmationButton');
+    
+    markConfirmationButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the attendance record ID from the data-id attribute
+            const attendanceId = button.getAttribute('data-id');
+            
+            // Send an AJAX request to update the 'hs' field to 1
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_hs.php'); // Create a PHP script to handle the update
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Reload the page to reflect the updated data
+                    location.reload();
+                }
+            };
+            xhr.send('id=' + attendanceId);
         });
-    </script>
-
-</body>
-
-</html>
+    });
+</script>

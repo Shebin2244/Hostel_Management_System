@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <?php
 include "../../../connection/connection.php";
 include "../../data_fetch.php";
@@ -8,24 +9,76 @@ include "../../data_fetch.php";
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, 
-				initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIT Hostel</title>
     <link rel="stylesheet" href="../../../style/dash-style.css">
     <link rel="stylesheet" href="../../../style/responsive.css">
+    <style>
+    /* Add the styles for the table */
+    .report-container {
+        width: 100%;
+    }
+
+    .report-body {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .details-container {
+        display: none;
+        background-color: #f9f9f9;
+    }
+
+    .details-container td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .show-details-btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Additional style for searchbar */
+    .searchbar form {
+        display: flex;
+        gap: 10px;
+    }
+    </style>
 </head>
 
 <body>
-
-    <!-- for header part -->
     <header>
-
         <div class="logosec">
             <div class="logo">Warden Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
-
         <div class="searchbar">
             <input type="text" placeholder="Search">
             <div class="searchbtn">
@@ -33,7 +86,6 @@ include "../../data_fetch.php";
                     class="icn srchicn" alt="search-icon">
             </div>
         </div>
-
         <div class="message">
             <div class="circle"></div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
@@ -42,132 +94,155 @@ include "../../data_fetch.php";
                     class="dpicn" alt="dp">
             </div>
         </div>
-
     </header>
 
     <div class="main-container">
-    <div class="navcontainer">
-            <nav class="nav">
-                <div class="nav-upper-options">
-                    <div class="nav-top">
-                        <a href="warden_dashboard.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                                class="nav-img" alt="dashboard">
-                            <h3> Dashboard</h3>
-                        </a>
-    
-                        <a href="registered_students.php" class="active nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3> Registered Students</h3>
-                        </a>
-    
-                        <a href="finalized_students.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3> Finalized Students</h3>
-                        </a>
-    
-                        <a href="attendance.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Attendance</h3>
-                        </a>
-    
-                        <a href="complaints.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Complaints</h3>
-                        </a>
-    
-                        <a href="foodmenu.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Food Menu</h3>
-                        </a>
-    
-                        <a href="food_feedback.php" class="nav-option">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
-                                class="nav-img" alt="articles">
-                            <h3>Food Feedback</h3>
-                        </a>
+        <?php
+        // Include your sidebar file
+        include "../../../component/sidebar/warden.php";
+        ?>
 
-                    </div>
+        <div class="report-container">
+            <div class="report-header">
+                <h1 class="recent-Articles">Registered Students</h1>
+                <button class="view">Download</button>
+            </div>
 
-                    <div class="navbar-bottom">
-                        <div class="nav-option option6">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
-                                class="nav-img" alt="settings">
-                            <h3> Settings</h3>
-                        </div>
-    
-                        <div class="nav-option logout">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                                class="nav-img" alt="logout">
-                            <h3>Logout</h3>
-                        </div>
-                    </div>
+            <div class="searchbar">
+                <form method="GET" action="">
+                    <input type="text" name="search_name" placeholder="Search by Name">
+                    <select name="search_degree">
+                        <option value="">Select Degree</option>
+                        <option value="B.Tech">B.Tech</option>
+                        <option value="M.Tech">M.Tech</option>
+                        <option value="MCA">MCA</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                    <select name="search_semester">
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                    <button type="submit" class="searchbtn">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
+                            class="icn srchicn" alt="search-icon">
+                    </button>
+                </form>
+            </div>
 
-                </div>
-            </nav>
-        </div>
-        <div class="main">
-            <div class="report-container">
-                <div class="report-header">
-                    <h1 class="recent-Articles">Registered Students</h1>
-                    <button class="view">Download</button>
-                </div>
+            <div class="report-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Admission Number</th>
+                            <th>Year of Study</th>
+                            <th>Semester</th>
+                            <th>Branch</th>
+                            <th>Degree</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Fetch data from the database based on search criteria
+                        $search_name = isset($_GET['search_name']) ? mysqli_real_escape_string($conn, $_GET['search_name']) : '';
+                        $search_degree = isset($_GET['search_degree']) ? mysqli_real_escape_string($conn, $_GET['search_degree']) : '';
+                        $search_semester = isset($_GET['search_semester']) ? mysqli_real_escape_string($conn, $_GET['search_semester']) : '';
 
-                <div class="report-body">
-                    <div class="report-topic-heading">
-                        <h3 class="t-op">Name</h3>
-                        <h3 class="t-op">Admission number</h3>
-                        <h3 class="t-op">Year of study</h3>
-                        <h3 class="t-op">semester</h3>
-                        <h3 class="t-op">branch</h3>
-                    </div>
+                        $query = "SELECT * FROM hostel_student_registration WHERE 1";
 
-<!-- Add the following code after the existing PHP includes -->
-<!-- Add the following code after the existing PHP includes -->
-<?php
-// Assuming $connection is your database connection variable
+                        if (!empty($search_name)) {
+                            $query .= " AND name LIKE '%$search_name%'";
+                        }
 
-// Fetch data from the database
-$query = "SELECT name, admissionNo, semester, branch, yearOfStudy FROM hostel_student_registration";
-$result = mysqli_query($conn, $query);
+                        if (!empty($search_degree)) {
+                            $query .= " AND degree = '$search_degree'";
+                        }
 
-// Check if the query was successful
-if ($result) {
-    // Loop through each row in the result set
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Output the data in the HTML structure for each row
-        echo '<div class="item1">';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['name']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['admissionNo']) . '</h3>';
-        
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['yearOfStudy']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['semester']) . '</h3>';
-        echo '<h3 class="t-op-nextlvl">' . htmlspecialchars($row['branch']) . '</h3>';
-        echo '</div>';
-    }
-} else {
-    // Handle the case where the query fails
-    echo 'Error fetching data: ' . mysqli_error($connection);
-}
+                        if (!empty($search_semester)) {
+                            $query .= " AND semester = '$search_semester'";
+                        }
 
-// Close the database connection
-// mysqli_close($connection);
-?>
+                        $result = mysqli_query($conn, $query);
 
+                        // Check if the query was successful
+                        if ($result) {
+                            if (mysqli_num_rows($result) > 0) {
 
+                            // Loop through each row in the result set
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                // Output the data in the table rows
+                                echo '<tr>';
+                                echo '<td>' . htmlspecialchars($row['name']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['admissionNo']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['yearOfStudy']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['semester']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['branch']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['degree']) . '</td>';
 
-                    </div>
-                </div>
+                                echo '<td><button class="show-details-btn">Show Details</button></td>';
+                                echo '</tr>';
+                                echo '<tr class="details-container">';
+                                // Add more details here based on your table structure
+                                echo '<td colspan="6">';
+                                echo '<p>Gender: ' . htmlspecialchars($row['gender']) . '</p>';
+                                echo '<p>Degree: ' . htmlspecialchars($row['degree']) . '</p>';
+                                echo '<p>Permanent Address: ' . htmlspecialchars($row['pAddress']) . '</p>';
+                                echo '<p>Guardian Address: ' . htmlspecialchars($row['gAddress']) . '</p>';
+                                echo '<p>Pincode: ' . htmlspecialchars($row['pincode']) . '</p>';
+                                echo '<p>Mobile: ' . htmlspecialchars($row['mobile']) . '</p>';
+                                echo '<p>Guardian Mobile: ' . htmlspecialchars($row['gMobile']) . '</p>';
+                                echo '<p>Present Address: ' . htmlspecialchars($row['prAddress']) . '</p>';
+                                // echo '<p>P1: ' . htmlspecialchars($row['p1']) . '</p>';
+                                // echo '<p>P2: ' . htmlspecialchars($row['p2']) . '</p>';
+                                // echo '<p>Other: ' . htmlspecialchars($row['other']) . '</p>';
+                                echo '<p>Annual Income: ' . htmlspecialchars($row['aIncome']) . '</p>';
+                                // echo '<p>OBC or OEC: ' . htmlspecialchars($row['obcOrOec']) . '</p>';
+                                echo '<p>Distance: ' . htmlspecialchars($row['distance']) . '</p>';
+                                // echo '<p>SGPA1: ' . htmlspecialchars($row['sgpa1']) . '</p>';
+                                // ... add more details as needed
+                                echo '</td>';
+                                echo '</tr>';
+                            }
+                        } else {
+                            // Display a message when there are no matching records
+                            echo '<tr><td colspan="7">No matching records found</td></tr>';
+                        }
+                    } else {
+                        // Handle the case where the query fails
+                        echo 'Error fetching data: ' . mysqli_error($connection);
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <script src="../../../style/dashboard.js"></script>
+    <script>
+    // Add the JavaScript to toggle the visibility of details container
+    document.addEventListener('DOMContentLoaded', function() {
+        var showDetailsBtns = document.querySelectorAll('.show-details-btn');
+        showDetailsBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var detailsContainer = this.parentElement.parentElement.nextElementSibling;
+                detailsContainer.style.display = (detailsContainer.style.display ===
+                    'table-row') ? 'none' : 'table-row';
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
