@@ -23,8 +23,8 @@ foreach ($data as $key => $value) {
 }
 
 // Formulate the SQL query
-$sql = "INSERT IGNORE INTO hostel_student_list (`name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`)
-        VALUES ('$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]', '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]', '$data[gAddress]', '$data[pincode]', '$data[mobile]')";
+$sql = "INSERT IGNORE INTO hostel_student_list (`name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`)
+        VALUES ('$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]', '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]', '$data[gAddress]', '$data[pincode]', '$data[mobile]', '$data[distance]', '$data[aIncome]')";
 
 $sql1= "INSERT IGNORE INTO login (`username`,`password`,`user_type`) VALUES ('$data[admissionNo]','$data[admissionNo]','student')";
 
@@ -112,8 +112,9 @@ if ($result->num_rows > 0) {
                 if ($insertedStudentsCount >= $maxStudentLimit) {
                     break;
                 }
-            } elseif ($yearOfStudy == 4 && $randomChance <= 10 && ($branch == 'mca' || $branch == 'mtech')) {
-                // Additional conditions for branch 'mca' or 'mtech'
+            } elseif (($yearOfStudy == 4 && $randomChance <= 10) || // For year 4
+            (($branch == 'MCA' || $branch == 'M.Tech') && $randomChance <= 10)) { // For 'mca' or 'mtech'
+       // Additional conditions for branch 'mca' or 'mtech'
                 insertIntoStudentList($conn, $row);
                 $insertedStudentsCount++;
 

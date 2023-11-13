@@ -20,16 +20,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $updateStmt->bind_param("ssssi", $breakfast_item, $lunch_item, $evening_item, $dinner_item, $menu_id);
 
         if ($updateStmt->execute()) {
-            echo "Food menu items updated successfully.";
+            // Display a success pop-up message
+            echo "<script>alert('Food menu items updated successfully.');</script>";
+            
+            // Redirect back to food_menu.php
+            echo "<script>window.location.href = 'food_menu.php';</script>";
         } else {
-            echo "Error: " . $updateStmt->error;
+            // Display an error pop-up message
+            echo "<script>alert('Error updating food menu items: " . $updateStmt->error . "');</script>";
+            
+            // Redirect back to food_menu.php
+            echo "<script>window.location.href = 'food_menu.php';</script>";
         }
 
         $updateStmt->close();
     } else {
-        echo "Invalid menu_id provided.";
+        // Display an error pop-up message for an invalid menu_id
+        echo "<script>alert('Invalid menu_id provided.');</script>";
+        
+        // Redirect back to food_menu.php
+        echo "<script>window.location.href = 'food_menu.php';</script>";
     }
 } else {
-    echo "Invalid request method.";
+    // Display an error pop-up message for an invalid request method
+    echo "<script>alert('Invalid request method.');</script>";
+    
+    // Redirect back to food_menu.php
+    echo "<script>window.location.href = 'food_menu.php';</script>";
 }
 ?>

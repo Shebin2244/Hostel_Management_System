@@ -122,9 +122,6 @@
     .night-attendance {
         flex: 1;
     }
-    </style>
-
-    <!-- ... your existing HTML code ... -->
 
     </style>
 </head>
