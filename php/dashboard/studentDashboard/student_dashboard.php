@@ -45,19 +45,108 @@ error_reporting(E_ERROR | E_PARSE);
             <div class="circle"></div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
             <div class="dp">
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
-                    class="dpicn" alt="dp">
-            </div>
+ 
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateDetailsModal">
+    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+        class="dpicn" alt="dp">
+    </button>
+</div>
+
         </div>
 
     </header>
+<!-- Modal for Updating Details -->
+<div class="modal fade" id="updateDetailsModal" tabindex="-1" aria-labelledby="updateDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateDetailsModalLabel">Update Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your form elements for updating details here -->
+                <form id="updateDetailsForm" action="process_update_details.php" method="post">
+                    <!-- Include input fields for yearOfStudy, semester, and mobile -->
+                    <label for="yearOfStudy">Year of Study:</label>
+                    <input type="text" name="yearOfStudy" id="yearOfStudy" class="form-control" required>
+                    
+                    <label for="semester">Semester:</label>
+                    <input type="text" name="semester" id="semester" class="form-control" required>
+                    
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" name="mobile" id="mobile" class="form-control" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Update Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Update Password Modal -->
+<div class="modal fade" id="updatePasswordModal" tabindex="-1" aria-labelledby="updatePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updatePasswordModalLabel">Update Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updatePasswordForm" action="process_update_password.php" method="post">
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Show the modal when the button is clicked
+        $('#updatePasswordModal').on('show.bs.modal', function(event) {
+            // Clear input fields when the modal is opened
+            $('#updatePasswordForm')[0].reset();
+        });
+
+        // Handle form submission
+        $('#updatePasswordForm').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Perform an AJAX request to submit the form data
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr('method'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    // Show an alert based on the response
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        $('#updatePasswordModal').modal('hide'); // Close the modal on success
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', status, error);
+                }
+            });
+        });
+    });
+</script>
     <div class="main-container">
         
     <?php
        include "../../../component/sidebar/student.php";
        ?>
-
 
 
         <div class="main">
@@ -243,6 +332,30 @@ $result = mysqli_query($conn, $query);
                     </script>
 
 
+<script>
+    // Use jQuery to handle modal events
+    $(document).ready(function() {
+        // Show the modal when the button is clicked
+        $('#updateDetailsModal').on('show.bs.modal', function(event) {
+            // Fetch details and populate form fields using AJAX
+            // You need to replace 'get_details.php' with the actual file to retrieve details
+            $.ajax({
+                url: 'get_details.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Populate form fields with retrieved details
+                    $('#yearOfStudy').val(data.yearOfStudy);
+                    $('#semester').val(data.semester);
+                    $('#mobile').val(data.mobile);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching details:', status, error);
+                }
+            });
+        });
+    });
+</script>
 
 
                     <!-- Complaint Box -->

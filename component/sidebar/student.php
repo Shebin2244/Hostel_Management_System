@@ -30,16 +30,22 @@
                                 class="nav-img" alt="articles">
                             <h3>Meeting</h3>
                         </a>
+                        <div class="navbar-bottom">
+    <div class="nav-option option6" data-bs-toggle="modal" data-bs-target="#updatePasswordModal">
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png" class="nav-img" alt="settings">
+        <h3> Settings</h3>
+    </div>
+</div>
 
                     </div>
 
                     <div class="navbar-bottom">
-                        <div class="nav-option option6">
+                        <!-- <div class="nav-option option6">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
                                 class="nav-img" alt="settings">
                             <h3> Settings</h3>
                         </div>
-    
+     -->
                         <a href="../../logout.php" class="nav-option logout">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
                                 class="nav-img" alt="logout">
