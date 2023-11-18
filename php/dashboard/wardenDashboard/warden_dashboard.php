@@ -30,7 +30,7 @@
 .white-box {
     flex: 1;
     max-width: 400px;
-    height: 300px;
+    height: 240px;
     margin: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -65,7 +65,9 @@
 }
 
 
-
+.view{
+    width: 130px;
+}
     </style>
 </head>
 
@@ -146,17 +148,21 @@ $rowComplaints = mysqli_fetch_assoc($resultComplaints);
     </div>
 
     <div class="white-box">
-        <h2>HS Complaints</h2>
+        <h2>Complaints</h2>
         <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
+    </div>
+    <div class="white-box">
+    <h2>Rank List</h2><br>
+    <a href="generate_ranklist.php"  target="_blank"><button class="view">Download</button></a>
+</div>
+
+    <div class="white-box">
+        <h2>Admission List</h2>
+        <button class="view">Download</button>
     </div>
 </div>
 
                 
-              
-<div class="report-body">
-    
-</div>
-
 <script src="../../style/dashboard.js"></script>
 <script>
     // JavaScript code for the "Mark Confirmation" button
