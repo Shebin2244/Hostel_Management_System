@@ -66,6 +66,7 @@
                                 <option value="" selected>Select your course</option>
                                 <option value="math">B.Tech</option>
                                 <option value="science">M.Tech</option>
+                                <option value="history">B.Arch</option>
                                 <option value="history">MCA</option>
                                 <!-- <option value="english">English</option> -->
                             </select>

@@ -131,26 +131,53 @@
         <h1>Allocate Rooms</h1>
         <form method="post" action="process_room_allocation.php">
             <div class="form-group">
-                <label for="btech_rooms">B.Tech Rooms:</label>
-                <input type="number" id="btech_rooms" name="btech_rooms" required>
+                <label for="btech_rooms">Total Rooms:</label>
+                <input type="number" id="btech_rooms" name="rooms" required>
             </div>
 
             <div class="form-group">
-                <label for="mtech_rooms">M.Tech Rooms:</label>
-                <input type="number" id="mtech_rooms" name="mtech_rooms" required>
+                <input type="submit" name="submit" value="Update Rooms">
             </div>
-
             <div class="form-group">
-                <label for="mca_rooms">MCA Rooms:</label>
-                <input type="number" id="mca_rooms" name="mca_rooms" required>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" name="submit" value="Allocate Rooms">
+                <a href="process_allocate_rooms.php" style="color:red">Clink here to start allocation</a>
             </div>
         </form>
     </div>
 
+    <form method="post" action="process_delete_rooms.php">
+        <table>
+            <thead>
+                <tr>
+                    <th>Room ID</th>
+                    <th>Room Name</th>
+                    <th>Capacity</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                include '../../../connection/connection.php';
+
+                // Retrieve data from the rooms table
+                $query = "SELECT * FROM rooms";
+                $result = mysqli_query($conn, $query);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . $row['room_id'] . "</td>";
+                    echo "<td>" . $row['room_name'] . "</td>";
+                    echo "<td>" . $row['capacity'] . "</td>";
+                    echo '<td><input type="checkbox" name="delete_rooms[]" value="' . $row['room_id'] . '"></td>';
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <input type="submit" name="delete" value="Delete Selected Rooms">
+        </div>
+    </form>
 
 
 
