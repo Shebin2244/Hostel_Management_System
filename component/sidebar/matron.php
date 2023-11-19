@@ -18,11 +18,11 @@
                             <h3>Attendance</h3>
                         </a>
 
-                    <div class="nav-option option4">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
-                            class="nav-img" alt="institution">
-                        <h3> Institution</h3>
-                    </div>
+                        <a href="../meeting.php" class="option2 nav-option">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                                class="nav-img" alt="articles">
+                            <h3>Meeting</h3>
+                        </a>
 
                     <div class="nav-option option5">
                         <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"

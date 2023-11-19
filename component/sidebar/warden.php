@@ -19,6 +19,11 @@
                                 class="nav-img" alt="articles">
                             <h3> Finalized Students</h3>
                         </a>
+                        <a href="../meeting.php" class="option2 nav-option">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                                class="nav-img" alt="articles">
+                            <h3>Meeting</h3>
+                        </a>
     
                         <a href="attendance.php" class="option2 nav-option">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
