@@ -13,6 +13,11 @@
                                 class="nav-img" alt="articles">
                             <h3>Attendance</h3>
                         </a>
+                        <a href="file_upload.php" class="nav-option ">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                                class="nav-img" alt="dashboard">
+                            <h3>File Upload</h3>
+                        </a>
     
                         <a href="feedback.php" class="option2 nav-option">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
