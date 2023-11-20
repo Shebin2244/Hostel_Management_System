@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2023 at 10:31 PM
+-- Generation Time: Nov 20, 2023 at 07:53 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -67,6 +67,13 @@ CREATE TABLE `attendance` (
   `matron` int(11) NOT NULL,
   `hs` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`) VALUES
+(3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -135,15 +142,16 @@ CREATE TABLE `fine` (
   `date` varchar(155) NOT NULL,
   `admission_no` varchar(22) NOT NULL,
   `reason` varchar(22) NOT NULL,
-  `status` varchar(111) NOT NULL
+  `status` varchar(111) NOT NULL,
+  `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `fine`
 --
 
-INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`) VALUES
-('wewe', '', '', '');
+INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`, `amount`) VALUES
+('wewe', '', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -215,19 +223,25 @@ CREATE TABLE `home_register` (
   `room_no` int(11) NOT NULL,
   `date` varchar(111) NOT NULL,
   `place` int(11) NOT NULL,
-  `time` int(11) NOT NULL
+  `time` int(11) NOT NULL,
+  `matron` int(11) NOT NULL,
+  `hs` int(11) NOT NULL,
+  `return` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `home_register`
 --
 
-INSERT INTO `home_register` (`admission_no`, `name`, `room_no`, `date`, `place`, `time`) VALUES
-(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
-(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
-(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
-(111, 'John Doe', 0, '11111-11-11', 1, 111),
-(111, 'John Doe', 0, '11111-11-12', 111, 111);
+INSERT INTO `home_register` (`admission_no`, `name`, `room_no`, `date`, `place`, `time`, `matron`, `hs`, `return`) VALUES
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123, 1, 1, 1),
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123, 1, 1, 1),
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123, 1, 1, 1),
+(111, 'John Doe', 0, '11111-11-11', 1, 111, 1, 1, 1),
+(111, 'John Doe', 0, '11111-11-12', 111, 111, 1, 1, 1),
+(111, 'John Doe', 0, '2023-11-20', 123123, 123123, 0, 0, 1),
+(111, 'John Doe', 0, '2023-11-26', 1, 21212312, 0, 0, 1),
+(111, 'John Doe', 0, '2023-11-26', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -472,6 +486,34 @@ INSERT INTO `rooms` (`room_id`, `room_name`, `capacity`) VALUES
 (20, 'Room 20', 4),
 (21, 'Room 21', 4);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock`
+--
+
+CREATE TABLE `stock` (
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL,
+  `total_value` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `unit_price`) STORED,
+  `date_added` date NOT NULL,
+  `notes` text DEFAULT NULL,
+  `bill_image` varchar(255) DEFAULT NULL,
+  `matron` int(11) NOT NULL,
+  `hs` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`product_id`, `product_name`, `quantity`, `unit_price`, `date_added`, `notes`, `bill_image`, `matron`, `hs`) VALUES
+(1, 'rice', 11, '111.00', '2023-12-02', '11', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
+(3, 'rice', 12123, '99999999.99', '2023-12-02', '222', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
+(4, 'rice', 11, '11.00', '2023-11-30', 'h', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (161).png', 0, 1);
+
 --
 -- Indexes for dumped tables
 --
@@ -544,6 +586,12 @@ ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
 
 --
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -557,7 +605,7 @@ ALTER TABLE `allocations`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `complaint_box`
@@ -606,6 +654,12 @@ ALTER TABLE `meetings`
 --
 ALTER TABLE `rooms`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

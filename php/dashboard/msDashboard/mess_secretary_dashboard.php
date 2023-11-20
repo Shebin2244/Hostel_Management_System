@@ -1,3 +1,22 @@
+<?php
+include "../../../connection/connection.php";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $selectedMonth = $_POST['selected_month'];
+    $queryTotalValue = "SELECT SUM(total_value) as totalValue FROM stock WHERE MONTH(date_added) = $selectedMonth";
+    $resultTotalValue = mysqli_query($conn, $queryTotalValue);
+    $rowTotalValue = mysqli_fetch_assoc($resultTotalValue);
+    
+    // Return the total value as JSON
+    echo json_encode(['totalValue' => $rowTotalValue['totalValue']]);
+} else {
+    // Handle invalid requests
+    http_response_code(400);
+    echo "Invalid request";
+}
+?>
+    
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -149,7 +168,51 @@ $rowComplaints = mysqli_fetch_assoc($resultComplaints);
         <h2>Complaints</h2>
         <p><?php echo $rowComplaints['hsComplaintCount']; ?></p>
     </div>
-</div>
+    <div class="white-box">
+        <h2>Total Stock amount  of Current Month</h2>
+        <form id="monthForm">
+            <label for="selectedMonth">Select Month:</label>
+            <select name="selected_month" id="selectedMonth">
+                <!-- Add options dynamically based on your data -->
+                <!-- Example: Display options for the last 12 months -->
+                <?php
+                for ($i = 1; $i <= 12; $i++) {
+                    echo "<option value=\"$i\">" . date('F', mktime(0, 0, 0, $i, 1)) . "</option>";
+                }
+                ?>
+            </select>
+            <input type="submit" value="Show Total">
+        </form>
+        <p style="font-size: 30px;" id="totalValueText">Total Amount: </p>
+    </div>
+</div>    <script>
+        // JavaScript code for handling form submission using AJAX
+        const monthForm = document.getElementById('monthForm');
+
+        monthForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const selectedMonth = document.getElementById('selectedMonth').value;
+
+            // Send an AJAX request to fetch the total value for the selected month
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'fetch_total_value.php');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Update the white box with the total value
+                    const response = JSON.parse(xhr.responseText);
+                    const totalValueText = document.getElementById('totalValueText');
+                    if (totalValueText) {
+                        totalValueText.textContent = 'Total Amount: ' + response.totalValue;
+                    }
+                }
+            };
+            xhr.send('selected_month=' + selectedMonth);
+        });
+    </script>
+
+
 
                 
               
