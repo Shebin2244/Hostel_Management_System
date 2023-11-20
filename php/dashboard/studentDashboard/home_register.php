@@ -1,5 +1,25 @@
+
 <?php
-session_start(); // Start the session
+session_start();
+$admission_no = $_SESSION['username']; 
+// Include your database connection
+include "../../../connection/connection.php";
+
+// Fetch data from the home_register table
+$query = "SELECT * FROM home_register WHERE admission_no = $admission_no AND 'return' = 0";
+$result = mysqli_query($conn, $query);
+
+// Check if there are records
+if ($result) {
+    $homeRegisterData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+} else {
+    $homeRegisterData = array(); // No records found
+}
+
+$conn->close();
+?>
+<?php
+// session_start(); // Start the session
 // Disable warning display
 error_reporting(E_ERROR | E_PARSE);
 
@@ -10,6 +30,34 @@ error_reporting(E_ERROR | E_PARSE);
 <html lang="en">
 
 <head>
+<style>
+        /* Style for the new table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .confirmButton {
+            background-color: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, 
@@ -145,8 +193,85 @@ error_reporting(E_ERROR | E_PARSE);
 
         <button type="submit" class="inform-button">Submit</button>
     </form>
-</div>
+</div><br>
+<h1 class="recent-Articles">Return Home Register</h1>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admission No</th>
+                        <th>Room No</th>
+                        <th>Date</th>
+                        <th>Place</th>
+                        <th>Time</th>
+                        <th>Return Status</th>
+                        <th>Matron</th>
+                        <th>HS</th>
+                        <!-- <th>Confirm</th> -->
+                    </tr>
+                    <?php foreach ($homeRegisterData as $data) : ?>
+                        <tr>
+                            <td><?= $data['name']; ?></td>
+                            <td><?= $data['admission_no']; ?></td>
+                            <td><?= $data['room_no']; ?></td>
+                            <td><?= $data['date']; ?></td>
+                            <td><?= $data['place']; ?></td>
+                            <td><?= $data['time']; ?></td>
+                 <!-- Inside your foreach loop -->
+<form action="update_matron_field.php" method="post">
+    <input type="hidden" name="admission_no" value="<?= $data['admission_no']; ?>">
+    <!-- <input type="hidden" name="date" value="<?= $data['date']; ?>"> -->
+    <td>
+        <?php if ($data['return'] == 0) : ?>
+            <button type="submit" class="confirmButton">Return</button>
+        <?php else : ?>
+            <span>Return added</span>
+        <?php endif; ?>
+    </td>
+</form>
 
+
+                            <!-- <td><?= $data['m']; ?></td> -->
+                            <!-- <td><?= $data['hs']; ?></td> -->
+                            <td>
+                                <?php if ($data['hs'] == 0) : ?>
+                                    <span>Not verified</span>
+                                <?php else : ?>
+                                    <span>Verified</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($data['matron'] == 0) : ?>
+                                    <span>Not verified</span>
+                                <?php else : ?>
+                                    <span>Verified</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>   
+                 <script>
+        // JavaScript code for the "Confirm" button
+        const confirmButtons = document.querySelectorAll('.confirmButton');
+
+        confirmButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Get the admission number from the data-id attribute
+                const admissionNo = button.getAttribute('data-id');
+
+                // Send an AJAX request to update the 'matron' field to 1
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_matron_field.php'); // Create a PHP script to handle the update
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // Reload the page to reflect the updated data
+                        location.reload();
+                    }
+                };
+                xhr.send('admission_no=' + admissionNo);
+            });
+        });
+    </script> 
 
 
                 </div>
@@ -187,6 +312,7 @@ error_reporting(E_ERROR | E_PARSE);
 
     </script>
     <script src="../../../style/dashboard.js"></script>
+   
 </body>
 
 </html>

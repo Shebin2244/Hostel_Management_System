@@ -155,7 +155,7 @@
     <header>
 
         <div class="logosec">
-            <div class="logo">Mess secretary Dashboard</div>
+            <div class="logo">Warden Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
