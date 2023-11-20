@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2023 at 08:05 AM
+-- Generation Time: Nov 19, 2023 at 10:31 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -39,12 +39,15 @@ CREATE TABLE `allocations` (
 
 INSERT INTO `allocations` (`allocation_id`, `room_id`, `admission_no`) VALUES
 (1, 1, 111),
-(2, 1, 111),
-(3, 1, 111),
-(4, 1, 111),
-(5, 1, 111),
-(6, 1, 111),
-(7, 1, 111);
+(2, 2, 2023005),
+(3, 3, 2023009),
+(4, 4, 2023013),
+(5, 1, 2023002),
+(6, 2, 2023020),
+(7, 1, 2023006),
+(8, 2, 2023010),
+(9, 3, 2023014),
+(10, 4, 2023018);
 
 -- --------------------------------------------------------
 
@@ -65,13 +68,6 @@ CREATE TABLE `attendance` (
   `hs` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `attendance`
---
-
-INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`) VALUES
-(2, 'SHEBIN P BIJU', '111', 'mca', '1', 1, 0, '2023-11-06', 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -85,19 +81,84 @@ CREATE TABLE `complaint_box` (
   `admission_no` varchar(20) NOT NULL,
   `name` varchar(255) NOT NULL,
   `branch_name` varchar(255) NOT NULL,
-  `degree` varchar(50) NOT NULL
+  `degree` varchar(50) NOT NULL,
+  `role` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `complaint_box`
 --
 
-INSERT INTO `complaint_box` (`complaint_id`, `topic`, `content`, `admission_no`, `name`, `branch_name`, `degree`) VALUES
-(2, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math'),
-(3, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math'),
-(4, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math'),
-(5, 'test', 'q', '111', 'SHEBIN P BIJU', 'mca', 'math'),
-(6, 'test', 'w', '111', 'SHEBIN P BIJU', 'mca', 'math');
+INSERT INTO `complaint_box` (`complaint_id`, `topic`, `content`, `admission_no`, `name`, `branch_name`, `degree`, `role`) VALUES
+(2, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math', ''),
+(3, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math', ''),
+(4, 'test', 'test', '111', 'SHEBIN P BIJU', 'mca', 'math', ''),
+(5, 'test', 'q', '111', 'SHEBIN P BIJU', 'mca', 'math', ''),
+(6, 'test', 'w', '111', 'SHEBIN P BIJU', 'mca', 'math', ''),
+(7, 'aa', 'aa', '111', 'SHEBIN P BIJU', 'B.Tech', 'MCA', ''),
+(8, 'aa', 'aa', '111', 'SHEBIN P BIJU', 'B.Tech', 'MCA', 'mess_secretary'),
+(9, 'aa', 'aa', '111', 'SHEBIN P BIJU', 'B.Tech', 'MCA', 'hostel_secretary'),
+(10, 'test', 'WD', '111', 'SHEBIN P BIJU', 'B.Tech', 'MCA', 'mess_secretary');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `files`
+--
+
+CREATE TABLE `files` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `upload_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `verified` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `files`
+--
+
+INSERT INTO `files` (`id`, `username`, `file_name`, `file_path`, `upload_time`, `verified`) VALUES
+(1, '111', '111_Income Certificate_student_list (17).pdf', 'C:xampphtdocsHostel_Management_SystemphpdashboardstudentDashboard/uploads/111_Income Certificate_student_list (17).pdf', '2023-11-19 11:08:05', 1),
+(2, '111', '111_Community Certificate_student_list (17).pdf', 'C:xampphtdocsHostel_Management_SystemphpdashboardstudentDashboard/uploads/111_Community Certificate_student_list (17).pdf', '2023-11-19 11:08:05', 1),
+(3, '111', '111_Aadhar Card_student_list (17).pdf', 'C:xampphtdocsHostel_Management_SystemphpdashboardstudentDashboard/uploads/111_Aadhar Card_student_list (17).pdf', '2023-11-19 11:08:05', 0),
+(4, '111', '111_Ration Card_student_list (17).pdf', 'C:xampphtdocsHostel_Management_SystemphpdashboardstudentDashboard/uploads/111_Ration Card_student_list (17).pdf', '2023-11-19 11:08:05', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fine`
+--
+
+CREATE TABLE `fine` (
+  `date` varchar(155) NOT NULL,
+  `admission_no` varchar(22) NOT NULL,
+  `reason` varchar(22) NOT NULL,
+  `status` varchar(111) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fine`
+--
+
+INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`) VALUES
+('wewe', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fine_generation`
+--
+
+CREATE TABLE `fine_generation` (
+  `fine_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `fine_amount` decimal(10,2) DEFAULT NULL,
+  `reason` varchar(255) DEFAULT NULL,
+  `date_generated` date DEFAULT NULL,
+  `is_paid` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -109,18 +170,17 @@ CREATE TABLE `food_feedback` (
   `feedback_id` int(11) NOT NULL,
   `feedback` varchar(255) NOT NULL,
   `admission_no` varchar(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `branch_name` varchar(255) NOT NULL,
-  `degree` varchar(50) NOT NULL
+  `food` varchar(50) NOT NULL,
+  `fooditem` varchar(22) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `food_feedback`
 --
 
-INSERT INTO `food_feedback` (`feedback_id`, `feedback`, `admission_no`, `name`, `branch_name`, `degree`) VALUES
-(0, 'tastey', '111', 'SHEBIN P BIJU', 'mca', 'math'),
-(0, 'a', '111', 'SHEBIN P BIJU', 'mca', 'math');
+INSERT INTO `food_feedback` (`feedback_id`, `feedback`, `admission_no`, `food`, `fooditem`) VALUES
+(0, 'tasty\r\n', '111', 'Lunch', 'Veg meals + fish'),
+(0, 'qqq', '111', 'Breakfast', 'chappathi + chicken cu');
 
 -- --------------------------------------------------------
 
@@ -141,7 +201,33 @@ CREATE TABLE `food_menu` (
 --
 
 INSERT INTO `food_menu` (`menu_id`, `breakfast_item`, `lunch_item`, `evening_item`, `dinner_item`) VALUES
-(1, 'chappathi + chicken curry', 'Veg meals + fish', 'tea + biscuit', 'Biriyaniaa');
+(1, 'kappa', 'chor', 'vada', 'kappa');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `home_register`
+--
+
+CREATE TABLE `home_register` (
+  `admission_no` int(11) NOT NULL,
+  `name` varchar(111) NOT NULL,
+  `room_no` int(11) NOT NULL,
+  `date` varchar(111) NOT NULL,
+  `place` int(11) NOT NULL,
+  `time` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `home_register`
+--
+
+INSERT INTO `home_register` (`admission_no`, `name`, `room_no`, `date`, `place`, `time`) VALUES
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
+(111, 'John Doe', 0, '2023-11-19', 123123, 123123),
+(111, 'John Doe', 0, '11111-11-11', 1, 111),
+(111, 'John Doe', 0, '11111-11-12', 111, 111);
 
 -- --------------------------------------------------------
 
@@ -161,17 +247,32 @@ CREATE TABLE `hostel_student_list` (
   `pAddress` text DEFAULT NULL,
   `gAddress` text DEFAULT NULL,
   `pincode` varchar(6) DEFAULT NULL,
-  `mobile` varchar(15) DEFAULT NULL
+  `mobile` varchar(15) DEFAULT NULL,
+  `distance_metric` int(155) NOT NULL,
+  `income_metric` int(111) NOT NULL,
+  `p1` int(11) NOT NULL,
+  `p2` int(11) NOT NULL,
+  `other` int(11) NOT NULL,
+  `room_no` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `hostel_student_list`
 --
 
-INSERT INTO `hostel_student_list` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`) VALUES
-(3, 'SHEBIN P BIJU', 'male', 'math', 2021, '111', 1, 'btech', 'Pullozhathil house', 'ALAMPALLY', '686502', '0999 581 5251'),
-(1, 'Saheba Biju', '', '', 0, '111111', 0, '', 'Pullozhathil House Pampady PO Pampady', 'Kottayam,Kerala', '686502', '09995815251'),
-(2, 'SHEBIN P BIJU', 'male', 'history', 1, '123', 1, 'ce', 'Pullozhathil house', 'ALAMPALLY', '686502', '0999 581 5251');
+INSERT INTO `hostel_student_list` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`, `p1`, `p2`, `other`, `room_no`) VALUES
+(1, 'John Doe', 'male', 'B.Tech', 2, '111', 22, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1111111', 51, 50000, 1, 0, 0, 0),
+(6, 'Jane Smith', 'female', 'M.Tech', 1, '2023002', 1, 'ECE', '456 Main St, City', '789 Guardian St, City', '654321', '11', 45, 60000, 0, 1, 0, 0),
+(2, 'Mark Wilson', 'male', 'B.Tech', 1, '2023005', 2, 'CE', '234 Main St, City', '567 Guardian St, City', '765432', '6543210987', 61, 60000, 1, 0, 0, 0),
+(7, 'Lisa Davis', 'female', 'MCA', 2, '2023006', 4, 'IT', '345 Main St, City', '678 Guardian St, City', '234567', '5432109876', 43, 70000, 0, 1, 0, 0),
+(3, 'Tom White', 'male', 'B.Tech', 1, '2023009', 1, 'ME', '789 Main St, City', '012 Guardian St, City', '567890', '2109876543', 55, 55000, 1, 0, 0, 0),
+(8, 'Emily Clark', 'female', 'MCA', 2, '2023010', 3, 'IT', '890 Main St, City', '123 Guardian St, City', '678901', '0987654321', 48, 65000, 0, 1, 0, 0),
+(4, 'James Lee', 'male', 'B.Tech', 1, '2023013', 2, 'ME', '678 Main St, City', '901 Guardian St, City', '123456', '5432109876', 59, 60000, 1, 0, 0, 0),
+(9, 'Sophie Turner', 'female', 'MCA', 2, '2023014', 4, 'IT', '234 Main St, City', '567 Guardian St, City', '234567', '0987654321', 39, 55000, 0, 1, 0, 0),
+(11, 'Daniel Brown', 'male', 'B.Tech', 3, '2023015', 6, 'CSE', '789 Main St, City', '012 Guardian St, City', '345678', '8765432109', 45, 65000, 0, 0, 1, 0),
+(5, 'William Johnson', 'male', 'B.Tech', 1, '2023017', 1, 'ME', '345 Main St, City', '678 Guardian St, City', '123456', '5432109876', 56, 70000, 1, 0, 0, 0),
+(10, 'Ava Davis', 'female', 'MCA', 2, '2023018', 3, 'IT', '678 Main St, City', '901 Guardian St, City', '234567', '0987654321', 48, 60000, 0, 1, 0, 0),
+(12, 'Mia Miller', 'female', 'M.Tech', 4, '2023020', 8, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '0987654321', 27, 75000, 0, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -219,11 +320,26 @@ CREATE TABLE `hostel_student_registration` (
 --
 
 INSERT INTO `hostel_student_registration` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `gMobile`, `prAddress`, `p1`, `p2`, `other`, `aIncome`, `obcOrOec`, `distance`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `rank`, `dAction`, `created_at`, `updated_at`) VALUES
-(2, 'SHEBIN P BIJU', 'male', 'math', 2021, '111', 1, 'mca', 'Pullozhathil house', 'ALAMPALLY', '686502', '0999 581 5251', '+917902609679', 'Pullozhathil house\r\nALAMPALLY', 0, 1, 0, '10000.00', 'obcOrOecNo', '123123.00', '2.00', '1.00', '2.00', '1.00', '2.00', '1.00', '9.99', '1.00', 22, 'no', '2023-10-15 04:59:22', '2023-10-15 04:59:22'),
-(7, 'SHEBIN P BIJU', '', '', 0, '1111', 0, '', 'Pullozhathil house', 'ALAMPALLY', '686546', '0999 581 5251', '', 'Pullozhathil house\r\nALAMPALLY', 0, 0, 0, '0.00', '', '13.08', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', 0, '', '2023-10-15 07:31:55', '2023-10-15 14:16:05'),
-(8, 'Saheba Biju', '', '', 0, '111111', 0, '', 'Pullozhathil House Pampady PO Pampady', 'Kottayam,Kerala', '686502', '09995815251', '', 'Pullozhathil House Pampady PO Pampady\r\nKottayam,Kerala', 1, 0, 0, '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', 0, '', '2023-10-15 07:39:49', '2023-10-15 14:16:10'),
-(9, '', '', '', 0, '', 0, '', '', '', '', '', '', '', 0, 0, 0, '0.00', '', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', 0, '', '2023-10-15 17:53:12', '2023-10-15 17:53:12'),
-(10, 'SHEBIN P BIJU', 'male', 'history', 1, '123', 1, 'ce', 'Pullozhathil house', 'ALAMPALLY', '686502', '0999 581 5251', '+917902609679', 'Pullozhathil house\r\nALAMPALLY', 1, 0, 0, '10000.00', '', '2.80', '1.00', '0.00', '1.00', '0.00', '0.00', '0.00', '0.00', '0.00', 22, 'no', '2023-10-31 18:24:49', '2023-10-31 18:24:49');
+(1, 'John Doe', 'male', 'B.Tech', 1, '2023001', 1, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1234567890', '9876543210', '789 Present St, City', 1, 0, 0, '50000.00', 'obcOrOecYes', '50.75', '3.40', '3.60', '3.70', '3.80', '3.50', '3.60', '3.70', '3.80', 120, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(2, 'Jane Smith', 'female', 'M.Tech', 2, '2023002', 3, 'ECE', '456 Main St, City', '789 Guardian St, City', '654321', '9876543210', '1234567890', '654 Present St, City', 0, 1, 0, '60000.00', 'obcOrOecNo', '45.25', '3.00', '3.20', '3.50', '3.10', '3.20', '3.40', '3.30', '3.10', 150, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(3, 'Sam Johnson', 'male', 'MCA', 3, '2023003', 5, 'IT', '789 Main St, City', '123 Guardian St, City', '987654', '8765432109', '2345678901', '987 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecYes', '30.50', '2.80', '3.00', '2.90', '3.10', '3.20', '3.00', '2.80', '3.10', 180, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(4, 'Eva Brown', 'female', 'B.Tech', 4, '2023004', 7, 'ME', '987 Main St, City', '234 Guardian St, City', '876543', '7654321098', '3456789012', '876 Present St, City', 0, 0, 1, '55000.00', 'obcOrOecNo', '22.00', '2.50', '2.30', '2.80', '2.70', '2.50', '2.40', '2.60', '2.70', 200, 'Two warnings issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(5, 'Mark Wilson', 'male', 'B.Tech', 1, '2023005', 2, 'CE', '234 Main St, City', '567 Guardian St, City', '765432', '6543210987', '4567890123', '765 Present St, City', 1, 0, 0, '60000.00', 'obcOrOecYes', '60.50', '3.50', '3.60', '3.80', '3.70', '3.50', '3.40', '3.60', '3.70', 90, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(6, 'Lisa Davis', 'female', 'MCA', 2, '2023006', 4, 'IT', '345 Main St, City', '678 Guardian St, City', '234567', '5432109876', '5678901234', '654 Present St, City', 0, 1, 0, '70000.00', 'obcOrOecNo', '42.50', '3.20', '3.40', '3.60', '3.50', '3.30', '3.20', '3.50', '3.40', 130, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(7, 'Mike Taylor', 'male', 'B.Tech', 3, '2023007', 6, 'CSE', '567 Main St, City', '890 Guardian St, City', '345678', '4321098765', '6789012345', '876 Present St, City', 0, 0, 1, '50000.00', 'obcOrOecYes', '35.00', '2.90', '3.00', '2.80', '3.10', '3.20', '2.90', '3.00', '3.20', 160, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(8, 'Sara Miller', 'female', 'M.Tech', 4, '2023008', 8, 'ECE', '678 Main St, City', '901 Guardian St, City', '456789', '3210987654', '7890123456', '987 Present St, City', 0, 0, 1, '80000.00', 'obcOrOecNo', '28.50', '2.80', '2.90', '3.00', '2.90', '2.70', '2.80', '2.90', '2.70', 175, 'Two warnings issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(9, 'Tom White', 'male', 'B.Tech', 1, '2023009', 1, 'ME', '789 Main St, City', '012 Guardian St, City', '567890', '2109876543', '8901234567', '123 Present St, City', 1, 0, 0, '55000.00', 'obcOrOecYes', '55.00', '3.60', '3.70', '3.50', '3.80', '3.60', '3.50', '3.70', '3.80', 110, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(10, 'Emily Clark', 'female', 'MCA', 2, '2023010', 3, 'IT', '890 Main St, City', '123 Guardian St, City', '678901', '0987654321', '2345678901', '345 Present St, City', 0, 1, 0, '65000.00', 'obcOrOecNo', '48.00', '3.00', '3.10', '3.20', '3.40', '3.50', '3.20', '3.10', '3.30', 140, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(11, 'Andrew Adams', 'male', 'B.Tech', 3, '2023011', 5, 'CSE', '012 Main St, City', '345 Guardian St, City', '789012', '9876543210', '4567890123', '567 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecYes', '32.50', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 155, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(12, 'Olivia Hall', 'female', 'M.Tech', 4, '2023012', 7, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '8765432109', '5678901234', '678 Present St, City', 0, 0, 1, '70000.00', 'obcOrOecNo', '26.50', '2.70', '2.80', '2.90', '3.00', '2.80', '2.70', '2.90', '2.70', 190, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(13, 'James Lee', 'male', 'B.Tech', 1, '2023013', 2, 'ME', '678 Main St, City', '901 Guardian St, City', '123456', '5432109876', '7890123456', '890 Present St, City', 1, 0, 0, '60000.00', 'obcOrOecYes', '58.50', '3.50', '3.60', '3.70', '3.80', '3.60', '3.40', '3.50', '3.70', 95, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(14, 'Sophie Turner', 'female', 'MCA', 2, '2023014', 4, 'IT', '234 Main St, City', '567 Guardian St, City', '234567', '0987654321', '3456789012', '012 Present St, City', 0, 1, 0, '55000.00', 'obcOrOecNo', '39.00', '2.90', '3.00', '2.80', '3.10', '3.20', '2.90', '3.00', '3.20', 170, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(15, 'Daniel Brown', 'male', 'B.Tech', 3, '2023015', 6, 'CSE', '789 Main St, City', '012 Guardian St, City', '345678', '8765432109', '5678901234', '234 Present St, City', 0, 0, 1, '65000.00', 'obcOrOecYes', '45.00', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 150, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(16, 'Emma Smith', 'female', 'M.Tech', 4, '2023016', 8, 'ECE', '012 Main St, City', '345 Guardian St, City', '901234', '0987654321', '2345678901', '345 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecNo', '32.50', '2.80', '2.90', '3.00', '2.90', '2.70', '2.80', '2.90', '2.70', 185, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(17, 'William Johnson', 'male', 'B.Tech', 1, '2023017', 1, 'ME', '345 Main St, City', '678 Guardian St, City', '123456', '5432109876', '7890123456', '456 Present St, City', 1, 0, 0, '70000.00', 'obcOrOecYes', '55.50', '3.60', '3.70', '3.50', '3.80', '3.60', '3.50', '3.70', '3.80', 100, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(18, 'Ava Davis', 'female', 'MCA', 2, '2023018', 3, 'IT', '678 Main St, City', '901 Guardian St, City', '234567', '0987654321', '3456789012', '567 Present St, City', 0, 1, 0, '60000.00', 'obcOrOecNo', '48.00', '3.00', '3.10', '3.20', '3.40', '3.50', '3.20', '3.10', '3.30', 140, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(19, 'Christopher Martin', 'male', 'B.Tech', 3, '2023019', 5, 'CSE', '901 Main St, City', '234 Guardian St, City', '345678', '8765432109', '5678901234', '678 Present St, City', 0, 0, 1, '80000.00', 'obcOrOecYes', '30.50', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 160, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(20, 'Mia Miller', 'female', 'M.Tech', 4, '2023020', 8, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '0987654321', '2345678901', '789 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecNo', '26.50', '2.70', '2.80', '2.90', '3.00', '2.80', '2.70', '2.90', '2.70', 190, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57');
 
 -- --------------------------------------------------------
 
@@ -245,10 +361,77 @@ INSERT INTO `login` (`username`, `password`, `user_type`) VALUES
 ('111', '111', 'student'),
 ('111111', '111111', 'student'),
 ('123', '123', 'student'),
+('2023001', '2023001', 'student'),
+('2023002', '2023002', 'student'),
+('2023004', '2023004', 'student'),
+('2023005', '2023005', 'student'),
+('2023006', '2023006', 'student'),
+('2023007', '2023007', 'student'),
+('2023009', '2023009', 'student'),
+('2023010', '2023010', 'student'),
+('2023012', '2023012', 'student'),
+('2023013', '2023013', 'student'),
+('2023014', '2023014', 'student'),
+('2023015', '2023015', 'student'),
+('2023016', '2023016', 'student'),
+('2023017', '2023017', 'student'),
+('2023018', '2023018', 'student'),
+('2023020', '2023020', 'student'),
 ('hs', 'hs', 'hs'),
 ('matron', 'matron', 'matron'),
 ('ms', 'ms', 'ms'),
 ('warden', 'warden', 'warden');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `meetings`
+--
+
+CREATE TABLE `meetings` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `agenda` varchar(200) NOT NULL,
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  `location` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `meetings`
+--
+
+INSERT INTO `meetings` (`id`, `title`, `agenda`, `date`, `time`, `location`) VALUES
+(6, '12312', '1231', '2023-11-05', '09:02:00', 'Kerala ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `points`
+--
+
+CREATE TABLE `points` (
+  `p_y1` int(11) NOT NULL,
+  `p_y2` int(11) NOT NULL,
+  `p_y3` int(11) NOT NULL,
+  `p_y4` int(11) NOT NULL,
+  `pg` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `t_y1` int(11) NOT NULL,
+  `t_y2` int(11) NOT NULL,
+  `t_y3` int(11) NOT NULL,
+  `t_y4` int(11) NOT NULL,
+  `t_pg` int(11) NOT NULL,
+  `id` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `points`
+--
+
+INSERT INTO `points` (`p_y1`, `p_y2`, `p_y3`, `p_y4`, `pg`, `total`, `t_y1`, `t_y2`, `t_y3`, `t_y4`, `t_pg`, `id`) VALUES
+(10, 10, 10, 10, 0, 200, 100, 25, 25, 25, 25, 1),
+(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11);
 
 -- --------------------------------------------------------
 
@@ -267,15 +450,27 @@ CREATE TABLE `rooms` (
 --
 
 INSERT INTO `rooms` (`room_id`, `room_name`, `capacity`) VALUES
-(1, 'Room 101', 4),
-(2, 'Room 102', 4),
-(3, 'Room 103', 4),
-(4, 'Room 201', 4),
-(5, 'Room 202', 4),
-(6, 'Room 203', 4),
-(7, 'Room 301', 4),
-(8, 'Room 302', 4),
-(9, 'Room 303', 4);
+(1, 'Room 1', 4),
+(2, 'Room 2', 4),
+(3, 'Room 3', 4),
+(4, 'Room 4', 4),
+(5, 'Room 5', 4),
+(6, 'Room 6', 4),
+(7, 'Room 7', 4),
+(8, 'Room 8', 4),
+(9, 'Room 9', 4),
+(10, 'Room 10', 4),
+(11, 'Room 11', 4),
+(12, 'Room 12', 4),
+(13, 'Room 13', 4),
+(14, 'Room 14', 4),
+(15, 'Room 15', 4),
+(16, 'Room 16', 4),
+(17, 'Room 17', 4),
+(18, 'Room 18', 4),
+(19, 'Room 19', 4),
+(20, 'Room 20', 4),
+(21, 'Room 21', 4);
 
 --
 -- Indexes for dumped tables
@@ -298,6 +493,18 @@ ALTER TABLE `attendance`
 --
 ALTER TABLE `complaint_box`
   ADD PRIMARY KEY (`complaint_id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fine_generation`
+--
+ALTER TABLE `fine_generation`
+  ADD PRIMARY KEY (`fine_id`);
 
 --
 -- Indexes for table `food_menu`
@@ -325,6 +532,12 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`username`);
 
 --
+-- Indexes for table `meetings`
+--
+ALTER TABLE `meetings`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `rooms`
 --
 ALTER TABLE `rooms`
@@ -338,7 +551,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `allocations`
 --
 ALTER TABLE `allocations`
-  MODIFY `allocation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `allocation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `attendance`
@@ -350,7 +563,19 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `complaint_box`
 --
 ALTER TABLE `complaint_box`
-  MODIFY `complaint_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `complaint_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `fine_generation`
+--
+ALTER TABLE `fine_generation`
+  MODIFY `fine_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `food_menu`
@@ -362,19 +587,25 @@ ALTER TABLE `food_menu`
 -- AUTO_INCREMENT for table `hostel_student_list`
 --
 ALTER TABLE `hostel_student_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `hostel_student_registration`
 --
 ALTER TABLE `hostel_student_registration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `meetings`
+--
+ALTER TABLE `meetings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `rooms`
 --
 ALTER TABLE `rooms`
-  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

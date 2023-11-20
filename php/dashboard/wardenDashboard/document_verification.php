@@ -96,7 +96,7 @@ $conn->close();
                         <ul class="document-list">
     <li class="document-item">
         <strong>Document Name:</strong> <?php echo $document['file_name']; ?><br>
-        <strong>File Path:</strong> <?php echo $document['file_path']; ?><br>
+        <!-- <strong>File Path:</strong> <?php echo $document['file_path']; ?><br> -->
         <strong>Upload Time:</strong> <?php echo $document['upload_time']; ?><br>
         <?php if ($document['verified'] == 1) : ?>
             <span style="color: green;">Verified</span>
