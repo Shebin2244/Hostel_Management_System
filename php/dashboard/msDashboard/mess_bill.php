@@ -29,16 +29,6 @@ function getRoomDetails($admissionNo, $conn) {
 
 // Function to display feedback details, total attendance, and fine information in table format
 function displayFeedbackDetails($conn) {
-    // Calculate total number of students
-    $totalStudentsQuery = "SELECT COUNT(*) AS total_students FROM hostel_student_list";
-    $totalStudentsResult = mysqli_query($conn, $totalStudentsQuery);
-    $totalStudents = 0;
-
-    if ($totalStudentsResult) {
-        $totalStudentsRow = mysqli_fetch_assoc($totalStudentsResult);
-        $totalStudents = $totalStudentsRow['total_students'];
-    }
-
     // Calculate total stock value for the current month
     $totalStockQuery = "SELECT SUM(total_value) AS total_stock_value FROM stock WHERE MONTH(date_added) = MONTH(CURRENT_DATE())";
     $totalStockResult = mysqli_query($conn, $totalStockQuery);
@@ -49,27 +39,13 @@ function displayFeedbackDetails($conn) {
         $totalStockValue = $totalStockRow['total_stock_value'];
     }
 
-    // Calculate total attendance for the current month
-    $totalAttendanceQuery = "SELECT SUM(morning + night) AS total_attendance FROM attendance WHERE MONTH(date) = MONTH(CURRENT_DATE())";
-    $totalAttendanceResult = mysqli_query($conn, $totalAttendanceQuery);
-    $totalAttendance = 0;
-
-    if ($totalAttendanceResult) {
-        $totalAttendanceRow = mysqli_fetch_assoc($totalAttendanceResult);
-        $totalAttendance = $totalAttendanceRow['total_attendance'];
-    }
-
-    // Calculate stock amount per student based on attendance
-    $stockPerStudent = ($totalStockValue / $totalStudents) * ($totalAttendance / $totalStudents);
-
     // Adjust the SQL query based on your requirements, including the admission number, room information, fee concession, total attendance, and fine information
     $query = "SELECT hostel_student_list.admissionNo, hostel_student_list.name, hostel_student_list.semester, hostel_student_list.branch, hostel_student_list.yearOfStudy, hostel_student_list.degree, allocations.room_id, 
               CASE WHEN hostel_student_list.p2 = 1 THEN 'FC' ELSE '' END AS fee_concession,
               SUM(CASE WHEN MONTH(attendance.date) = MONTH(CURRENT_DATE()) THEN attendance.morning + attendance.night ELSE 0 END) AS total_attendance,
               fine.reason AS fine_reason,
               fine.status AS fine_status,
-              fine.amount AS fine_amount,
-              $stockPerStudent AS stock_per_student
+              fine.amount AS fine_amount
               FROM hostel_student_list
               LEFT JOIN allocations ON hostel_student_list.admissionNo = allocations.admission_no
               LEFT JOIN attendance ON hostel_student_list.admissionNo = attendance.admission_no
@@ -91,7 +67,6 @@ function displayFeedbackDetails($conn) {
         echo '<th>Room No</th>';
         echo '<th>Fee Concession</th>';
         echo '<th>Total Attendance</th>';
-        
         echo '<th>Fine Amount</th>';
         echo '<th>Total amount</th>';
         echo '</tr>';
@@ -99,6 +74,10 @@ function displayFeedbackDetails($conn) {
         echo '<tbody>';
 
         while ($row = mysqli_fetch_assoc($result)) {
+            // Check if total attendance is zero to avoid Division by Zero error
+            $attendance = $row['total_attendance'];
+            $stockPerStudent = ($attendance > 0) ? ($totalStockValue / $attendance) * $attendance : 0;
+
             echo '<tr>';
             echo '<td>' . $row['admissionNo'] . '</td>';
             echo '<td>' . $row['name'] . '</td>';
@@ -110,7 +89,7 @@ function displayFeedbackDetails($conn) {
             echo '<td>' . $row['fee_concession'] . '</td>';
             echo '<td>' . $row['total_attendance'] . '</td>';
             echo '<td>' . $row['fine_amount'] . '</td>';
-            echo '<td>' . $row['stock_per_student'] . '</td>';
+            echo '<td>' . $stockPerStudent . '</td>';
             echo '</tr>';
         }
 
@@ -216,3 +195,4 @@ function displayFeedbackDetails($conn) {
 </body>
 
 </html>
+        
