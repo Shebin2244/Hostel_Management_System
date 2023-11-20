@@ -197,9 +197,9 @@ error_reporting(E_ERROR | E_PARSE);
 <h1 class="recent-Articles">Return Home Register</h1>
                 <table>
                     <tr>
-                        <th>Name</th>
-                        <th>Admission No</th>
-                        <th>Room No</th>
+                        <!-- <th>Name</th> -->
+                        <!-- <th>Admission No</th> -->
+                        <!-- <th>Room No</th> -->
                         <th>Date</th>
                         <th>Place</th>
                         <th>Time</th>
@@ -210,9 +210,9 @@ error_reporting(E_ERROR | E_PARSE);
                     </tr>
                     <?php foreach ($homeRegisterData as $data) : ?>
                         <tr>
-                            <td><?= $data['name']; ?></td>
-                            <td><?= $data['admission_no']; ?></td>
-                            <td><?= $data['room_no']; ?></td>
+                            <!-- <td><?= $data['name']; ?></td> -->
+                            <!-- <td><?= $data['admission_no']; ?></td> -->
+                            <!-- <td><?= $data['room_no']; ?></td> -->
                             <td><?= $data['date']; ?></td>
                             <td><?= $data['place']; ?></td>
                             <td><?= $data['time']; ?></td>

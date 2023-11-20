@@ -15,7 +15,7 @@ if ($result) {
     $homeRegisterData = array(); // No records found
 }
 
-$conn->close();
+// $conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +91,17 @@ $conn->close();
 
     <div class="main-container">
         <!-- Include your sidebar file -->
+        
         <?php include "../../../component/sidebar/matron.php"; ?>
+        <?php
+        // Fetch data from the home_register table with a join on the allocations table
+$query1 = "SELECT hr.*, a.room_id 
+FROM home_register hr
+LEFT JOIN allocations a ON hr.admission_no = a.admission_no";
+$result1 = mysqli_query($conn, $query1);
+
+?>
+
 
         <div class="main">
             <div class="new-table-container">
@@ -113,7 +123,9 @@ $conn->close();
                         <tr>
                             <td><?= $data['name']; ?></td>
                             <td><?= $data['admission_no']; ?></td>
-                            <td><?= $data['room_no']; ?></td>
+                            
+                            <td>Room 1</td>
+
                             <td><?= $data['date']; ?></td>
                             <td><?= $data['place']; ?></td>
                             <td><?= $data['time']; ?></td>

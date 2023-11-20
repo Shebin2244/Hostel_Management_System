@@ -113,7 +113,9 @@ $conn->close();
                         <tr>
                             <td><?= $data['name']; ?></td>
                             <td><?= $data['admission_no']; ?></td>
-                            <td><?= $data['room_no']; ?></td>
+                            <!-- <td><?= $data['room_no']; ?></td> -->
+                            <td>Room 1</td>
+
                             <td><?= $data['date']; ?></td>
                             <td><?= $data['place']; ?></td>
                             <td><?= $data['time']; ?></td>
