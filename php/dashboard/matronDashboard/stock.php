@@ -130,7 +130,7 @@
     <!-- Header -->
     <header>
         <div class="logosec">
-            <div class="logo">Mess Secretary Dashboard</div>
+            <div class="logo">Matron Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
@@ -146,7 +146,7 @@
 
     <div class="main-container">
         <!-- Include your sidebar file -->
-        <?php include "../../../component/sidebar/ms.php"; ?>
+        <?php include "../../../component/sidebar/matron.php"; ?>
 
         <div class="main">
             <div class="searchbar2">
@@ -161,37 +161,6 @@
                 <!-- Add your content here -->
             </div>
 
-            <form action="process_stock.php" method="post" enctype="multipart/form-data">
-                
-                
-
-                <!-- <input type="hidden" name="product_id" "> -->
-
-                <label for="product_name">Product Name:</label>
-                <input type="text" name="product_name" id="product_name" 
-                    required><br><br>
-
-                <label for="quantity">Quantity:</label>
-                <input type="text" name="quantity" id="quantity" 
-                    required><br><br>
-
-                <label for="unit_price">Unit Price:</label>
-                <input type="text" name="unit_price" id="unit_price"
-                    required><br><br>
-
-                <label for="date_added">Date Added:</label>
-                <input type="date" name="date_added" id="date_added" "
-                    required><br><br>
-
-                <label for="notes">Notes:</label>
-                <textarea name="notes" id="notes"></textarea><br><br>
-
-                <label for="bill_image">Bill Image(jpeg or png):</label>
-    <input type="file" name="bill_image" id="bill_image"  required><br><br>
-
-
-                <input type="submit" value="Add">
-            </form>
             
             <!-- Display Stock Table -->
             <h2>Stock Data</h2>
@@ -224,7 +193,7 @@
                     // $imagePath = $row['bill_image'];
                     $imageName = basename($row['bill_image']);
 
-                    $imagePath = 'uploads'.'/'. $imageName;
+                    $imagePath = '../msDashboard/uploads'.'/'. $imageName;
 
 
                 // echo ''. $imagePath .'';
@@ -234,13 +203,23 @@
                     echo "<td>Image not found</td>";
                 }
                // Add delete button with a form
-        echo "<td>";
-        echo "<form action='delete_stock_process.php' method='post'>";
-        echo "<input type='hidden' name='product_id' value='" . $row['product_id'] . "'>";
-        echo "<input type='submit' value='Delete'>";
-        echo "</form>";
-        echo "</td>";
-                    echo "</tr>";
+    
+            
+               if ($row['matron'] == 0) {
+                   echo "<td>";
+                   echo "<form action='update_stock.php' method='post'>";
+                   echo "<input type='hidden' name='product_id' value='" . $row['product_id'] . "'>";
+                   echo "<input type='submit' value='Confirm'>";
+                   echo "</form>";
+                   echo "</td>";
+               } else {
+                   echo "<td><span>Marked</span></td>";
+               }
+               ?>
+               
+
+ echo "</tr>";
+ <?php
                 }
                 ?>
             </table>
