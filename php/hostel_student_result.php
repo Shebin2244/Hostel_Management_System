@@ -1,18 +1,36 @@
 <?php
+include "../connection/connection.php"; // Include your database connection file
 
-// Assuming you have a MySQL database
-$servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hostel";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Query to retrieve values from the 'points' table where id = 1
+$sql = "SELECT * FROM points WHERE id = 1";
+$result = $conn->query($sql);
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if there are results
+if ($result->num_rows > 0) {
+    // Fetch and print the data
+    while ($row = $result->fetch_assoc()) {
+        // Access the values using column names
+        $p_y1 = $row['p_y1'];
+        $p_y2 = $row['p_y2'];
+        $p_y3 = $row['p_y3'];
+        $p_y4 = $row['p_y4'];
+        $pg = $row['pg'];
+        $total = $row['total'];
+        $t_y1 = $row['t_y1'];
+        $t_y2 = $row['t_y2'];
+        $t_y3 = $row['t_y3'];
+        $t_y4 = $row['t_y4'];
+        $t_pg = $row['t_pg'];
+
+        // Do something with the retrieved values
+        // echo "p_y1: $p_y1, p_y2: $p_y2, p_y3: $p_y3, p_y4: $p_y4, pg: $pg, total: $total, t_y1: $t_y1, t_y2: $t_y2, t_y3: $t_y3, t_y4: $t_y4, t_pg: $t_pg";
+    }
+} else {
+    echo "No results found";
 }
+
+
 
 // Function to insert data into the student list table
 function insertIntoStudentList($conn, $data)  
@@ -38,7 +56,7 @@ if ($conn->error) {
 }
 
 // Set the maximum limit for student insertion
-$maxStudentLimit = 100; // Change this to your desired limit
+$maxStudentLimit = $total; // Change this to your desired limit
 
 // Initialize counter variable
 $insertedStudentsCount = 0;
@@ -88,7 +106,7 @@ if ($result->num_rows > 0) {
             $randomChance = rand(1, 100); // Generate a random number between 1 and 100
 
             // Implement the probability conditions
-            if ($yearOfStudy == 1 && $randomChance <= 25) {
+            if ($yearOfStudy == 1 && $randomChance <= $p_y1) {
                 insertIntoStudentList($conn, $row);
                 $insertedStudentsCount++;
 
@@ -96,7 +114,7 @@ if ($result->num_rows > 0) {
                 if ($insertedStudentsCount >= $maxStudentLimit) {
                     break;
                 }
-            } elseif ($yearOfStudy == 2 && $randomChance <= 15) {
+            } elseif ($yearOfStudy == 2 && $randomChance <= $p_y2) {
                 insertIntoStudentList($conn, $row);
                 $insertedStudentsCount++;
 
@@ -104,7 +122,7 @@ if ($result->num_rows > 0) {
                 if ($insertedStudentsCount >= $maxStudentLimit) {
                     break;
                 }
-            } elseif ($yearOfStudy == 3 && $randomChance <= 10) {
+            } elseif ($yearOfStudy == 3 && $randomChance <= $p_y3) {
                 insertIntoStudentList($conn, $row);
                 $insertedStudentsCount++;
 
@@ -113,7 +131,7 @@ if ($result->num_rows > 0) {
                     break;
                 }
             } elseif (($yearOfStudy == 4 && $randomChance <= 10) || // For year 4
-            (($branch == 'MCA' || $branch == 'M.Tech') && $randomChance <= 10)) { // For 'mca' or 'mtech'
+            (($branch == 'MCA' || $branch == 'M.Tech') && $randomChance <= $p_y4)) { // For 'mca' or 'mtech'
        // Additional conditions for branch 'mca' or 'mtech'
                 insertIntoStudentList($conn, $row);
                 $insertedStudentsCount++;

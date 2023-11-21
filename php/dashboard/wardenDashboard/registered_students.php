@@ -105,7 +105,7 @@ include "../../data_fetch.php";
         <div class="report-container">
             <div class="report-header">
                 <h1 class="recent-Articles">Registered Students</h1>
-                <button class="view">Download</button>
+                <button class="view" style="width:160px;background-color:red"><a href="../../hostel_student_result.php">Start Allocation</a></button>
             </div>
 
             <div class="searchbar">
