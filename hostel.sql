@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2023 at 07:53 AM
+-- Generation Time: Nov 21, 2023 at 05:06 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -73,7 +73,8 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`) VALUES
-(3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0);
+(3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0),
+(6, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-21', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -143,15 +144,21 @@ CREATE TABLE `fine` (
   `admission_no` varchar(22) NOT NULL,
   `reason` varchar(22) NOT NULL,
   `status` varchar(111) NOT NULL,
-  `amount` int(11) NOT NULL
+  `amount` int(11) NOT NULL,
+  `type` varchar(155) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `fine`
 --
 
-INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`, `amount`) VALUES
-('wewe', '', '', '', 0);
+INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`, `amount`, `type`) VALUES
+('wewe', '', '', '', 0, ''),
+('2023-11-09', '111', 'qweq', 'Paid', 1111111, 'HS fine'),
+('2023-11-09', '111', 'qweq', 'Paid', 1111111, 'HS fine'),
+('2023-11-03', '111', 'S', 'Paid', 11, 'HS fine'),
+('2023-11-03', '111', 'qweq', 'Paid', 1111, 'HS fine'),
+('2023-11-03', '111', '1111', 'Paid', 1111, 'Mess fine');
 
 -- --------------------------------------------------------
 
@@ -246,6 +253,29 @@ INSERT INTO `home_register` (`admission_no`, `name`, `room_no`, `date`, `place`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hostel_report`
+--
+
+CREATE TABLE `hostel_report` (
+  `id` int(11) NOT NULL,
+  `admissionNo` varchar(20) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `semester` varchar(10) DEFAULT NULL,
+  `branch` varchar(50) DEFAULT NULL,
+  `yearOfStudy` int(11) DEFAULT NULL,
+  `degree` varchar(20) DEFAULT NULL,
+  `room_id` int(11) DEFAULT NULL,
+  `fee_concession` varchar(10) DEFAULT NULL,
+  `total_attendance` int(11) DEFAULT NULL,
+  `fine_reason` varchar(255) DEFAULT NULL,
+  `fine_status` varchar(20) DEFAULT NULL,
+  `fine_amount` decimal(10,2) DEFAULT NULL,
+  `stock_per_student` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hostel_student_list`
 --
 
@@ -276,11 +306,16 @@ CREATE TABLE `hostel_student_list` (
 
 INSERT INTO `hostel_student_list` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`, `p1`, `p2`, `other`, `room_no`) VALUES
 (1, 'John Doe', 'male', 'B.Tech', 2, '111', 22, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1111111', 51, 50000, 1, 0, 0, 0),
+(13, 'John Doe', 'male', 'B.Tech', 1, '2023001', 1, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1234567890', 51, 50000, 1, 0, 0, 0),
 (6, 'Jane Smith', 'female', 'M.Tech', 1, '2023002', 1, 'ECE', '456 Main St, City', '789 Guardian St, City', '654321', '11', 45, 60000, 0, 1, 0, 0),
+(46, 'Sam Johnson', 'male', 'MCA', 3, '2023003', 5, 'IT', '789 Main St, City', '123 Guardian St, City', '987654', '8765432109', 31, 75000, 0, 0, 1, 0),
+(34, 'Eva Brown', 'female', 'B.Tech', 4, '2023004', 7, 'ME', '987 Main St, City', '234 Guardian St, City', '876543', '7654321098', 22, 55000, 0, 0, 1, 0),
 (2, 'Mark Wilson', 'male', 'B.Tech', 1, '2023005', 2, 'CE', '234 Main St, City', '567 Guardian St, City', '765432', '6543210987', 61, 60000, 1, 0, 0, 0),
 (7, 'Lisa Davis', 'female', 'MCA', 2, '2023006', 4, 'IT', '345 Main St, City', '678 Guardian St, City', '234567', '5432109876', 43, 70000, 0, 1, 0, 0),
+(35, 'Mike Taylor', 'male', 'B.Tech', 3, '2023007', 6, 'CSE', '567 Main St, City', '890 Guardian St, City', '345678', '4321098765', 35, 50000, 0, 0, 1, 0),
 (3, 'Tom White', 'male', 'B.Tech', 1, '2023009', 1, 'ME', '789 Main St, City', '012 Guardian St, City', '567890', '2109876543', 55, 55000, 1, 0, 0, 0),
 (8, 'Emily Clark', 'female', 'MCA', 2, '2023010', 3, 'IT', '890 Main St, City', '123 Guardian St, City', '678901', '0987654321', 48, 65000, 0, 1, 0, 0),
+(47, 'Olivia Hall', 'female', 'M.Tech', 4, '2023012', 7, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '8765432109', 27, 70000, 0, 0, 1, 0),
 (4, 'James Lee', 'male', 'B.Tech', 1, '2023013', 2, 'ME', '678 Main St, City', '901 Guardian St, City', '123456', '5432109876', 59, 60000, 1, 0, 0, 0),
 (9, 'Sophie Turner', 'female', 'MCA', 2, '2023014', 4, 'IT', '234 Main St, City', '567 Guardian St, City', '234567', '0987654321', 39, 55000, 0, 1, 0, 0),
 (11, 'Daniel Brown', 'male', 'B.Tech', 3, '2023015', 6, 'CSE', '789 Main St, City', '012 Guardian St, City', '345678', '8765432109', 45, 65000, 0, 0, 1, 0),
@@ -377,6 +412,7 @@ INSERT INTO `login` (`username`, `password`, `user_type`) VALUES
 ('123', '123', 'student'),
 ('2023001', '2023001', 'student'),
 ('2023002', '2023002', 'student'),
+('2023003', '2023003', 'student'),
 ('2023004', '2023004', 'student'),
 ('2023005', '2023005', 'student'),
 ('2023006', '2023006', 'student'),
@@ -512,7 +548,7 @@ CREATE TABLE `stock` (
 INSERT INTO `stock` (`product_id`, `product_name`, `quantity`, `unit_price`, `date_added`, `notes`, `bill_image`, `matron`, `hs`) VALUES
 (1, 'rice', 11, '111.00', '2023-12-02', '11', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
 (3, 'rice', 12123, '99999999.99', '2023-12-02', '222', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
-(4, 'rice', 11, '11.00', '2023-11-30', 'h', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (161).png', 0, 1);
+(4, 'rice', 11, '1100.00', '2023-11-30', 'h', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (161).png', 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -553,6 +589,12 @@ ALTER TABLE `fine_generation`
 --
 ALTER TABLE `food_menu`
   ADD PRIMARY KEY (`menu_id`);
+
+--
+-- Indexes for table `hostel_report`
+--
+ALTER TABLE `hostel_report`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `hostel_student_list`
@@ -605,7 +647,7 @@ ALTER TABLE `allocations`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `complaint_box`
@@ -632,10 +674,16 @@ ALTER TABLE `food_menu`
   MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `hostel_report`
+--
+ALTER TABLE `hostel_report`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `hostel_student_list`
 --
 ALTER TABLE `hostel_student_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `hostel_student_registration`
