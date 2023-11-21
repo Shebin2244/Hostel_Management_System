@@ -19,15 +19,15 @@ if (isset($_GET['id'])) {
         // Debugging: Output the file path
         echo "File Path: $documentPath";
 
-        // Force download using the Content-Disposition header
+        // Set the Content-Type header to display the PDF in the browser
         header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="' . $document['file_name'] . '"');
 
         // Debugging: Output any errors during readfile
         set_error_handler(function ($errno, $errstr) {
             echo "Error: [$errno] $errstr";
         }, E_WARNING);
         
+        // Output the PDF content
         readfile($documentPath);
 
         exit();
