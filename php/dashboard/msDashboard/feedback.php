@@ -16,7 +16,7 @@ include "../../data_fetch.php";
     <style>
         .report-topic-heading {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             background-color: #f0f0f0;
             font-weight: bold;
             padding: 10px;
@@ -29,7 +29,7 @@ include "../../data_fetch.php";
 
         .item1 {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             margin: 5px 0;
             padding: 5px;
         }
@@ -40,7 +40,7 @@ include "../../data_fetch.php";
     <!-- Header Section -->
     <header>
         <div class="logosec">
-            <div class="logo">Mess secretary Dashboard</div>
+            <div class="logo">Mess Secretary Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
@@ -81,23 +81,22 @@ include "../../data_fetch.php";
 
             <div class="report-container">
                 <div class="report-header">
-                    <h1 class="recent-Articles">Fine Records</h1>
-                    <button class="view">Download</button>
+                    <h1 class="recent-Articles">Food Feedback</h1>
+                    <!-- <button class="view">Download</button> -->
                 </div>
 
                 <div class="report-body">
                     <div class="report-topic-heading">
-                        <h3 class="t-op">Date</h3>
+                        <!-- <h3 class="t-op">Feedback ID</h3> -->
+                        <h3 class="t-op">Feedback</h3>
                         <h3 class="t-op">Admission No</h3>
-                        <h3 class="t-op">Reason</h3>
-                        <h3 class="t-op">Status</h3>
-                        <h3 class="t-op">Amount</h3>
-                        <!-- <h3 class="t-op">Type</h3> -->
+                        <h3 class="t-op">Food</h3>
+                        <h3 class="t-op">Food Item</h3>
                     </div>
 
                     <?php
-                    // Fetch data from the 'fine' table with type 'hs_fine'
-                    $query = "SELECT date, admission_no, reason, status, amount, type FROM fine WHERE type='Mess fine'";
+                    // Fetch data from the 'food_feedback' table
+                    $query = "SELECT feedback_id, feedback, admission_no, food, fooditem FROM food_feedback";
                     $result = mysqli_query($conn, $query);
 
                     // Check if the query was successful
@@ -105,12 +104,11 @@ include "../../data_fetch.php";
                         // Loop through each row in the result set
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '<div class="item1">';
-                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['date']) . '</div>';
+                            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['feedback_id']) . '</div>';
+                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['feedback']) . '</div>';
                             echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['admission_no']) . '</div>';
-                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['reason']) . '</div>';
-                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['status']) . '</div>';
-                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['amount']) . '</div>';
-                            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['type']) . '</div>';
+                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['food']) . '</div>';
+                            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['fooditem']) . '</div>';
                             echo '</div>';
                         }
                     } else {
