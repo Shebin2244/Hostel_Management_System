@@ -132,7 +132,7 @@
     <header>
 
         <div class="logosec">
-            <div class="logo">Hostel secretary Dashboard</div>
+            <div class="logo">Mess secretary Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
@@ -151,7 +151,7 @@
 
     <div class="main-container">
     <?php
-       include "../../../component/sidebar/hs.php";
+       include "../../../component/sidebar/ms.php";
        ?>
 
 
@@ -196,7 +196,7 @@
 
                 <!-- Type input -->
                 <!-- <label for="type">Type:</label> -->
-                <input type="hidden" name="type" value="HS fine" id="type" required><br><br>
+                <input type="hidden" name="type" value="Mess fine" id="type" required><br><br>
 
                 <input type="submit" value="Add/Update">
 
