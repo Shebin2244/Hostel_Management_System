@@ -82,7 +82,7 @@
                 <div class="report-header">
                     <h1 class="recent-Articles">Attendance</h1>
                     <!-- <button class="view">View All</button> -->
-                    <button class="view" id="confirmAllButton">Confirm All</button>
+                    <button class="view" id="confirmAllButton"><a href="attendance_download.php">Download</a></button>
 
                 </div>
                 <div class="search-container">

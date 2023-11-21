@@ -94,7 +94,8 @@
                 </div>
 
 
-                <div class="report-body">
+                <div class="report-body">                <button class="view" id="confirmAllButton"><a href="attendance_download.php">Download</a></button>
+
                     <table>
                         <tr>
                             <th>Name</th>
