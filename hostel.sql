@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2023 at 05:06 AM
+-- Generation Time: Nov 22, 2023 at 05:19 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -74,7 +74,8 @@ CREATE TABLE `attendance` (
 
 INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`) VALUES
 (3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0),
-(6, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-21', 1, 1);
+(6, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-21', 1, 1),
+(24, 'Saheba Biju', '', '', '', 0, 1, '2023-11-22', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -158,7 +159,8 @@ INSERT INTO `fine` (`date`, `admission_no`, `reason`, `status`, `amount`, `type`
 ('2023-11-09', '111', 'qweq', 'Paid', 1111111, 'HS fine'),
 ('2023-11-03', '111', 'S', 'Paid', 11, 'HS fine'),
 ('2023-11-03', '111', 'qweq', 'Paid', 1111, 'HS fine'),
-('2023-11-03', '111', '1111', 'Paid', 1111, 'Mess fine');
+('2023-11-03', '111', '1111', 'Paid', 1111, 'Mess fine'),
+('2023-12-03', '111', 'qweq', 'unpaid', 1111, 'HS fine');
 
 -- --------------------------------------------------------
 
@@ -430,6 +432,7 @@ INSERT INTO `login` (`username`, `password`, `user_type`) VALUES
 ('hs', 'hs', 'hs'),
 ('matron', 'matron', 'matron'),
 ('ms', 'ms', 'ms'),
+('Saheba Biju', 'Saheba Biju', 'staff'),
 ('warden', 'warden', 'warden');
 
 -- --------------------------------------------------------
@@ -525,6 +528,28 @@ INSERT INTO `rooms` (`room_id`, `room_name`, `capacity`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `staff`
+--
+
+CREATE TABLE `staff` (
+  `id` int(11) NOT NULL,
+  `name` varchar(111) NOT NULL,
+  `address` varchar(111) NOT NULL,
+  `phone` int(11) NOT NULL,
+  `email` varchar(111) NOT NULL,
+  `dob` varchar(111) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`id`, `name`, `address`, `phone`, `email`, `dob`) VALUES
+(1, 'Saheba Biju', 'Pullozhathil House Pampady PO Pampady, Kottayam,Kerala', 2147483647, 'shebin2244@gmail.com', '2023-11-22');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stock`
 --
 
@@ -549,6 +574,27 @@ INSERT INTO `stock` (`product_id`, `product_name`, `quantity`, `unit_price`, `da
 (1, 'rice', 11, '111.00', '2023-12-02', '11', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
 (3, 'rice', 12123, '99999999.99', '2023-12-02', '222', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (195).png', 1, 1),
 (4, 'rice', 11, '1100.00', '2023-11-30', 'h', 'C:xampphtdocsHostel_Management_SystemphpdashboardmsDashboard/uploads/111_Bill Image_Screenshot (161).png', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `time_setting`
+--
+
+CREATE TABLE `time_setting` (
+  `m_start` int(11) NOT NULL,
+  `m_end` int(11) NOT NULL,
+  `n_start` int(11) NOT NULL,
+  `n_end` int(11) NOT NULL,
+  `id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `time_setting`
+--
+
+INSERT INTO `time_setting` (`m_start`, `m_end`, `n_start`, `n_end`, `id`) VALUES
+(8, 11, 21, 21, 1);
 
 --
 -- Indexes for dumped tables
@@ -628,6 +674,12 @@ ALTER TABLE `rooms`
   ADD PRIMARY KEY (`room_id`);
 
 --
+-- Indexes for table `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `stock`
 --
 ALTER TABLE `stock`
@@ -647,7 +699,7 @@ ALTER TABLE `allocations`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `complaint_box`
@@ -702,6 +754,12 @@ ALTER TABLE `meetings`
 --
 ALTER TABLE `rooms`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stock`
