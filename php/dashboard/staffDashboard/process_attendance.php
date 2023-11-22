@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
 $admission = $_SESSION['username'];
-session_start();
+// session_start();
 $_SESSION['attendance_message'] = "Attendance has been marked successfully.";
 
 // Include the database connection file
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentDate = date('Y-m-d'); // Get the current date (ignoring time for daily attendance)
 
     // Retrieve student details based on the admission number
-    $sql = "SELECT * FROM hostel_student_list WHERE admissionNo = ?";
+    $sql = "SELECT * FROM staff WHERE name = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $admission);
 
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             $name = $row['name'];
-            $branch = $row['branch'];
-            $semester = $row['semester'];
+            // $branch = $row['branch'];
+            // $semester = $row['semester'];
 
             // Check if attendance record already exists for the current date and admission ID
-            $checkSql = "SELECT * FROM attendance WHERE admiss = ? AND date = ?";
+            $checkSql = "SELECT * FROM attendance WHERE name = ? AND date = ?";
             $checkStmt = $conn->prepare($checkSql);
             $checkStmt->bind_param("ss", $admission, $currentDate);
             $checkStmt->execute();
@@ -33,13 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($checkResult->num_rows > 0) {
                 // Attendance record exists, update morning or night field
-                $updateSql = "UPDATE attendance SET $attendanceType = 1 WHERE admission_no = ? AND date = ?";
+                $updateSql = "UPDATE attendance SET $attendanceType = 1 WHERE name = ? AND date = ?";
                 $updateStmt = $conn->prepare($updateSql);
                 $updateStmt->bind_param("ss", $admission, $currentDate);
 
                 if ($updateStmt->execute()) {
                     echo "Attendance updated successfully.";
-                    header("Location: student_dashboard.php"); // Redirect to the page where the toast will be displayed
+                    header("Location: staff_dashboard.php"); // Redirect to the page where the toast will be displayed
                 } else {
                     echo "Error updating attendance: " . $updateStmt->error;
                 }
@@ -47,13 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt->close();
             } else {
                 // Attendance record does not exist, insert a new record
-                $insertSql = "INSERT INTO attendance (name, admission_no, branch, semester, $attendanceType, date) VALUES (?, ?, ?, ?, 1, ?)";
+                $insertSql = "INSERT INTO attendance (name, $attendanceType, date) VALUES ( ?, 1, ?)";
                 $insertStmt = $conn->prepare($insertSql);
-                $insertStmt->bind_param("sssds", $name, $admission, $branch, $semester, $currentDate);
+                $insertStmt->bind_param("ss", $name, $currentDate);
 
                 if ($insertStmt->execute()) {
                     echo "Attendance marked successfully.";
-                    header("Location: student_dashboard.php"); // Redirect to the page where the toast will be displayed
+                    header("Location: staff_dashboard.php"); // Redirect to the page where the toast will be displayed
                 } else {
                     echo "Error inserting attendance: " . $insertStmt->error;
                 }

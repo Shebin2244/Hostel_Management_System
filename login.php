@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     body {
-        background-color: rgb(13,110,253);
+        background-color: rgb(13, 110, 253);
     }
 
     .login-container {
@@ -54,18 +54,20 @@
     .form-group {
         margin-bottom: 20px;
     }
+
     .role-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .role-box label {
-            font-size: 14px;
-        }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .role-box label {
+        font-size: 14px;
+    }
     </style>
 </head>
 
@@ -93,6 +95,10 @@
                 <label class="btn btn-role" id="matron-button">
                     <input type="radio" name="role" id="matron" value="matron" autocomplete="off">
                     <i class="fa fa-user-nurse"></i> Matron
+                </label>
+                <label class="btn btn-role" id="staff-button">
+                    <input type="radio" name="role" id="staff" value="staff" autocomplete="off">
+                    <i class="fa fa-user"></i> Staff
                 </label>
             </div>
             <form class="mt-3" onsubmit="return handleLogin()">
@@ -178,6 +184,9 @@
                                 break;
                             case 'matron':
                                 window.location.href = 'php/dashboard/matronDashboard/matron_dashboard.php';
+                                break;
+                            case 'staff':
+                                window.location.href = 'php/dashboard/staffDashboard/staff_dashboard.php';
                                 break;
                             default:
                                 window.location.href = 'default_dashboard.php';
