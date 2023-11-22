@@ -5,6 +5,34 @@ error_reporting(E_ERROR | E_PARSE);
 
     $username = $_SESSION['username'];
     $role = $_SESSION['role'];
+    include "../../../connection/connection.php"; // Assuming you have a database connection established
+
+// ... (your existing code)
+
+// Select data from the time_setting table where id is 1
+$queryTimeSetting = "SELECT * FROM time_setting WHERE id = 1";
+$resultTimeSetting = mysqli_query($conn, $queryTimeSetting);
+
+// Check if the query was successful
+if ($resultTimeSetting) {
+    // Fetch the data as an associative array
+    $rowTimeSetting = mysqli_fetch_assoc($resultTimeSetting);
+
+    // Access individual columns like this
+    $m_start = $rowTimeSetting['m_start'];
+    $m_end = $rowTimeSetting['m_end'];
+    $n_start = $rowTimeSetting['n_start'];
+    $n_end = $rowTimeSetting['n_end'];
+
+    // echo  "$m_start";
+
+    // Now you can use these variables wherever you need in your HTML or PHP code
+} else {
+    // Handle the case where the query fails
+    echo 'Error fetching time setting data: ' . mysqli_error($conn);
+}
+
+// ... (your existing code)
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -290,46 +318,39 @@ $result = mysqli_query($conn, $query);
                                 </div>
                             </div>
 
-                    <script>
-                    // Get the current date and time
-                    var now = new Date();
-                    var hours = now.getHours();
-                    var minutes = now.getMinutes();
+                            <script>
+    // Get the current date and time
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
 
-                    // Check if the current time is within the allowed time intervals
-                    if ((hours == 8 && minutes >= 0 && minutes < 60) || (hours == 9 && minutes <= 20)) {
-                        // Show the "attendance-section" div and the "Morning" button
-                        // document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+    // Check if the current time is within the allowed time intervals
+    <?php
+    echo "var m_start = " . json_encode($m_start) . ";"; // Embed PHP variable in JavaScript
+    echo "var m_end = " . json_encode($m_end) . ";"; // Embed PHP variable in JavaScript
+    echo "var n_start = " . json_encode($n_start) . ";"; // Embed PHP variable in JavaScript
+    ?>
+    
+    if ((hours == m_start && minutes >= 0 && minutes < 60) || (hours == m_end && minutes <= 20)) {
+        // Show the "attendance-section" div and the "Morning" button
+        document.getElementById("time-show").innerHTML = m_start + ":00 AM - " + m_end + ":00 AM";
+        document.getElementById("attendance-type").innerHTML = "Morning Attendance";
+        document.querySelector(".attendance-section").style.display = "block";
+        document.getElementById("morning-attendance-form").style.display = "block";
+        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
+    } else if (hours == n_start && minutes >= 0 && minutes < 60) {
+        // Show the "attendance-section" div and the "Night" button
+        document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
+        document.getElementById("time-show").innerHTML = n_start + ":00 PM - " + m_end + ":30 PM";
+        document.getElementById("attendance-type").innerHTML = "Night Attendance";
+        document.querySelector(".attendance-section").style.display = "block";
+        document.getElementById("night-attendance-btn").style.display = "block";
+    } else {
+        // Hide the "attendance-section" div
+        document.querySelector(".attendance-section").style.display = "none";
+    }
+</script>
 
-                        document.getElementById("time-show").innerHTML = "8:00 AM - 9:00 AM";
-                        document.getElementById("attendance-type").innerHTML = "Morning Attendance"
-                        document.querySelector(".attendance-section").style.display = "block";
-                        document.getElementById("morning-attendance-form").style.display = "block";
-                        document.getElementById("night-attendance-btn").style.display ="none"; // Hide the "Night" button
-
-                    } else if (hours == 21 && minutes >= 0 && minutes < 60) {
-                        // Show the "attendance-section" div and the "Night" button
-                        document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
-                        document.getElementById("time-show").innerHTML = "9:00 PM - 9:30 PM";
-                        document.getElementById("attendance-type").innerHTML = "Night Attendance"
-                        document.querySelector(".attendance-section").style.display = "block";
-                        document.getElementById("night-attendance-btn").style.display = "block";
-
-                        // // Calculate the time until 10:30 PM
-                        // var endTime = new Date();
-                        // endTime.setHours(21);
-                        // endTime.setMinutes(30);
-                        // var timeRemaining = endTime - now;
-
-                        // // Schedule a page refresh when the end time is reached
-                        // // setTimeout(function() {
-                        // //     window.location.reload(true); // Hard refresh the page
-                        // // }, timeRemaining);
-                    } else {
-                        // Hide the "attendance-section" div
-                        document.querySelector(".attendance-section").style.display = "none";
-                    }
-                    </script>
 
 
 <script>

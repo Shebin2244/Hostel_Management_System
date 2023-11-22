@@ -271,6 +271,69 @@
                 <input type="submit" value="Add/Update">
                 <!-- </div> -->
             </form>
+
+
+
+<br>
+            <!-- Add this form below your existing HTML code -->
+<div class="time-setting-form-container">
+
+    <?php
+    // Include your database connection file
+    include "../../../connection/connection.php";
+
+    // Assume $id is the specific id you want to retrieve data for
+    $id = 1; // You can replace this with the actual id you want to edit
+
+    // SQL query to select data from the time_setting table for the given id
+    $querySelect = "SELECT * FROM time_setting WHERE id = $id";
+    $resultSelect = mysqli_query($conn, $querySelect);
+
+    // Check if the query was successful
+    if ($resultSelect && mysqli_num_rows($resultSelect) > 0) {
+        // Fetch the data as an associative array
+        $rowData = mysqli_fetch_assoc($resultSelect);
+    ?>
+        <form action="update_time_setting.php" method="post">
+        <h2>Time Setting Form (use 24 hour format)</h2>
+        <br>
+
+            <div class="form-group">
+                <label for="m_start">Morning Start:</label>
+                <input type="text" id="m_start" name="m_start" value="<?php echo $rowData['m_start']; ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="m_end">Morning End:</label>
+                <input type="text" id="m_end" name="m_end" value="<?php echo $rowData['m_end']; ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="n_start">Night Start:</label>
+                <input type="text" id="n_start" name="n_start" value="<?php echo $rowData['n_start']; ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="n_end">Night End:</label>
+                <input type="text" id="n_end" name="n_end" value="<?php echo $rowData['n_end']; ?>" required>
+            </div>
+
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            
+            <div class="form-group">
+                <input type="submit" value="Update">
+            </div>
+        </form>
+    <?php
+    } else {
+        echo 'Error fetching data: ' . mysqli_error($conn);
+    }
+
+    // Close the database connection
+    mysqli_close($conn);
+    ?>
+</div>
+
         </div>
     </div>
 

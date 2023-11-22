@@ -67,7 +67,7 @@ function getMeetings()
     <!-- for header part -->
     <header>
         <div class="logosec">
-            <div class="logo">Student Dashboard</div>
+            <div class="logo">MEETINGS</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
