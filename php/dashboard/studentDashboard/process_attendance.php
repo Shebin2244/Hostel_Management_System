@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $semester = $row['semester'];
 
             // Check if attendance record already exists for the current date and admission ID
-            $checkSql = "SELECT * FROM attendance WHERE admiss = ? AND date = ?";
+            $checkSql = "SELECT * FROM attendance WHERE admission_no = ? AND date = ?";
             $checkStmt = $conn->prepare($checkSql);
             $checkStmt->bind_param("ss", $admission, $currentDate);
             $checkStmt->execute();

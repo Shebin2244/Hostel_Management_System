@@ -80,7 +80,7 @@
 
             <div class="report-container">
                 <div class="report-header">
-                    <h1 class="recent-Articles">Attendance</h1>
+                    <h1 class="recent-Articles">Student Attendance</h1>
                     <!-- <button class="view">View All</button> -->
                     <button class="view" id="confirmAllButton"><a href="attendance_download.php">Download</a></button>
 
@@ -118,7 +118,7 @@
                             }
 
                             // Select data from the attendance table based on the searchDate
-                            $query = "SELECT * FROM attendance WHERE date = '$searchDate'";
+                            $query = "SELECT * FROM attendance WHERE date = '$searchDate' AND staff = 0";
                             $result = mysqli_query($conn, $query);
 
                             if ($result) {
@@ -164,8 +164,14 @@
                             }
                         ?>
                     </table>
-                </div>
 
+
+
+
+                    
+                    
+                </div>
+                
                 <script src="../../../style/dashboard.js"></script>
                 <script>
                     // JavaScript code for the "Mark Confirmation" button
@@ -206,6 +212,106 @@
                         xhr.send();
                     });
                 </script>
+            </div>
+            <br><br><br><br><br>
+
+
+            <div class="report-container">
+                <div class="report-header">
+                    <h1 class="recent-Articles">Staff Attendance</h1>
+                    <!-- <button class="view">View All</button> -->
+                    <button class="view" id="confirmAllButton"><a href="attendance_download_staff.php">Download</a></button>
+
+                </div>
+                <div class="search-container">
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
+                        <input type="date" name="searchDate" id="searchDate" placeholder="Select a Date">
+                        <button id="searchButton">Search</button>
+                    </form>
+                    
+                </div>
+
+
+                <div class="report-body">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <!-- <th>Admission No</th> -->
+                            <!-- <th>Branch</th> -->
+                            <!-- <th>Semester</th> -->
+                            <th>Morning</th>
+                            <th>Night</th>
+                            <th>Mark Confirmation</th> <!-- New column for Mark Confirmation -->
+                        </tr>
+                        <?php
+                            // Include your connection.php file
+                            include '../../../connection/connection.php';
+
+                            // Initialize the searchDate with the current date
+                            $searchDate = date("Y-m-d");
+
+                            // Check if a date is provided in the search
+                            if (isset($_GET['searchDate'])) {
+                                $searchDate = $_GET['searchDate'];
+                            }
+
+                            // Select data from the attendance table based on the searchDate
+                            $query = "SELECT * FROM attendance WHERE date = '$searchDate' AND staff = 1";
+                            $result = mysqli_query($conn, $query);
+
+                            if ($result) {
+                                if (mysqli_num_rows($result) > 0) {
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo "<tr>";
+                                        echo "<td>" . $row['name'] . "</td>";
+                                        // echo "<td>" . $row['admission_no'] . "</td>";
+                                        // echo "<td>" . $row['branch'] . "</td>";
+                                        // echo "<td>" . $row['semester'] . "</td>";
+
+                                        // Check the 'morning' value
+                                        if ($row['morning'] == 1) {
+                                            echo "<td style='color: green;'>Present</td>";
+                                        } else {
+                                            echo "<td style='color: red;'>Absent</td>";
+                                        }
+
+                                        // Check the 'night' value
+                                        if ($row['night'] == 1) {
+                                            echo "<td style='color: green;'>Present</td>";
+                                        } else {
+                                            echo "<td style='color: red;'>Absent</td>";
+                                        }
+
+                                        // Add a button to mark confirmation
+                                        echo "<td>";
+                                        if ($row['hs'] == 1) {
+                                            echo "<h3>confirmed</h3>";
+                                        } else {
+                                            echo "<button class='markConfirmationButton' data-id='" . $row['id'] . "'>Mark Confirmation</button>";
+                                        }
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    // No data found for the selected date
+                                    echo "<tr><td colspan='7'>No attendance data found for the selected date.</td></tr>";
+                                }
+                            } else {
+                                // Handle any query execution errors
+                                echo "Error executing the query: " . mysqli_error($conn);
+                            }
+                        ?>
+                    </table>
+
+
+
+
+                    <br>
+                    
+                </div>
+
+                <script src="../../../style/dashboard.js"></script>
+            
             </div>
         </div>
     </div>

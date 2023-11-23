@@ -80,7 +80,7 @@
 
             <div class="report-container">
                 <div class="report-header">
-                    <h1 class="recent-Articles">Attendance</h1>
+                    <h1 class="recent-Articles">Student Attendance</h1>
                     <!-- <button class="view">View All</button> -->
                     <button class="view" id="confirmAllButton">Confirm All</button>.
 

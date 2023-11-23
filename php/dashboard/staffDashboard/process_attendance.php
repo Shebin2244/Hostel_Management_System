@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt->close();
             } else {
                 // Attendance record does not exist, insert a new record
-                $insertSql = "INSERT INTO attendance (name, $attendanceType, date) VALUES ( ?, 1, ?)";
+                $insertSql = "INSERT INTO attendance (name, $attendanceType, date, staff) VALUES ( ?, 1, ? , 1)";
                 $insertStmt = $conn->prepare($insertSql);
                 $insertStmt->bind_param("ss", $name, $currentDate);
 
