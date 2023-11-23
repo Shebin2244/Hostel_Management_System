@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2023 at 05:19 PM
+-- Generation Time: Nov 23, 2023 at 05:20 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -65,17 +65,20 @@ CREATE TABLE `attendance` (
   `night` int(11) NOT NULL,
   `date` date NOT NULL,
   `matron` int(11) NOT NULL,
-  `hs` int(11) NOT NULL
+  `hs` int(11) NOT NULL,
+  `staff` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `attendance`
 --
 
-INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`) VALUES
-(3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0),
-(6, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-21', 1, 1),
-(24, 'Saheba Biju', '', '', '', 0, 1, '2023-11-22', 1, 1);
+INSERT INTO `attendance` (`id`, `name`, `admission_no`, `branch`, `semester`, `morning`, `night`, `date`, `matron`, `hs`, `staff`) VALUES
+(3, 'John Doe', '111', 'CSE', '22', 2, 2, '2023-11-20', 0, 0, 0),
+(6, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-21', 1, 1, 0),
+(24, 'Saheba Biju', '', '', '', 0, 1, '2023-11-22', 1, 1, 0),
+(25, 'Saheba Biju', '', '', '', 1, 0, '2023-11-23', 1, 1, 1),
+(26, 'John Doe', '111', 'CSE', '22', 1, 0, '2023-11-23', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -371,6 +374,73 @@ CREATE TABLE `hostel_student_registration` (
 --
 
 INSERT INTO `hostel_student_registration` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `gMobile`, `prAddress`, `p1`, `p2`, `other`, `aIncome`, `obcOrOec`, `distance`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `rank`, `dAction`, `created_at`, `updated_at`) VALUES
+(1, 'John Doe', 'male', 'B.Tech', 1, '2023001', 1, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1234567890', '9876543210', '789 Present St, City', 1, 0, 0, '50000.00', 'obcOrOecYes', '50.75', '3.40', '3.60', '3.70', '3.80', '3.50', '3.60', '3.70', '3.80', 120, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(2, 'Jane Smith', 'female', 'M.Tech', 2, '2023002', 3, 'ECE', '456 Main St, City', '789 Guardian St, City', '654321', '9876543210', '1234567890', '654 Present St, City', 0, 1, 0, '60000.00', 'obcOrOecNo', '45.25', '3.00', '3.20', '3.50', '3.10', '3.20', '3.40', '3.30', '3.10', 150, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(3, 'Sam Johnson', 'male', 'MCA', 3, '2023003', 5, 'IT', '789 Main St, City', '123 Guardian St, City', '987654', '8765432109', '2345678901', '987 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecYes', '30.50', '2.80', '3.00', '2.90', '3.10', '3.20', '3.00', '2.80', '3.10', 180, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(4, 'Eva Brown', 'female', 'B.Tech', 4, '2023004', 7, 'ME', '987 Main St, City', '234 Guardian St, City', '876543', '7654321098', '3456789012', '876 Present St, City', 0, 0, 1, '55000.00', 'obcOrOecNo', '22.00', '2.50', '2.30', '2.80', '2.70', '2.50', '2.40', '2.60', '2.70', 200, 'Two warnings issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(5, 'Mark Wilson', 'male', 'B.Tech', 1, '2023005', 2, 'CE', '234 Main St, City', '567 Guardian St, City', '765432', '6543210987', '4567890123', '765 Present St, City', 1, 0, 0, '60000.00', 'obcOrOecYes', '60.50', '3.50', '3.60', '3.80', '3.70', '3.50', '3.40', '3.60', '3.70', 90, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(6, 'Lisa Davis', 'female', 'MCA', 2, '2023006', 4, 'IT', '345 Main St, City', '678 Guardian St, City', '234567', '5432109876', '5678901234', '654 Present St, City', 0, 1, 0, '70000.00', 'obcOrOecNo', '42.50', '3.20', '3.40', '3.60', '3.50', '3.30', '3.20', '3.50', '3.40', 130, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(7, 'Mike Taylor', 'male', 'B.Tech', 3, '2023007', 6, 'CSE', '567 Main St, City', '890 Guardian St, City', '345678', '4321098765', '6789012345', '876 Present St, City', 0, 0, 1, '50000.00', 'obcOrOecYes', '35.00', '2.90', '3.00', '2.80', '3.10', '3.20', '2.90', '3.00', '3.20', 160, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(8, 'Sara Miller', 'female', 'M.Tech', 4, '2023008', 8, 'ECE', '678 Main St, City', '901 Guardian St, City', '456789', '3210987654', '7890123456', '987 Present St, City', 0, 0, 1, '80000.00', 'obcOrOecNo', '28.50', '2.80', '2.90', '3.00', '2.90', '2.70', '2.80', '2.90', '2.70', 175, 'Two warnings issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(9, 'Tom White', 'male', 'B.Tech', 1, '2023009', 1, 'ME', '789 Main St, City', '012 Guardian St, City', '567890', '2109876543', '8901234567', '123 Present St, City', 1, 0, 0, '55000.00', 'obcOrOecYes', '55.00', '3.60', '3.70', '3.50', '3.80', '3.60', '3.50', '3.70', '3.80', 110, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(10, 'Emily Clark', 'female', 'MCA', 2, '2023010', 3, 'IT', '890 Main St, City', '123 Guardian St, City', '678901', '0987654321', '2345678901', '345 Present St, City', 0, 1, 0, '65000.00', 'obcOrOecNo', '48.00', '3.00', '3.10', '3.20', '3.40', '3.50', '3.20', '3.10', '3.30', 140, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(11, 'Andrew Adams', 'male', 'B.Tech', 3, '2023011', 5, 'CSE', '012 Main St, City', '345 Guardian St, City', '789012', '9876543210', '4567890123', '567 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecYes', '32.50', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 155, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(12, 'Olivia Hall', 'female', 'M.Tech', 4, '2023012', 7, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '8765432109', '5678901234', '678 Present St, City', 0, 0, 1, '70000.00', 'obcOrOecNo', '26.50', '2.70', '2.80', '2.90', '3.00', '2.80', '2.70', '2.90', '2.70', 190, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(13, 'James Lee', 'male', 'B.Tech', 1, '2023013', 2, 'ME', '678 Main St, City', '901 Guardian St, City', '123456', '5432109876', '7890123456', '890 Present St, City', 1, 0, 0, '60000.00', 'obcOrOecYes', '58.50', '3.50', '3.60', '3.70', '3.80', '3.60', '3.40', '3.50', '3.70', 95, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(14, 'Sophie Turner', 'female', 'MCA', 2, '2023014', 4, 'IT', '234 Main St, City', '567 Guardian St, City', '234567', '0987654321', '3456789012', '012 Present St, City', 0, 1, 0, '55000.00', 'obcOrOecNo', '39.00', '2.90', '3.00', '2.80', '3.10', '3.20', '2.90', '3.00', '3.20', 170, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(15, 'Daniel Brown', 'male', 'B.Tech', 3, '2023015', 6, 'CSE', '789 Main St, City', '012 Guardian St, City', '345678', '8765432109', '5678901234', '234 Present St, City', 0, 0, 1, '65000.00', 'obcOrOecYes', '45.00', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 150, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(16, 'Emma Smith', 'female', 'M.Tech', 4, '2023016', 8, 'ECE', '012 Main St, City', '345 Guardian St, City', '901234', '0987654321', '2345678901', '345 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecNo', '32.50', '2.80', '2.90', '3.00', '2.90', '2.70', '2.80', '2.90', '2.70', 185, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(17, 'William Johnson', 'male', 'B.Tech', 1, '2023017', 1, 'ME', '345 Main St, City', '678 Guardian St, City', '123456', '5432109876', '7890123456', '456 Present St, City', 1, 0, 0, '70000.00', 'obcOrOecYes', '55.50', '3.60', '3.70', '3.50', '3.80', '3.60', '3.50', '3.70', '3.80', 100, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(18, 'Ava Davis', 'female', 'MCA', 2, '2023018', 3, 'IT', '678 Main St, City', '901 Guardian St, City', '234567', '0987654321', '3456789012', '567 Present St, City', 0, 1, 0, '60000.00', 'obcOrOecNo', '48.00', '3.00', '3.10', '3.20', '3.40', '3.50', '3.20', '3.10', '3.30', 140, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(19, 'Christopher Martin', 'male', 'B.Tech', 3, '2023019', 5, 'CSE', '901 Main St, City', '234 Guardian St, City', '345678', '8765432109', '5678901234', '678 Present St, City', 0, 0, 1, '80000.00', 'obcOrOecYes', '30.50', '3.20', '3.30', '3.00', '3.10', '3.20', '3.40', '3.30', '3.10', 160, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
+(20, 'Mia Miller', 'female', 'M.Tech', 4, '2023020', 8, 'ECE', '345 Main St, City', '678 Guardian St, City', '901234', '0987654321', '2345678901', '789 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecNo', '26.50', '2.70', '2.80', '2.90', '3.00', '2.80', '2.70', '2.90', '2.70', 190, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hostel_student_registration_backup`
+--
+
+CREATE TABLE `hostel_student_registration_backup` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `gender` enum('male','female','other') NOT NULL,
+  `degree` varchar(50) DEFAULT NULL,
+  `yearOfStudy` int(11) DEFAULT NULL,
+  `admissionNo` varchar(20) DEFAULT NULL,
+  `semester` int(11) DEFAULT NULL,
+  `branch` varchar(50) DEFAULT NULL,
+  `pAddress` text DEFAULT NULL,
+  `gAddress` text DEFAULT NULL,
+  `pincode` varchar(6) DEFAULT NULL,
+  `mobile` varchar(15) DEFAULT NULL,
+  `gMobile` varchar(15) DEFAULT NULL,
+  `prAddress` text DEFAULT NULL,
+  `p1` tinyint(1) DEFAULT NULL,
+  `p2` tinyint(1) DEFAULT NULL,
+  `other` tinyint(1) DEFAULT NULL,
+  `aIncome` decimal(10,2) DEFAULT NULL,
+  `obcOrOec` enum('obcOrOecYes','obcOrOecNo') DEFAULT NULL,
+  `distance` decimal(10,2) DEFAULT NULL,
+  `sgpa1` decimal(3,2) DEFAULT NULL,
+  `sgpa2` decimal(3,2) DEFAULT NULL,
+  `sgpa3` decimal(3,2) DEFAULT NULL,
+  `sgpa4` decimal(3,2) DEFAULT NULL,
+  `sgpa5` decimal(3,2) DEFAULT NULL,
+  `sgpa6` decimal(3,2) DEFAULT NULL,
+  `sgpa7` decimal(3,2) DEFAULT NULL,
+  `sgpa8` decimal(3,2) DEFAULT NULL,
+  `rank` int(11) DEFAULT NULL,
+  `dAction` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `hostel_student_registration_backup`
+--
+
+INSERT INTO `hostel_student_registration_backup` (`id`, `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `gMobile`, `prAddress`, `p1`, `p2`, `other`, `aIncome`, `obcOrOec`, `distance`, `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`, `rank`, `dAction`, `created_at`, `updated_at`) VALUES
 (1, 'John Doe', 'male', 'B.Tech', 1, '2023001', 1, 'CSE', '123 Main St, City', '456 Guardian St, City', '123456', '1234567890', '9876543210', '789 Present St, City', 1, 0, 0, '50000.00', 'obcOrOecYes', '50.75', '3.40', '3.60', '3.70', '3.80', '3.50', '3.60', '3.70', '3.80', 120, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
 (2, 'Jane Smith', 'female', 'M.Tech', 2, '2023002', 3, 'ECE', '456 Main St, City', '789 Guardian St, City', '654321', '9876543210', '1234567890', '654 Present St, City', 0, 1, 0, '60000.00', 'obcOrOecNo', '45.25', '3.00', '3.20', '3.50', '3.10', '3.20', '3.40', '3.30', '3.10', 150, 'No disciplinary action', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
 (3, 'Sam Johnson', 'male', 'MCA', 3, '2023003', 5, 'IT', '789 Main St, City', '123 Guardian St, City', '987654', '8765432109', '2345678901', '987 Present St, City', 0, 0, 1, '75000.00', 'obcOrOecYes', '30.50', '2.80', '3.00', '2.90', '3.10', '3.20', '3.00', '2.80', '3.10', 180, 'One warning issued', '2023-11-13 16:06:57', '2023-11-13 16:06:57'),
@@ -699,7 +769,7 @@ ALTER TABLE `allocations`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `complaint_box`
