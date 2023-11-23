@@ -334,6 +334,25 @@
     ?>
 </div>
 
+<br>
+  <!-- Add this form below your existing HTML code -->
+  <div class="time-setting-form-container">
+
+
+
+    <form action="update_time_setting.php" method="post">
+    <h2>Backup - Clear - Restore</h2>
+    <br>
+
+    
+        <div class="form-group">
+            <!-- <input type="submit" value="Update"> -->
+            <a href="backup.php">--> Click here to Backup</a><br><br>
+            <a href="restore.php">-->Click here to Restore</a><br><br>
+            <a href="clear.php">-->Click here to Clear</a><br><br>
+        </div>
+    </form>
+
         </div>
     </div>
 
