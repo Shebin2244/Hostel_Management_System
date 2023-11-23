@@ -263,12 +263,25 @@ include "../../data_fetch.php";
     <!-- Update Modal -->
     <div id="updateModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="closeUpdateModal">&times;</span>
             <h2>Update Student Details</h2>
             <!-- Update form with fields -->
             <form id="updateForm">
                 <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+                <label for="updateName">Name:</label>
+                <input type="text" id="updateName" name="updateName" required><br>
+
                 <!-- Add more fields as needed -->
                 <button type="submit">Update</button>
             </form>
@@ -280,6 +293,7 @@ include "../../data_fetch.php";
         document.addEventListener('DOMContentLoaded', function () {
             var showDetailsBtns = document.querySelectorAll('.show-details-btn');
             var updateModal = document.getElementById('updateModal');
+            var closeUpdateModalBtn = document.getElementById('closeUpdateModal');
             var updateForm = document.getElementById('updateForm');
             var updateNameInput = document.getElementById('updateName');
 
@@ -289,7 +303,7 @@ include "../../data_fetch.php";
                     detailsContainer.style.display = (detailsContainer.style.display === 'table-row') ? 'none' : 'table-row';
 
                     // Get existing data and populate the form fields
-                    var name = detailsContainer.querySelector('p:contains("Name")').textContent.split(': ')[1].trim();
+                    var name = detailsContainer.querySelector('td:first-child').textContent;
                     // Get other fields as needed
 
                     updateNameInput.value = name;
@@ -301,8 +315,7 @@ include "../../data_fetch.php";
             });
 
             // Close the modal when the close button is clicked
-            var closeBtn = updateModal.querySelector('.close');
-            closeBtn.addEventListener('click', function () {
+            closeUpdateModalBtn.addEventListener('click', function () {
                 updateModal.style.display = 'none';
             });
 
@@ -337,4 +350,3 @@ include "../../data_fetch.php";
 </body>
 
 </html>
-

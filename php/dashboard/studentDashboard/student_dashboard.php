@@ -4,6 +4,7 @@ session_start(); // Start the session
 error_reporting(E_ERROR | E_PARSE);
 
     $username = $_SESSION['username'];
+    // echo $username;
     $role = $_SESSION['role'];
     include "../../../connection/connection.php"; // Assuming you have a database connection established
 
@@ -459,6 +460,26 @@ $result = mysqli_query($conn, $query);
 
     </script>
     <script src="../../../style/dashboard.js"></script>
+    <?php
+        $username = $_SESSION['username'];
+        // $username = "111";
+
+    $queryFineCount = "SELECT COUNT(*) as fineCount FROM fine WHERE admission_no = '$username'";
+$resultFineCount = mysqli_query($conn, $queryFineCount);
+// echo $queryFineCount;
+if ($resultFineCount) {
+    $rowFineCount = mysqli_fetch_assoc($resultFineCount);
+    $fineCount = $rowFineCount['fineCount'];
+
+    // Check if the fine count is greater than 3
+    if ($fineCount > 3) {
+        // Display the marquee element
+        echo '<marquee style="color:red" font-size:"10px"behavior="scroll" direction="left">Warning: You have more than 3 fines!</marquee>';
+    }
+} else {
+    // Handle the case where the query fails
+    echo 'Error fetching fine count data: ' . mysqli_error($conn);
+} ?>
 </body>
 
 </html>
