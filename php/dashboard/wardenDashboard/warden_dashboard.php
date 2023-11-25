@@ -156,10 +156,10 @@ $rowComplaints = mysqli_fetch_assoc($resultComplaints);
     <a href="generate_ranklist.php"  target="_blank"><button class="view">Download</button></a>
 </div>
 
-    <div class="white-box">
+    <!-- <div class="white-box">
         <h2>Admission List</h2>
         <button class="view">Download</button>
-    </div>
+    </div> -->
 </div>
 
                 
