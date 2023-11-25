@@ -1,7 +1,6 @@
 <?php
 include "../connection/connection.php"; // Include your database connection file
 
-
 // Query to retrieve values from the 'points' table where id = 1
 $sql = "SELECT * FROM points WHERE id = 1";
 $result = $conn->query($sql);
@@ -30,29 +29,76 @@ if ($result->num_rows > 0) {
     echo "No results found";
 }
 
-
-
 // Function to insert data into the student list table
 function insertIntoStudentList($conn, $data)  
 {
     // Escape values to prevent SQL injection
-foreach ($data as $key => $value) {
-    $data[$key] = $conn->real_escape_string($value);
+    foreach ($data as $key => $value) {
+        $data[$key] = $conn->real_escape_string($value);
+    }
+
+    // Formulate the SQL query
+    $sql = "INSERT IGNORE INTO hostel_student_list (
+        `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`,
+        `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`,
+        `p1`, `p2`, `other`,`obcOrOec`, 
+        `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`,
+        `rank`, `dAction`, `created_at`, `updated_at`
+    ) VALUES (
+        '$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]',
+        '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]',
+        '$data[gAddress]', '$data[pincode]', '$data[mobile]', '$data[distance]',
+        '$data[aIncome]', '$data[p1]', '$data[p2]', '$data[other]',
+        '$data[obcOrOec]',
+        '$data[sgpa1]', '$data[sgpa2]', '$data[sgpa3]', '$data[sgpa4]',
+        '$data[sgpa5]', '$data[sgpa6]', '$data[sgpa7]', '$data[sgpa8]',
+        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    )";
+    $sql1 = "INSERT IGNORE INTO login (`username`,`password`,`user_type`) VALUES ('$data[admissionNo]','$data[admissionNo]','student')";
+
+    // Execute the query
+    $conn->query($sql);
+    $conn->query($sql1);
+
+    // Check for errors
+    if ($conn->error) {
+        echo "Error: " . $conn->error;
+    }
 }
 
-// Formulate the SQL query
-$sql = "INSERT IGNORE INTO hostel_student_list (`name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`, `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`,`p1`,`p2`,`other`)
-        VALUES ('$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]', '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]', '$data[gAddress]', '$data[pincode]', '$data[mobile]', '$data[distance]', '$data[aIncome]','$data[p1]','$data[p2]','$data[other]')";
+// Function to insert data into the waiting list table
+function insertIntoWaitingList($conn, $data)
+{
+    // Escape values to prevent SQL injection
+    foreach ($data as $key => $value) {
+        $data[$key] = $conn->real_escape_string($value);
+    }
 
-$sql1= "INSERT IGNORE INTO login (`username`,`password`,`user_type`) VALUES ('$data[admissionNo]','$data[admissionNo]','student')";
+    // Formulate the SQL query
+    $sql = "INSERT IGNORE INTO waiting_list (
+        `name`, `gender`, `degree`, `yearOfStudy`, `admissionNo`, `semester`, `branch`,
+        `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`,
+        `p1`, `p2`, `other`,`obcOrOec`, 
+        `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`,
+        `rank`, `dAction`, `created_at`, `updated_at`
+    ) VALUES (
+        '$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]',
+        '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]',
+        '$data[gAddress]', '$data[pincode]', '$data[mobile]', '$data[distance]',
+        '$data[aIncome]', '$data[p1]', '$data[p2]', '$data[other]',
+        '$data[obcOrOec]',
+        '$data[sgpa1]', '$data[sgpa2]', '$data[sgpa3]', '$data[sgpa4]',
+        '$data[sgpa5]', '$data[sgpa6]', '$data[sgpa7]', '$data[sgpa8]',
+        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    )";
 
-// Execute the query
-$conn->query($sql);
-$conn->query($sql1);
-// Check for errors
-if ($conn->error) {
-    echo "Error: " . $conn->error;
-}
+    // Execute the query
+    $conn->query($sql);
+
+    // Check for errors
+    if ($conn->error) {
+        echo "Error: " . $conn->error;
+    }
 }
 
 // Set the maximum limit for student insertion
@@ -98,6 +144,9 @@ if ($result->num_rows > 0) {
     // Move the result pointer back to the beginning of the result set
     $result->data_seek(0);
 
+    // Initialize counter for waiting list
+    $waitingListCount = 0;
+
     while ($row = $result->fetch_assoc()) {
         if ($row['p1'] != 1 && $row['p2'] != 1) {
             // For other students, check conditions based on year of study and branch
@@ -140,9 +189,17 @@ if ($result->num_rows > 0) {
                 if ($insertedStudentsCount >= $maxStudentLimit) {
                     break;
                 }
+            } else {
+                // If conditions are not met, insert into waiting list
+                insertIntoWaitingList($conn, $row);
+                $waitingListCount++;
             }
         }
     }
+
+    // Display a message with the count of students added to the waiting list
+    // echo "Added $waitingListCount students to the waiting list.";
+
 } else {
     echo "0 results";
 }

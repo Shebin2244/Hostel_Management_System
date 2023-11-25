@@ -13,6 +13,12 @@
                                 class="nav-img" alt="articles">
                             <h3> Registered Students</h3>
                         </a>
+                        <a href="waiting_list.php" class="option2 nav-option">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                                class="nav-img" alt="articles">
+                            <h3> Waiting List</h3>
+                        </a>
+    
     
                         <a href="finalized_students.php" class="option2 nav-option">
                             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
