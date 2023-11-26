@@ -61,10 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sgpa8 = $_POST['sgpa8'];
         $rank = $_POST['rank'];
         $dAction = $_POST['dAction'];
+        $email = $_POST['email'];
+
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO hostel_student_registration(name, gender, degree, yearOfStudy, admissionNo, semester, branch, pAddress, gAddress, pincode, mobile, gMobile, prAddress, p1, p2, other, aIncome, obcOrOec, distance, sgpa1, sgpa2, sgpa3, sgpa4, sgpa5, sgpa6, sgpa7, sgpa8, rank, dAction) VALUES 
-        ('$name', '$gender', '$degree', '$yearOfStudy', '$admissionNo', '$semester', '$branch', '$pAddress', '$gAddress', '$pincode', '$mobile', '$gMobile', '$prAddress', '$p1', '$p2', '$other', '$aIncome', '$obcOrOec', '$distance', '$sgpa1', '$sgpa2', '$sgpa3', '$sgpa4', '$sgpa5', '$sgpa6', '$sgpa7', '$sgpa8', '$rank', '$dAction')";
+        $sql = "INSERT INTO hostel_student_registration(name, gender, degree, yearOfStudy, admissionNo, semester, branch, pAddress, gAddress, pincode, mobile, gMobile, prAddress, p1, p2, other, aIncome, obcOrOec, distance, sgpa1, sgpa2, sgpa3, sgpa4, sgpa5, sgpa6, sgpa7, sgpa8, rank, dAction, email) VALUES 
+        ('$name', '$gender', '$degree', '$yearOfStudy', '$admissionNo', '$semester', '$branch', '$pAddress', '$gAddress', '$pincode', '$mobile', '$gMobile', '$prAddress', '$p1', '$p2', '$other', '$aIncome', '$obcOrOec', '$distance', '$sgpa1', '$sgpa2', '$sgpa3', '$sgpa4', '$sgpa5', '$sgpa6', '$sgpa7', '$sgpa8', '$rank', '$dAction', '$email')";
 
         if ($conn->query($sql) === TRUE) {
             ?>

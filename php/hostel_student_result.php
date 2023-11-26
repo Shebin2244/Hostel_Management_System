@@ -43,7 +43,7 @@ function insertIntoStudentList($conn, $data)
         `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`,
         `p1`, `p2`, `other`,`obcOrOec`, 
         `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`,
-        `rank`, `dAction`, `created_at`, `updated_at`
+        `rank`, `dAction`, `created_at`, `updated_at`,`email`
     ) VALUES (
         '$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]',
         '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]',
@@ -52,8 +52,9 @@ function insertIntoStudentList($conn, $data)
         '$data[obcOrOec]',
         '$data[sgpa1]', '$data[sgpa2]', '$data[sgpa3]', '$data[sgpa4]',
         '$data[sgpa5]', '$data[sgpa6]', '$data[sgpa7]', '$data[sgpa8]',
-        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'$data[email]'
     )";
+    include "message.php";
     $sql1 = "INSERT IGNORE INTO login (`username`,`password`,`user_type`) VALUES ('$data[admissionNo]','$data[admissionNo]','student')";
 
     // Execute the query
@@ -80,7 +81,7 @@ function insertIntoWaitingList($conn, $data)
         `pAddress`, `gAddress`, `pincode`, `mobile`, `distance_metric`, `income_metric`,
         `p1`, `p2`, `other`,`obcOrOec`, 
         `sgpa1`, `sgpa2`, `sgpa3`, `sgpa4`, `sgpa5`, `sgpa6`, `sgpa7`, `sgpa8`,
-        `rank`, `dAction`, `created_at`, `updated_at`
+        `rank`, `dAction`, `created_at`, `updated_at`,`email`
     ) VALUES (
         '$data[name]', '$data[gender]', '$data[degree]', '$data[yearOfStudy]',
         '$data[admissionNo]', '$data[semester]', '$data[branch]', '$data[pAddress]',
@@ -89,7 +90,7 @@ function insertIntoWaitingList($conn, $data)
         '$data[obcOrOec]',
         '$data[sgpa1]', '$data[sgpa2]', '$data[sgpa3]', '$data[sgpa4]',
         '$data[sgpa5]', '$data[sgpa6]', '$data[sgpa7]', '$data[sgpa8]',
-        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+        '$data[rank]', '$data[dAction]', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP,'$data[email]'
     )";
 
     // Execute the query

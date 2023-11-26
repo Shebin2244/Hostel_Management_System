@@ -91,7 +91,13 @@
                                 placeholder="Enter Admission Number">
                         </div>
                     </div>
-
+                    <div class="col-md-6">
+                        <div class="my-3">
+                            <label for="admissionNo" class="form-label important">Email</label>
+                            <input type="email" class="form-control" id="admissionNo" name="email"
+                                placeholder="Enter Email">
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="my-3">
                             <label for="semester" class="form-label important">Semester</label>
