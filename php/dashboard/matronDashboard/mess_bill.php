@@ -39,19 +39,6 @@ function displayFeedbackDetails($conn) {
         $totalStockValue = $totalStockRow['total_stock_value'];
     }
 
-    // Fetch common information from mess_verify
-    $commonInfoQuery = "SELECT matron, warden, matron_issue, warden_issue FROM mess_verify LIMIT 1";
-    $commonInfoResult = mysqli_query($conn, $commonInfoQuery);
-    $commonInfo = mysqli_fetch_assoc($commonInfoResult);
-
-    // Display common information
-    echo '<div>';
-    echo '<p>Matron Verified: ' . ($commonInfo['matron'] == 1 ? 'Verified' : 'Not Verified') . '</p>';
-    echo '<p>Warden Verified: ' . ($commonInfo['warden'] == 1 ? 'Verified' : 'Not Verified') . '</p>';
-    echo '<p>Comment form Matron: ' . $commonInfo['matron_issue'] . '</p>';
-    echo '<p>Comment from Warden: ' . $commonInfo['warden_issue'] . '</p>';
-    echo '</div>';
-
     // Adjust the SQL query based on your requirements, including the admission number, room information, fee concession, total attendance, and fine information
     $query = "SELECT hostel_student_list.admissionNo, hostel_student_list.name, hostel_student_list.semester, hostel_student_list.branch, hostel_student_list.yearOfStudy, hostel_student_list.degree, allocations.room_id, 
               CASE WHEN hostel_student_list.p2 = 1 THEN 'FC' ELSE '' END AS fee_concession,
@@ -171,7 +158,7 @@ function displayFeedbackDetails($conn) {
 <body>
     <header>
         <div class="logosec">
-            <div class="logo">Mess secretary Dashboard</div>
+            <div class="logo">Matron Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
@@ -190,12 +177,24 @@ function displayFeedbackDetails($conn) {
     <div class="main-container">
         <?php
         // Include your sidebar file
-        include "../../../component/sidebar/ms.php";
+        include "../../../component/sidebar/matron.php";
         ?>
         <div class="main">
             <div class="searchbar2">
                 <!-- Your search bar content here -->
             </div>
+            <form action="update_matron_mess.php" method="POST">
+                <label for="matronValue">Status:</label>
+                <select name="matronValue" id="matronValue">
+                    <option value="1">Verified</option>
+                    <option value="0">Not Verified</option>
+                </select>
+
+                <label for="matronIssue">Any comment:</label>
+                <input type="text" name="matronIssue" id="matronIssue">
+
+                <button type="submit">Update</button>
+            </form>
             <div class="report-body">
                 <?php
                 // Display feedback details
@@ -208,3 +207,4 @@ function displayFeedbackDetails($conn) {
 </body>
 
 </html>
+        
