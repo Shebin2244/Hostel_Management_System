@@ -102,8 +102,8 @@ $conn->close();
             <span style="color: green;">Verified</span>
         <?php else : ?>
             <a href="verify_document.php?id=<?php echo $document['id']; ?>">Verify</a>
-        <?php endif; ?>
-        <a href="download_document.php?id=<?php echo $document['id']; ?>">Download Document</a>
+        <?php endif; ?> |
+        <a href="../studentDashboard/uploads/<?php echo $document['file_name']; ?>">Download Document</a>
     </li>
 </ul>
                     </div>
