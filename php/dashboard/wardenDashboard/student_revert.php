@@ -38,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Exclude the submit button and admission number from the update
             if ($field !== "update" && $field !== "searchAdmissionNo") {
                 $result = updateStudentDetails($searchAdmissionNo, $field, $value, $conn);
+                echo "<script>alert('student reverted successfully.');</script>";
+                echo "<script>window.location.href = 'student_revert.php';</script>";
 
                 // Debugging: Output the result of the update query
                 // echo "Update Result for $field: " . ($result ? "Success" : "Failed") . "<br>";
