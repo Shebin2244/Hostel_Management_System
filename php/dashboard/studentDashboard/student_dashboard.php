@@ -472,7 +472,7 @@ if ($resultFineCount) {
     $fineCount = $rowFineCount['fineCount'];
 
     // Check if the fine count is greater than 3
-    if ($fineCount > 3) {
+    if ($fineCount >= 3) {
         // Display the marquee element
         echo '<marquee style="color:red" font-size:"10px"behavior="scroll" direction="left">Warning: You have more than 3 fines!</marquee>';
         // echo '<marquee style="color:blue" font-size:"10px"behavior="scroll" direction="left">Message: If you want to reject the allotment <a href="remove_allotment.php">Click Here</a></marquee>';
