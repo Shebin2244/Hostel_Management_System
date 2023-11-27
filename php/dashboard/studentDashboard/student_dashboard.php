@@ -342,7 +342,7 @@ $result = mysqli_query($conn, $query);
     } else if (hours == n_start && minutes >= 0 && minutes < 60) {
         // Show the "attendance-section" div and the "Night" button
         document.getElementById("morning-attendance-btn").style.display ="none"; // Hide the "Morning" button
-        document.getElementById("time-show").innerHTML = n_start + ":00 PM - " + m_end + ":30 PM";
+        document.getElementById("time-show").innerHTML = n_start + ":00 PM - " + n_start + ":30 PM";
         document.getElementById("attendance-type").innerHTML = "Night Attendance";
         document.querySelector(".attendance-section").style.display = "block";
         document.getElementById("night-attendance-btn").style.display = "block";
