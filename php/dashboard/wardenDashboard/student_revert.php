@@ -4,6 +4,50 @@
 <?php
 include "../../../connection/connection.php";
 include "../../data_fetch.php";
+
+// Function to fetch student details by admission number
+function getStudentDetails($admissionNo, $conn) {
+    $query = "SELECT * FROM hostel_student_list WHERE admissionNo = '$admissionNo'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        return mysqli_fetch_assoc($result);
+    } else {
+        return false;
+    }
+}
+
+// Function to update student details
+function updateStudentDetails($admissionNo, $field, $value, $conn) {
+    $query = "UPDATE hostel_student_list SET $field = '$value' WHERE admissionNo = '$admissionNo'";
+    return mysqli_query($conn, $query);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Check if the "searchAdmissionNo" key is set in the $_POST array
+    $searchAdmissionNo = isset($_POST["searchAdmissionNo"]) ? $_POST["searchAdmissionNo"] : '';
+
+    if (!empty($searchAdmissionNo)) {
+        $studentDetails = getStudentDetails($searchAdmissionNo, $conn);
+    }
+
+    // Check if the form is submitted and the admission number is not empty
+    if (isset($_POST["update"]) && !empty($searchAdmissionNo)) {
+        // Update student details if the form is submitted
+        foreach ($_POST as $field => $value) {
+            // Exclude the submit button and admission number from the update
+            if ($field !== "update" && $field !== "searchAdmissionNo") {
+                $result = updateStudentDetails($searchAdmissionNo, $field, $value, $conn);
+
+                // Debugging: Output the result of the update query
+                // echo "Update Result for $field: " . ($result ? "Success" : "Failed") . "<br>";
+            }
+        }
+
+        // Refresh student details after update
+        $studentDetails = getStudentDetails($searchAdmissionNo, $conn);
+    }
+}
 ?>
 
 <head>
@@ -14,100 +58,50 @@ include "../../data_fetch.php";
     <link rel="stylesheet" href="../../../style/dash-style.css">
     <link rel="stylesheet" href="../../../style/responsive.css">
     <style>
-        /* Add the styles for the table */
-        .report-container {
-            width: 100%;
-        }
-
-        .report-body {
+        /* Add styles for the form and inputs */
+        form {
             display: flex;
             flex-wrap: wrap;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            gap: 10px;
             margin-top: 20px;
         }
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
+        label {
+            font-weight: bold;
+            width: 150px;
+            margin-bottom: 5px;
         }
 
-        th {
+        input {
+            width: 200px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
             background-color: #4caf50;
             color: white;
-        }
-
-        .details-container {
-            display: none;
-            background-color: #f9f9f9;
-        }
-
-        .details-container td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .show-details-btn {
-            background-color: #4caf50;
-            color: white;
-            padding: 8px 16px;
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        /* Additional style for searchbar */
-        .searchbar form {
-            display: flex;
-            gap: 10px;
+        button[type="reset"] {
+            background-color: #f44336;
         }
 
-        /* Additional style for modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+        /* Additional style for the message */
+        .message {
+            margin-top: 10px;
             font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
-    <header>
+    
+<header>
         <div class="logosec">
             <div class="logo">Warden Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
@@ -129,7 +123,6 @@ include "../../data_fetch.php";
             </div>
         </div>
     </header>
-
     <div class="main-container">
         <?php
         // Include your sidebar file
@@ -138,215 +131,44 @@ include "../../data_fetch.php";
 
         <div class="report-container">
             <div class="report-header">
-                <h1 class="recent-Articles">Registered Students</h1>
-                <button class="view">Download</button>
+                <h1 class="recent-Articles">Student Revert</h1>
             </div>
 
-            <div class="searchbar">
-                <form method="GET" action="">
-                    <input type="text" name="search_name" placeholder="Search by Name">
-                    <select name="search_degree">
-                        <option value="">Select Degree</option>
-                        <option value="B.Tech">B.Tech</option>
-                        <option value="M.Tech">M.Tech</option>
-                        <option value="MCA">MCA</option>
-                        <!-- Add more options as needed -->
-                    </select>
-                    <select name="search_semester">
-                        <option value="">Select Semester</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                        <option value="3">Semester 3</option>
-                        <option value="4">Semester 4</option>
-                        <option value="5">Semester 5</option>
-                        <option value="6">Semester 6</option>
-                        <option value="7">Semester 7</option>
-                        <option value="8">Semester 8</option>
-                    </select>
-                    <button type="submit" class="searchbtn">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                            class="icn srchicn" alt="search-icon">
-                    </button>
-                </form>
-            </div>
-
-            <div class="report-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Admission Number</th>
-                            <th>Year of Study</th>
-                            <th>Semester</th>
-                            <th>Branch</th>
-                            <th>Degree</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        // Fetch data from the database based on search criteria
-                        $search_name = isset($_GET['search_name']) ? mysqli_real_escape_string($conn, $_GET['search_name']) : '';
-                        $search_degree = isset($_GET['search_degree']) ? mysqli_real_escape_string($conn, $_GET['search_degree']) : '';
-                        $search_semester = isset($_GET['search_semester']) ? mysqli_real_escape_string($conn, $_GET['search_semester']) : '';
-
-                        $query = "SELECT * FROM hostel_student_list WHERE 1";
-
-                        if (!empty($search_name)) {
-                            $query .= " AND name LIKE '%$search_name%'";
-                        }
-
-                        if (!empty($search_degree)) {
-                            $query .= " AND degree = '$search_degree'";
-                        }
-
-                        if (!empty($search_semester)) {
-                            $query .= " AND semester = '$search_semester'";
-                        }
-
-                        $result = mysqli_query($conn, $query);
-
-                        // Check if the query was successful
-                        if ($result) {
-                            if (mysqli_num_rows($result) > 0) {
-
-                                // Loop through each row in the result set
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    // Output the data in the table rows
-                                    echo '<tr>';
-                                    echo '<td>' . htmlspecialchars($row['name']) . '</td>';
-                                    echo '<td>' . htmlspecialchars($row['admissionNo']) . '</td>';
-                                    echo '<td>' . htmlspecialchars($row['yearOfStudy']) . '</td>';
-                                    echo '<td>' . htmlspecialchars($row['semester']) . '</td>';
-                                    echo '<td>' . htmlspecialchars($row['branch']) . '</td>';
-                                    echo '<td>' . htmlspecialchars($row['degree']) . '</td>';
-
-                                    echo '<td><button class="show-details-btn">Show Details</button></td>';
-                                    echo '</tr>';
-                                    echo '<tr class="details-container">';
-                                    // Add more details here based on your table structure
-                                    echo '<td colspan="6">';
-                                    echo '<p>Gender: ' . htmlspecialchars($row['gender']) . '</p>';
-                                    echo '<p>Degree: ' . htmlspecialchars($row['degree']) . '</p>';
-                                    echo '<p>Permanent Address: ' . htmlspecialchars($row['pAddress']) . '</p>';
-                                    echo '<p>Guardian Address: ' . htmlspecialchars($row['gAddress']) . '</p>';
-                                    echo '<p>Pincode: ' . htmlspecialchars($row['pincode']) . '</p>';
-                                    echo '<p>Mobile: ' . htmlspecialchars($row['mobile']) . '</p>';
-                                    // echo '<p>Guardian Mobile: ' . htmlspecialchars($row['gMobile']) . '</p>';
-                                    // echo '<p>Present Address: ' . htmlspecialchars($row['prAddress']) . '</p>';
-                                    // echo '<p>P1: ' . htmlspecialchars($row['p1']) . '</p>';
-                                    // echo '<p>P2: ' . htmlspecialchars($row['p2']) . '</p>';
-                                    // echo '<p>Other: ' . htmlspecialchars($row['other']) . '</p>';
-                                    // echo '<p>Annual Income: ' . htmlspecialchars($row['aIncome']) . '</p>';
-                                    // echo '<p>OBC or OEC: ' . htmlspecialchars($row['obcOrOec']) . '</p>';
-                                    // echo '<p>Distance: ' . htmlspecialchars($row['distance']) . '</p>';
-                                    // echo '<p>SGPA1: ' . htmlspecialchars($row['sgpa1']) . '</p>';
-                                    // ... add more details as needed
-                                    echo '</td>';
-                                    echo '</tr>';
-                                }
-                            } else {
-                                // Display a message when there are no matching records
-                                echo '<tr><td colspan="7">No matching records found</td></tr>';
-                            }
-                        } else {
-                            // Handle the case where the query fails
-                            echo 'Error fetching data: ' . mysqli_error($connection);
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Update Modal -->
-    <div id="updateModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeUpdateModal">&times;</span>
-            <h2>Update Student Details</h2>
-            <!-- Update form with fields -->
-            <form id="updateForm">
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-                <label for="updateName">Name:</label>
-                <input type="text" id="updateName" name="updateName" required><br>
-
-                <!-- Add more fields as needed -->
-                <button type="submit">Update</button>
+            <!-- Search Form -->
+            <form method="post" action="">
+                <label for="searchAdmissionNo">Search Admission Number:</label>
+                <input type="text" name="searchAdmissionNo" id="searchAdmissionNo" required>
+                <button type="submit">Search</button>
+                <button type="reset">Clear</button>
             </form>
+
+            <!-- <div class="report-body"> -->
+                <!-- Display Student Details -->
+                <?php if (isset($studentDetails) && $studentDetails) : ?>
+                    <form method="post" action="">                           
+
+                        <input type="hidden" name="searchAdmissionNo" value="<?php echo $searchAdmissionNo; ?>">
+                        <input type="hidden" name="searchAdmissionNo" value="<?php echo $searchAdmissionNo; ?>">
+                        <?php foreach ($studentDetails as $field => $value) : ?>
+                                
+                            <label for="<?php echo $field; ?>"><?php echo ucwords(str_replace('_', ' ', $field)); ?>:</label>
+                            <input type="text" name="<?php echo $field; ?>" id="<?php echo $field; ?>" value="<?php echo $value; ?>">
+                           
+                        
+                         <br>
+                        <?php endforeach; ?>
+                        <button type="submit" name="update">Update</button>
+                    </form>
+                    </table>
+
+                <?php elseif (isset($studentDetails) && !$studentDetails) : ?>
+                    <p>No student found with the provided admission number.</p>
+                <?php endif; ?>
+            <!-- </div> -->
         </div>
     </div>
-
     <script src="../../../style/dashboard.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var showDetailsBtns = document.querySelectorAll('.show-details-btn');
-            var updateModal = document.getElementById('updateModal');
-            var closeUpdateModalBtn = document.getElementById('closeUpdateModal');
-            var updateForm = document.getElementById('updateForm');
-            var updateNameInput = document.getElementById('updateName');
 
-            showDetailsBtns.forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    var detailsContainer = this.parentElement.parentElement.nextElementSibling;
-                    detailsContainer.style.display = (detailsContainer.style.display === 'table-row') ? 'none' : 'table-row';
-
-                    // Get existing data and populate the form fields
-                    var name = detailsContainer.querySelector('td:first-child').textContent;
-                    // Get other fields as needed
-
-                    updateNameInput.value = name;
-                    // Populate other fields
-
-                    // Show the update modal
-                    updateModal.style.display = 'block';
-                });
-            });
-
-            // Close the modal when the close button is clicked
-            closeUpdateModalBtn.addEventListener('click', function () {
-                updateModal.style.display = 'none';
-            });
-
-            // Close the modal if the user clicks outside the modal
-            window.addEventListener('click', function (event) {
-                if (event.target == updateModal) {
-                    updateModal.style.display = 'none';
-                }
-            });
-
-            // Submit the update form (you need to implement the backend logic for updating data)
-            updateForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                // Add logic to submit the form data to the backend for updating
-                // You can use AJAX or other methods to send the data
-                // After successful update, close the modal and possibly refresh the table
-                updateModal.style.display = 'none';
-                // Example: Call a function to update the data in the backend
-                updateData(updateNameInput.value);
-            });
-
-            function updateData(updatedName) {
-                // Example: You need to implement the backend logic to update the data
-                // You can use AJAX to send the updated data to the server
-                // and update the database
-                // For simplicity, this is just a console log statement
-                console.log('Updating data:', updatedName);
-                // You may want to refresh the table or take other actions after updating data
-            }
-        });
-    </script>
 </body>
 
 </html>
