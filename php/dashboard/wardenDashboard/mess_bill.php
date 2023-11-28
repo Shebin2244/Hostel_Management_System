@@ -80,17 +80,38 @@ function displayFeedbackDetails($conn) {
 
             echo '<tr>';
             echo '<td>' . $row['admissionNo'] . '</td>';
-            echo '<td>' . $row['name'] . '</td>';
-            echo '<td>' . $row['semester'] . '</td>';
-            echo '<td>' . $row['branch'] . '</td>';
-            echo '<td>' . $row['yearOfStudy'] . '</td>';
-            echo '<td>' . $row['degree'] . '</td>';
-            echo '<td>' . $row['room_id'] . '</td>';
-            echo '<td>' . $row['fee_concession'] . '</td>';
-            echo '<td>' . $row['total_attendance'] . '</td>';
-            echo '<td>' . $row['fine_amount'] . '</td>';
-            echo '<td>' . $stockPerStudent . '</td>';
-            echo '</tr>';
+echo '<td>' . $row['name'] . '</td>';
+echo '<td>' . $row['semester'] . '</td>';
+echo '<td>' . $row['branch'] . '</td>';
+echo '<td>' . $row['yearOfStudy'] . '</td>';
+echo '<td>' . $row['degree'] . '</td>';
+echo '<td>' . $row['room_id'] . '</td>';
+echo '<td>' . $row['fee_concession'] . '</td>';
+echo '<td>' . $row['total_attendance'] . '</td>';
+echo '<td>' . $row['fine_amount'] . '</td>';
+echo '<td>' . $stockPerStudent . '</td>';
+echo '</tr>';
+
+// Corrected SQL query
+$insertQuery = "INSERT IGNORE INTO mess_bill (admission_no, name, semester, branch, year_of_study, degree, room_id, fee_concession, total_attendance, fine_amount, stock_per_student) 
+                VALUES (
+                    '{$row['admissionNo']}', 
+                    '{$row['name']}', 
+                    '{$row['semester']}', 
+                    '{$row['branch']}', 
+                    '{$row['yearOfStudy']}', 
+                    '{$row['degree']}', 
+                    '{$row['room_id']}', 
+                    '{$row['fee_concession']}', 
+                    '{$row['total_attendance']}', 
+                    '{$row['fine_amount']}', 
+                    '{$stockPerStudent}'
+                )";
+
+// Execute the query
+mysqli_query($conn, $insertQuery);
+
+
         }
 
         echo '</tbody>';
@@ -182,6 +203,8 @@ function displayFeedbackDetails($conn) {
         <div class="main">
             <div class="searchbar2">
                 <!-- Your search bar content here -->
+                                <button class="view" style="width:160px;background-color:red"><a href="../../hostel_student_result.php">Start Allocation</a></button>
+
             </div>
             <form action="update_matron_mess.php" method="POST">
                 <label for="matronValue">Status:</label>
@@ -194,7 +217,8 @@ function displayFeedbackDetails($conn) {
                 <input type="text" name="matronIssue" id="matronIssue">
 
                 <button type="submit">Update</button>
-            </form>
+            </form>          <br>      <button class="view" style="width:160px;background-color:green;"><a href="mess_bill_download.php">Download Mess Bill</a></button>
+
             <div class="report-body">
                 <?php
                 // Display feedback details

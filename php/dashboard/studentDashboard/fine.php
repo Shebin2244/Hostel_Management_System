@@ -111,7 +111,7 @@ include "../../data_fetch.php";
             <div class="report-container">
                 <div class="report-header">
                     <h1 class="recent-Articles">Fines</h1>
-                    <button class="view">Download</button>
+                    <!-- <button class="view">Download</button> -->
                 </div>
 
                 <div class="report-body">
@@ -153,7 +153,80 @@ include "../../data_fetch.php";
 
 
                 </div>
+
+
+
+                
             </div>
+
+<br><br>
+
+
+
+            <div class="report-container">
+                <div class="report-header">
+                    <h1 class="recent-Articles">Bill</h1>
+                    <!-- <button class="view">Download</button> -->
+                </div>
+
+                <div class="report-body">
+    <div class="report-topic-heading">
+        <h3 class="t-op">Date & Time</h3>
+        <!-- <h3 class="t-op">Admission No</h3> -->
+        <!-- <h3 class="t-op">Name</h3> -->
+        <!-- <h3 class="t-op">Semester</h3> -->
+        <!-- <h3 class="t-op">Branch</h3> -->
+        <!-- <h3 class="t-op">Year of Study</h3> -->
+        <!-- <h3 class="t-op">Degree</h3> -->
+        <!-- <h3 class="t-op">Room ID</h3> -->
+        <!-- <h3 class="t-op">Fee Concession</h3> -->
+        <h3 class="t-op">Total Attendance</h3>
+        <h3 class="t-op">Fine Amount</h3>
+        <h3 class="t-op">Stock Per Student</h3>
+        <!-- <h3 class="t-op">Action</h3> New column for the "Paid" button -->
+    </div>
+
+    <?php
+    // Fetch data from the database (mess_bill table) based on the admission_no
+  // Fetch data from the database (mess_bill table) based on the admission_no and current month
+// Fetch data from the database (mess_bill table) based on the admission_no and last day of the current month
+$username = $_SESSION['username'];
+$currentMonth = date('m');  // Get the current month
+$lastDayOfMonth = date('Y-m-t');  // Get the last day of the current month
+$query = "SELECT * FROM mess_bill
+          WHERE admission_no = '$username' AND DATE(created_at) = '$lastDayOfMonth'";
+$result = mysqli_query($conn, $query);
+
+
+    // Check if the query was successful
+    if ($result) {
+        // Loop through each row in the result set
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div class="item1">';
+            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['created_at']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['admission_no']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['name']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['semester']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['branch']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['year_of_study']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['degree']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['room_id']) . '</div>';
+            // echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['fee_concession']) . '</div>';
+            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['total_attendance']) . '</div>';
+            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['fine_amount']) . '</div>';
+            echo '<div class="t-op-nextlvl">' . htmlspecialchars($row['stock_per_student']) . '</div>';
+            // echo '<div class="t-op-nextlvl"><button onclick="markAsPaid(\'' . htmlspecialchars($row['created_at']) . '\', \'' . htmlspecialchars($row['admission_no']) . '\')">Paid</button></div>';
+            echo '</div>';
+        }
+    } else {
+        // Handle the case where the query fails
+        echo 'Error fetching data: ' . mysqli_error($conn);
+    }
+    ?>
+</div>
+
+                
+            </div> 
         </div>
     </div>
 
