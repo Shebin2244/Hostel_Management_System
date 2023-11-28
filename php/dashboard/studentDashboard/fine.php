@@ -182,7 +182,7 @@ include "../../data_fetch.php";
         <!-- <h3 class="t-op">Fee Concession</h3> -->
         <h3 class="t-op">Total Attendance</h3>
         <h3 class="t-op">Fine Amount</h3>
-        <h3 class="t-op">Stock Per Student</h3>
+        <h3 class="t-op">Amount Per Student</h3>
         <!-- <h3 class="t-op">Action</h3> New column for the "Paid" button -->
     </div>
 

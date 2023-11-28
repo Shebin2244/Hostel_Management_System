@@ -1,17 +1,13 @@
 <?php
-session_start();
-
 // Include your database connection
 include "../../../connection/connection.php";
 
-// Fetch documents and student details for the logged-in user
-$username = $_SESSION['username'];
-$query = "SELECT f.*, s.* FROM files f
-          JOIN hostel_student_list s ON f.username = s.admissionNo
-          WHERE f.username = '$username'";
+// Fetch documents and student details
+$query = "SELECT s.*, f.* FROM hostel_student_list s
+          LEFT JOIN files f ON s.admissionNo = f.username";
 $result = $conn->query($query);
 
-// Check if there are documents for the user
+// Check if there are documents for the users
 if ($result->num_rows > 0) {
     $documents = $result->fetch_all(MYSQLI_ASSOC);
 } else {
@@ -20,6 +16,7 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,30 +46,30 @@ $conn->close();
     <!-- Include your header and sidebar here -->
     <header>
 
-<div class="logosec">
-    <div class="logo">Warden Dashboard</div>
-    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
-        class="icn menuicn" id="menuicn" alt="menu-icon">
-</div>
+        <div class="logosec">
+            <div class="logo">Warden Dashboard</div>
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
+                class="icn menuicn" id="menuicn" alt="menu-icon">
+        </div>
 
-<div class="searchbar">
-    <input type="text" placeholder="Search">
-    <div class="searchbtn">
-        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-            class="icn srchicn" alt="search-icon">
-    </div>
-</div>
+        <div class="searchbar">
+            <input type="text" placeholder="Search">
+            <div class="searchbtn">
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
+                    class="icn srchicn" alt="search-icon">
+            </div>
+        </div>
 
-<div class="message">
-    <div class="circle"></div>
-    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
-    <div class="dp">
-        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
-            class="dpicn" alt="dp">
-    </div>
-</div>
+        <div class="message">
+            <div class="circle"></div>
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
+            <div class="dp">
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+                    class="dpicn" alt="dp">
+            </div>
+        </div>
 
-</header>
+    </header>
 
     <div class="main-container">
         <!-- Include your sidebar file -->
@@ -94,18 +91,21 @@ $conn->close();
 
                         <!-- Display document details -->
                         <ul class="document-list">
-    <li class="document-item">
-        <strong>Document Name:</strong> <?php echo $document['file_name']; ?><br>
-        <!-- <strong>File Path:</strong> <?php echo $document['file_path']; ?><br> -->
-        <strong>Upload Time:</strong> <?php echo $document['upload_time']; ?><br>
-        <?php if ($document['verified'] == 1) : ?>
-            <span style="color: green;">Verified</span>
-        <?php else : ?>
-            <a href="verify_document.php?id=<?php echo $document['id']; ?>">Verify</a>
-        <?php endif; ?> |
-        <a href="../studentDashboard/uploads/<?php echo $document['file_name']; ?>">Download Document</a>
-    </li>
-</ul>
+                            <?php if ($document['file_name']) : ?>
+                                <li class="document-item">
+                                    <strong>Document Name:</strong> <?php echo $document['file_name']; ?><br>
+                                    <strong>Upload Time:</strong> <?php echo $document['upload_time']; ?><br>
+                                    <?php if ($document['verified'] == 1) : ?>
+                                        <span style="color: green;">Verified</span>
+                                    <?php else : ?>
+                                        <a href="verify_document.php?id=<?php echo $document['id']; ?>">Verify</a>
+                                    <?php endif; ?> |
+                                    <a href="../studentDashboard/uploads/<?php echo $document['file_name']; ?>">Download Document</a>
+                                </li>
+                            <?php else : ?>
+                                <li>No documents uploaded for this student.</li>
+                            <?php endif; ?>
+                        </ul>
                     </div>
                 <?php endforeach; ?>
             </div>
