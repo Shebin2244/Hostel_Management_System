@@ -166,7 +166,7 @@
                     echo "<tr>";
                     echo "<td>" . $row['room_id'] . "</td>";
                     echo "<td>" . $row['room_name'] . "</td>";
-                    echo "<td>" . $row['capacity'] . "</td>";
+                    echo "<td>" . $row['capacity']-1 . "</td>";
                     echo '<td><input type="checkbox" name="delete_rooms[]" value="' . $row['room_id'] . '"></td>';
                     echo "</tr>";
                 }

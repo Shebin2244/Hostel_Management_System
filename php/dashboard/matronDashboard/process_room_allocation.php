@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
 
     for ($i = $maxRoomId + 1; $i <= $maxRoomId + $totalRooms; $i++) {
         $roomName = "Room " . $i;
-        $capacity = 4; // Default capacity
+        $capacity = 5; // Default capacity
 
         // Insert the room into the rooms table
         $insertQuery = "INSERT INTO rooms (room_id, room_name, capacity) VALUES ('$i', '$roomName', '$capacity')";
