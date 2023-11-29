@@ -2,12 +2,12 @@
 include '../../../connection/connection.php';
 
 // Function to allocate rooms to students
-function allocateRooms($degree, $capacity, $students)
+function allocateRooms($degree, $students)
 {
     global $conn;
 
     // Fetch available rooms for the given degree
-    $roomQuery = "SELECT * FROM rooms WHERE capacity >= $capacity";
+    $roomQuery = "SELECT * FROM rooms WHERE capacity >= 4";
     $roomResult = mysqli_query($conn, $roomQuery);
 
     if ($roomResult) {
@@ -19,8 +19,8 @@ function allocateRooms($degree, $capacity, $students)
             $existingAllocationResult = mysqli_query($conn, $existingAllocationQuery);
 
             if (!$existingAllocationResult || mysqli_num_rows($existingAllocationResult) === 0) {
-                // Assign a room to the student
-                $room = array_shift($rooms);
+                // Find the next available room for the current degree
+                $room = findAvailableRoom($rooms, $degree);
 
                 if ($room) {
                     $room_id = $room['room_id'];
@@ -34,6 +34,13 @@ function allocateRooms($degree, $capacity, $students)
                         // Handle the case where the insertion fails
                         echo "Error inserting allocation for student $admission_no. Please try again.";
                         exit();
+                    }
+
+                    // If room is full, remove it from the available rooms
+                    if (countCurrentOccupancy($conn, $room_id) >= 4) {
+                        $rooms = array_filter($rooms, function ($r) use ($room_id) {
+                            return $r['room_id'] != $room_id;
+                        });
                     }
                 } else {
                     // Handle the case where there are not enough available rooms
@@ -49,10 +56,47 @@ function allocateRooms($degree, $capacity, $students)
     }
 
     // Display completion message
-echo "Room allocation for $degree completed successfully.";
-echo '<script>alert("Error verifying existing password.");</script>';
-    // Use JavaScript to show an alert
-    echo '<script>alert("Room allocation for ' . $degree . ' completed successfully.");</script>';
+    echo "Room allocation for $degree completed successfully.";
+}
+
+// Function to find available room for the given degree
+function findAvailableRoom(&$rooms, $degree)
+{
+    foreach ($rooms as $room) {
+        $room_id = $room['room_id'];
+        include '../../../connection/connection.php';
+
+        // Check if the room has the same branch students
+        $existingAllocationQuery = "SELECT * FROM allocations a JOIN hostel_student_list s ON a.admission_no = s.admissionNo WHERE a.room_id = '$room_id' AND s.degree = '$degree'";
+        $existingAllocationResult = mysqli_query($conn, $existingAllocationQuery);
+
+        if ($existingAllocationResult && countCurrentOccupancy($conn, $room_id) < 4) {
+            // If the room has capacity for the current branch, return the room
+            return $room;
+        } elseif (!$existingAllocationResult) {
+            // Handle the case where fetching existing allocations fails
+            echo "Error fetching existing allocations. Please try again.";
+            exit();
+        }
+    }
+
+    return null;
+}
+
+// Function to count the current occupancy of a room
+function countCurrentOccupancy($conn, $room_id)
+{
+    $occupancyQuery = "SELECT COUNT(*) as occupancy FROM allocations WHERE room_id = '$room_id'";
+    $occupancyResult = mysqli_query($conn, $occupancyQuery);
+
+    if ($occupancyResult) {
+        $occupancyData = mysqli_fetch_assoc($occupancyResult);
+        return $occupancyData['occupancy'];
+    } else {
+        // Handle the case where fetching occupancy fails
+        echo "Error fetching room occupancy. Please try again.";
+        exit();
+    }
 }
 
 // Fetch students by degree
@@ -64,10 +108,9 @@ foreach ($degrees as $degree) {
 
     if ($studentResult) {
         $students = mysqli_fetch_all($studentResult, MYSQLI_ASSOC);
-        $capacity = count($students);
 
         // Allocate rooms for the current degree
-        allocateRooms($degree, $capacity, $students);
+        allocateRooms($degree, $students);
     } else {
         // Handle the case where fetching students fails
         echo "Error fetching students for degree $degree. Please try again.";
