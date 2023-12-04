@@ -39,10 +39,21 @@ function displayFeedbackDetails($conn) {
         $totalStockValue = $totalStockRow['total_stock_value'];
     }
 
+    // Calculate total attendance for the current month
+    $totalAttendanceQuery = "SELECT SUM(morning + night) AS total_attendance FROM attendance WHERE MONTH(date) = MONTH(CURRENT_DATE())";
+    $totalAttendanceResult = mysqli_query($conn, $totalAttendanceQuery);
+    echo 
+    $totalAttendance = 0;
+
+    if ($totalAttendanceResult) {
+        $totalAttendanceRow = mysqli_fetch_assoc($totalAttendanceResult);
+        $totalAttendance = $totalAttendanceRow['total_attendance'];
+    }
+
     // Adjust the SQL query based on your requirements, including the admission number, room information, fee concession, total attendance, and fine information
     $query = "SELECT hostel_student_list.admissionNo, hostel_student_list.name, hostel_student_list.semester, hostel_student_list.branch, hostel_student_list.yearOfStudy, hostel_student_list.degree, allocations.room_id, 
               CASE WHEN hostel_student_list.p2 = 1 THEN 'FC' ELSE '' END AS fee_concession,
-              SUM(CASE WHEN MONTH(attendance.date) = MONTH(CURRENT_DATE()) THEN attendance.morning + attendance.night ELSE 0 END) AS total_attendance,
+              SUM(attendance.morning + attendance.night) AS total_attendance,
               fine.reason AS fine_reason,
               fine.status AS fine_status,
               fine.amount AS fine_amount
@@ -50,6 +61,7 @@ function displayFeedbackDetails($conn) {
               LEFT JOIN allocations ON hostel_student_list.admissionNo = allocations.admission_no
               LEFT JOIN attendance ON hostel_student_list.admissionNo = attendance.admission_no
               LEFT JOIN fine ON hostel_student_list.admissionNo = fine.admission_no
+              WHERE MONTH(attendance.date) = MONTH(CURRENT_DATE())
               GROUP BY hostel_student_list.admissionNo";
 
     $result = mysqli_query($conn, $query);
@@ -76,42 +88,27 @@ function displayFeedbackDetails($conn) {
         while ($row = mysqli_fetch_assoc($result)) {
             // Check if total attendance is zero to avoid Division by Zero error
             $attendance = $row['total_attendance'];
-            $stockPerStudent = ($attendance > 0) ? ($totalStockValue / $attendance) * $attendance : 0;
-
+            // $data=0;
+            $data = $totalStockValue / $totalAttendance;
+// echo $data;
+            // $stockPerStudent = ($attendance > 0) ? ($totalStockValue / $totalAttendance) * $attendance : 0;
+            $stockPerStudent=$data*$attendance+$row['fine_amount'];
             echo '<tr>';
             echo '<td>' . $row['admissionNo'] . '</td>';
-echo '<td>' . $row['name'] . '</td>';
-echo '<td>' . $row['semester'] . '</td>';
-echo '<td>' . $row['branch'] . '</td>';
-echo '<td>' . $row['yearOfStudy'] . '</td>';
-echo '<td>' . $row['degree'] . '</td>';
-echo '<td>' . $row['room_id'] . '</td>';
-echo '<td>' . $row['fee_concession'] . '</td>';
-echo '<td>' . $row['total_attendance'] . '</td>';
-echo '<td>' . $row['fine_amount'] . '</td>';
-echo '<td>' . $stockPerStudent . '</td>';
-echo '</tr>';
-
-// Corrected SQL query
-$insertQuery = "INSERT IGNORE INTO mess_bill (admission_no, name, semester, branch, year_of_study, degree, room_id, fee_concession, total_attendance, fine_amount, stock_per_student) 
-                VALUES (
-                    '{$row['admissionNo']}', 
-                    '{$row['name']}', 
-                    '{$row['semester']}', 
-                    '{$row['branch']}', 
-                    '{$row['yearOfStudy']}', 
-                    '{$row['degree']}', 
-                    '{$row['room_id']}', 
-                    '{$row['fee_concession']}', 
-                    '{$row['total_attendance']}', 
-                    '{$row['fine_amount']}', 
-                    '{$stockPerStudent}'
-                )";
-
-// Execute the query
-mysqli_query($conn, $insertQuery);
-
-
+            echo '<td>' . $row['name'] . '</td>';
+            echo '<td>' . $row['semester'] . '</td>';
+            echo '<td>' . $row['branch'] . '</td>';
+            echo '<td>' . $row['yearOfStudy'] . '</td>';
+            echo '<td>' . $row['degree'] . '</td>';
+            echo '<td>' . $row['room_id'] . '</td>';
+            echo '<td>' . $row['fee_concession'] . '</td>';
+            echo '<td>' . $row['total_attendance'] . '</td>';
+            echo '<td>' . $row['fine_amount'] . '</td>';
+            echo '<td>' . $stockPerStudent . '</td>';
+            // $stockPerStudent=0;
+            // echo '<td>' .$data.'</td>';
+            echo '</tr>';
+            // echo $data;
         }
 
         echo '</tbody>';
@@ -122,7 +119,6 @@ mysqli_query($conn, $insertQuery);
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 

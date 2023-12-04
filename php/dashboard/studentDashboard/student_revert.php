@@ -41,7 +41,7 @@ function updateStudentDetails($admissionNo, $field, $value, $conn) {
             // Exclude the submit button and admission number from the update
             if ($field !== "update" && $field !== "searchAdmissionNo") {
                 $result = updateStudentDetails($searchAdmissionNo, $field, $value, $conn);
-                echo "<script>alert('student reverted successfully.');</script>";
+                echo "<script>alert('Updated');</script>";
                 echo "<script>window.location.href = 'student_revert.php';</script>";
 
                 // Debugging: Output the result of the update query
@@ -131,7 +131,7 @@ function updateStudentDetails($admissionNo, $field, $value, $conn) {
     <div class="main-container">
         <?php
         // Include your sidebar file
-        include "../../../component/sidebar/warden.php";
+        include "../../../component/sidebar/student.php";
         ?>
 
         <div class="report-container">

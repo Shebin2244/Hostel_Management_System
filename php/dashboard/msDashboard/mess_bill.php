@@ -39,23 +39,21 @@ function displayFeedbackDetails($conn) {
         $totalStockValue = $totalStockRow['total_stock_value'];
     }
 
-    // Fetch common information from mess_verify
-    $commonInfoQuery = "SELECT matron, warden, matron_issue, warden_issue FROM mess_verify LIMIT 1";
-    $commonInfoResult = mysqli_query($conn, $commonInfoQuery);
-    $commonInfo = mysqli_fetch_assoc($commonInfoResult);
+    // Calculate total attendance for the current month
+    $totalAttendanceQuery = "SELECT SUM(morning + night) AS total_attendance FROM attendance WHERE MONTH(date) = MONTH(CURRENT_DATE())";
+    $totalAttendanceResult = mysqli_query($conn, $totalAttendanceQuery);
+    echo 
+    $totalAttendance = 0;
 
-    // Display common information
-    echo '<div>';
-    echo '<p>Matron Verified: ' . ($commonInfo['matron'] == 1 ? 'Verified' : 'Not Verified') . '</p>';
-    echo '<p>Warden Verified: ' . ($commonInfo['warden'] == 1 ? 'Verified' : 'Not Verified') . '</p>';
-    echo '<p>Comment form Matron: ' . $commonInfo['matron_issue'] . '</p>';
-    echo '<p>Comment from Warden: ' . $commonInfo['warden_issue'] . '</p>';
-    echo '</div>';
+    if ($totalAttendanceResult) {
+        $totalAttendanceRow = mysqli_fetch_assoc($totalAttendanceResult);
+        $totalAttendance = $totalAttendanceRow['total_attendance'];
+    }
 
     // Adjust the SQL query based on your requirements, including the admission number, room information, fee concession, total attendance, and fine information
     $query = "SELECT hostel_student_list.admissionNo, hostel_student_list.name, hostel_student_list.semester, hostel_student_list.branch, hostel_student_list.yearOfStudy, hostel_student_list.degree, allocations.room_id, 
               CASE WHEN hostel_student_list.p2 = 1 THEN 'FC' ELSE '' END AS fee_concession,
-              SUM(CASE WHEN MONTH(attendance.date) = MONTH(CURRENT_DATE()) THEN attendance.morning + attendance.night ELSE 0 END) AS total_attendance,
+              SUM(attendance.morning + attendance.night) AS total_attendance,
               fine.reason AS fine_reason,
               fine.status AS fine_status,
               fine.amount AS fine_amount
@@ -63,6 +61,7 @@ function displayFeedbackDetails($conn) {
               LEFT JOIN allocations ON hostel_student_list.admissionNo = allocations.admission_no
               LEFT JOIN attendance ON hostel_student_list.admissionNo = attendance.admission_no
               LEFT JOIN fine ON hostel_student_list.admissionNo = fine.admission_no
+              WHERE MONTH(attendance.date) = MONTH(CURRENT_DATE())
               GROUP BY hostel_student_list.admissionNo";
 
     $result = mysqli_query($conn, $query);
@@ -89,8 +88,11 @@ function displayFeedbackDetails($conn) {
         while ($row = mysqli_fetch_assoc($result)) {
             // Check if total attendance is zero to avoid Division by Zero error
             $attendance = $row['total_attendance'];
-            $stockPerStudent = ($attendance > 0) ? ($totalStockValue / $attendance) * $attendance : 0;
-
+            // $data=0;
+            $data = $totalStockValue / $totalAttendance;
+// echo $data;
+            // $stockPerStudent = ($attendance > 0) ? ($totalStockValue / $totalAttendance) * $attendance : 0;
+            $stockPerStudent=$data*$attendance+$row['fine_amount'];
             echo '<tr>';
             echo '<td>' . $row['admissionNo'] . '</td>';
             echo '<td>' . $row['name'] . '</td>';
@@ -103,7 +105,10 @@ function displayFeedbackDetails($conn) {
             echo '<td>' . $row['total_attendance'] . '</td>';
             echo '<td>' . $row['fine_amount'] . '</td>';
             echo '<td>' . $stockPerStudent . '</td>';
+            // $stockPerStudent=0;
+            // echo '<td>' .$data.'</td>';
             echo '</tr>';
+            // echo $data;
         }
 
         echo '</tbody>';
@@ -114,7 +119,6 @@ function displayFeedbackDetails($conn) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -171,7 +175,7 @@ function displayFeedbackDetails($conn) {
 <body>
     <header>
         <div class="logosec">
-            <div class="logo">Mess secretary Dashboard</div>
+            <div class="logo">Warden Dashboard</div>
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
                 class="icn menuicn" id="menuicn" alt="menu-icon">
         </div>
@@ -190,12 +194,27 @@ function displayFeedbackDetails($conn) {
     <div class="main-container">
         <?php
         // Include your sidebar file
-        include "../../../component/sidebar/ms.php";
+        include "../../../component/sidebar/warden.php";
         ?>
         <div class="main">
             <div class="searchbar2">
                 <!-- Your search bar content here -->
+                                <button class="view" style="width:160px;background-color:red"><a href="../../hostel_student_result.php">Start Allocation</a></button>
+
             </div>
+            <form action="update_matron_mess.php" method="POST">
+                <label for="matronValue">Status:</label>
+                <select name="matronValue" id="matronValue">
+                    <option value="1">Verified</option>
+                    <option value="0">Not Verified</option>
+                </select>
+
+                <label for="matronIssue">Any comment:</label>
+                <input type="text" name="matronIssue" id="matronIssue">
+
+                <button type="submit">Update</button>
+            </form>          <br>      <button class="view" style="width:160px;background-color:green;"><a href="mess_bill_download.php">Download Mess Bill</a></button>
+
             <div class="report-body">
                 <?php
                 // Display feedback details
@@ -208,3 +227,4 @@ function displayFeedbackDetails($conn) {
 </body>
 
 </html>
+        
