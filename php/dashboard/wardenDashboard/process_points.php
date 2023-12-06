@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $p_y3 = $_POST['p_y3'];
     $p_y4 = $_POST['p_y4'];
     $pg = $_POST['pg'];
+    $priority = $_POST['priority']; 
     $total = $_POST['total'];
     $t_y1 = $_POST['t_y1'];
     $t_y2 = $_POST['t_y2'];
@@ -20,16 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $t_pg = $_POST['t_pg'];
 
     // Update the data in the database
-    $updateSql = "UPDATE points SET 
-                    p_y1 = ?, p_y2 = ?, p_y3 = ?, p_y4 = ?, pg = ?, 
-                    total = ?, t_y1 = ?, t_y2 = ?, t_y3 = ?, t_y4 = ?, t_pg = ? 
-                  WHERE id = 1";
-    $updateStmt = $conn->prepare($updateSql);
-    $updateStmt->bind_param("iiiiiiiiiii", 
-                            $p_y1, $p_y2, $p_y3, $p_y4, $pg, 
-                            $total, $t_y1, $t_y2, $t_y3, $t_y4, $t_pg,);
-
-    if ($updateStmt->execute()) {
+    $updateSql= "UPDATE points SET 
+                p_y1 = $p_y1, p_y2 = $p_y2, p_y3 = $p_y3, p_y4 = $p_y4, pg = $pg, priority = $priority,
+                total = $total, t_y1 = $t_y1, t_y2 = $t_y2, t_y3 = $t_y3, t_y4 = $t_y4, t_pg = $t_pg
+              WHERE id = 1";
+    if ($result = $conn->query($updateSql)) {
         // Display a success pop-up message
         echo "<script>alert('Point Allocation and Number of Seats updated successfully.');</script>";
         
