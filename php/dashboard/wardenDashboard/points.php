@@ -217,7 +217,7 @@ error_reporting(E_ALL & ~E_WARNING);
                     $t_y4 = ($p_y4/$total)*$total;
                     $t_pg = ($pg/100)*$total;
                     $priority=($row['priority']/100)*$total;
-                    echo $priority;
+                    // echo $priority;
 
                     // $priority=($row['priority']
                     $id = $row['id'];
@@ -404,6 +404,30 @@ error_reporting(E_ALL & ~E_WARNING);
 
             // Attach the checkSeats function to the form's onsubmit event
             document.querySelector("form").onsubmit = checkSeats;
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to check if the sum of percentages is 100
+            function checkPercentage() {
+                var p_y1 = parseInt(document.getElementById("p_y1").value) || 0;
+                var p_y2 = parseInt(document.getElementById("p_y2").value) || 0;
+                var p_y3 = parseInt(document.getElementById("p_y3").value) || 0;
+                var p_y4 = parseInt(document.getElementById("p_y4").value) || 0;
+                var pg = parseInt(document.getElementById("pg").value) || 0;
+                var priority = parseInt(document.getElementById("priority").value) || 0;
+
+                var totalPercentage = p_y1 + p_y2 + p_y3 + p_y4 + pg + priority;
+
+                if (totalPercentage !== 100) {
+                    alert("The total percentage should be 100%. Please adjust your input.");
+                    return false; // Prevent form submission
+                }
+
+                return true; // Allow form submission
+            }
+
+            // Attach the checkPercentage function to the form's onsubmit event
+            document.querySelector("form").onsubmit = checkPercentage;
         });
         </script>
 
